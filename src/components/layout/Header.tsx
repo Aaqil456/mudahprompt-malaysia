@@ -4,29 +4,27 @@ import { Menu, X, Sun, Moon, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/enhanced-button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 
-interface HeaderProps {
-  isAuthenticated?: boolean;
-  user?: {
-    name: string;
-    email: string;
-    avatar?: string;
-  };
-}
+interface HeaderProps {}
 
-export function Header({ isAuthenticated = false, user }: HeaderProps) {
+export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { lang, setLang, t } = useLanguage();
   const { theme, toggleTheme } = useTheme();
+  const { user, signOut } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
   const isCurrentPath = (path: string) => location.pathname === path;
 
-  const handleSignOut = () => {
-    // TODO: Implement actual sign out logic
-    console.log('Sign out clicked');
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+    } catch (error) {
+      console.error('Sign out error:', error);
+    }
   };
 
   const handleSignIn = () => {
@@ -106,10 +104,10 @@ export function Header({ isAuthenticated = false, user }: HeaderProps) {
 
           {/* Auth Button */}
           <div className="hidden md:block">
-            {isAuthenticated && user ? (
+            {user ? (
               <div className="flex items-center space-x-2">
                 <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-medium">
-                  {user.name.charAt(0).toUpperCase()}
+                  {user.email?.charAt(0).toUpperCase()}
                 </div>
                 <Button
                   variant="ghost"
@@ -191,14 +189,13 @@ export function Header({ isAuthenticated = false, user }: HeaderProps) {
             </Link>
             
             <div className="pt-4 border-t border-border/40">
-              {isAuthenticated && user ? (
+              {user ? (
                 <div className="space-y-2">
                   <div className="flex items-center space-x-2 px-3 py-2">
                     <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-medium">
-                      {user.name.charAt(0).toUpperCase()}
+                      {user.email?.charAt(0).toUpperCase()}
                     </div>
                     <div className="text-sm">
-                      <div className="font-medium">{user.name}</div>
                       <div className="text-muted-foreground">{user.email}</div>
                     </div>
                   </div>

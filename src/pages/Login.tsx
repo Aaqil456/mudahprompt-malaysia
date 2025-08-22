@@ -3,30 +3,25 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/enhanced-button';
 import { Card } from '@/components/ui/card';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function Login() {
   const { t } = useLanguage();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const { user, signInWithGoogle } = useAuth();
   const nextUrl = searchParams.get('next') || '/prompt-assistant';
 
-  // Mock authentication check
+  // If already authenticated, redirect
   useEffect(() => {
-    // If already authenticated, redirect
-    const isAuthenticated = false; // This would come from your auth system
-    if (isAuthenticated) {
+    if (user) {
       navigate(nextUrl);
     }
-  }, [navigate, nextUrl]);
+  }, [user, navigate, nextUrl]);
 
   const handleGoogleSignIn = async () => {
     try {
-      // TODO: Implement actual Supabase Google OAuth
-      console.log('Starting Google OAuth flow...');
-      
-      // Mock redirect to Google OAuth
-      // In real implementation, this would redirect to Supabase auth
-      window.location.href = `/auth/callback?next=${encodeURIComponent(nextUrl)}`;
+      await signInWithGoogle();
     } catch (error) {
       console.error('Sign in error:', error);
     }

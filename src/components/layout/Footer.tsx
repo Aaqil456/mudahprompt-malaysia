@@ -12,10 +12,10 @@ export function Footer() {
           {/* Brand */}
           <div className="md:col-span-2">
             <div className="flex items-center space-x-2 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg hero-gradient flex items-center justify-center">
                 <span className="text-white font-bold text-sm">MP</span>
               </div>
-              <span className="font-bold text-xl text-gradient">MudahPrompt</span>
+              <span className="font-bold text-xl text-hero-gradient">MudahPrompt</span>
             </div>
             <p className="text-muted-foreground mb-6 max-w-md">
               {t('lang') === 'ms'

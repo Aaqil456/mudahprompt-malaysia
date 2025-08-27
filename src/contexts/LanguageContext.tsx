@@ -44,12 +44,12 @@ const translations = {
     
     // Features
     'features.title': 'Ciri-ciri Utama',
-    'features.bilingual.title': 'Dwibahasa',
-    'features.bilingual.desc': 'Sokongan penuh untuk Bahasa Malaysia dan Inggeris',
-    'features.ai.title': 'Kuasa AI',
-    'features.ai.desc': 'Pembantu AI pintar untuk jawapan yang tepat',
-    'features.mobile.title': 'Responsif',
-    'features.mobile.desc': 'Pengalaman terbaik di semua peranti',
+    'features.bilingual.title': 'Penjana Prompt Pelbagai Guna',
+    'features.bilingual.desc': 'Pilih daripada pelbagai pembantu AI dengan fungsi tersusun mengikut kategori',
+    'features.ai.title': 'Penjana Prompt Pintar',
+    'features.ai.desc': 'Isi maklumat → Jana prompt berkualiti tinggi secara automatik',
+    'features.mobile.title': 'Custom Prompt',
+    'features.mobile.desc': 'Masukkan arahan khas untuk hasil yang lebih peribadi & relevan',
     
     // Prompt Assistant
     'assistant.title': 'Pembantu Prompt',
@@ -112,12 +112,12 @@ const translations = {
     
     // Features
     'features.title': 'Key Features',
-    'features.bilingual.title': 'Bilingual',
-    'features.bilingual.desc': 'Full support for Bahasa Malaysia and English',
-    'features.ai.title': 'AI Powered',
-    'features.ai.desc': 'Smart AI assistant for accurate answers',
-    'features.mobile.title': 'Responsive',
-    'features.mobile.desc': 'Best experience on all devices',
+    'features.bilingual.title': 'Versatile Prompt Assistants',
+    'features.bilingual.desc': 'Choose from multiple AI assistants organized by category',
+    'features.ai.title': 'Smart Prompt Generator',
+    'features.ai.desc': 'Fill in details → Auto-generate high-quality prompts',
+    'features.mobile.title': 'Custom Prompt',
+    'features.mobile.desc': 'Add custom instructions for more personalized & relevant results',
     
     // Prompt Assistant
     'assistant.title': 'Prompt Assistant',

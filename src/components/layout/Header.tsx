@@ -39,10 +39,10 @@ export function Header() {
           to="/" 
           className="flex items-center space-x-2 font-bold text-xl text-gradient hover:scale-105 transition-transform"
         >
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg hero-gradient flex items-center justify-center">
             <span className="text-white font-bold text-sm">MP</span>
           </div>
-          <span>MudahPrompt</span>
+          <span className="text-hero-gradient">MudahPrompt</span>
         </Link>
 
         {/* Desktop Navigation */}

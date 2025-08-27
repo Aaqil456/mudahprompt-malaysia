@@ -31,7 +31,7 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 to-accent/10 px-4">
       <Card className="card-gradient p-8 w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-2xl mx-auto mb-6 flex items-center justify-center">
+          <div className="w-16 h-16 hero-gradient rounded-2xl mx-auto mb-6 flex items-center justify-center">
             <span className="text-white font-bold text-xl">MP</span>
           </div>
           <h1 className="text-2xl font-bold mb-2">{t('auth.welcome')}</h1>

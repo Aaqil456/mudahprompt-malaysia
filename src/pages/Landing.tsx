@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, Languages, Zap, Smartphone, Users, Star, CheckCircle } from 'lucide-react';
+import { ArrowRight, LayoutGrid, Wand2, SlidersHorizontal, Users, Star, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/enhanced-button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Card } from '@/components/ui/card';
@@ -10,19 +10,19 @@ export default function Landing() {
 
   const features = [
     {
-      icon: Languages,
+      icon: LayoutGrid,
       title: t('features.bilingual.title'),
       description: t('features.bilingual.desc'),
       color: 'from-blue-500 to-cyan-500'
     },
     {
-      icon: Zap,
+      icon: Wand2,
       title: t('features.ai.title'),
       description: t('features.ai.desc'),
       color: 'from-purple-500 to-pink-500'
     },
     {
-      icon: Smartphone,
+      icon: SlidersHorizontal,
       title: t('features.mobile.title'),
       description: t('features.mobile.desc'),
       color: 'from-green-500 to-emerald-500'
@@ -173,9 +173,11 @@ export default function Landing() {
                     <Star className="h-4 w-4 text-yellow-400 mr-1" />
                     <span>4.8</span>
                   </div>
-                  <Button variant="ghost" size="sm">
-                    Lihat Detail
-                  </Button>
+                  <Link to="/prompt-assistant">
+                    <Button variant="ghost" size="sm">
+                      Lihat Detail
+                    </Button>
+                  </Link>
                 </div>
               </Card>
             ))}

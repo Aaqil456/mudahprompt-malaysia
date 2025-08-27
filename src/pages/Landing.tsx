@@ -124,7 +124,7 @@ export default function Landing() {
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">{t('features.title')}</h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Platform yang direka khas untuk keperluan Malaysia dengan teknologi AI terkini
+              Platform yang direka khas untuk keperluan pengguna awam dengan teknologi AI terkini
             </p>
           </div>
 
@@ -193,14 +193,14 @@ export default function Landing() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 bg-gradient-to-r from-primary to-accent">
+      <section className="py-24 hero-gradient">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center text-white">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
               Mulakan Perjalanan AI Anda Hari Ini
             </h2>
             <p className="text-xl mb-8 text-white/90">
-              Sertai ribuan pengguna yang telah meningkatkan produktiviti mereka dengan MudahPrompt
+              Tingkatkan produktiviti anda dengan MudahPrompt
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

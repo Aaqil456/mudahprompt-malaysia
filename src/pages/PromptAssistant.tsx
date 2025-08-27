@@ -889,13 +889,22 @@ export default function PromptAssistant() {
             systemInstruction: customInstructions
           })
         });
-        
-        const data = await response.json();
-        setAiAnswer(data.answer || 'No answer received');
+        const raw = await response.text();
+        let data: any = {};
+        try {
+          data = raw ? JSON.parse(raw) : {};
+        } catch (e) {
+          throw new Error(raw || 'Invalid JSON from /api/gemini-assist');
+        }
+        if (!response.ok) {
+          const message = data?.error || `HTTP ${response.status}`;
+          throw new Error(message);
+        }
+        setAiAnswer(data.answer || data.revisedPrompt || 'No answer received');
       });
     } catch (error) {
       console.error('Error getting AI answer:', error);
-      setAiAnswer('Error getting AI response. Please try again.');
+      setAiAnswer(String((error as Error)?.message || error) || 'Error getting AI response. Please try again.');
     } finally {
       setIsGettingAnswer(false);
     }

@@ -38,7 +38,7 @@ const translations = {
     
     // Landing Page
     'hero.title': 'Pembantu Prompt AI Malaysia',
-    'hero.subtitle': 'Platform canggih untuk menjana prompt AI yang berkualiti tinggi dalam Bahasa Malaysia dan Inggeris',
+    'hero.subtitle': 'Platform canggih untuk menjana prompt AI yang berkualiti tinggi',
     'hero.cta': 'Mulakan Sekarang',
     'hero.learnMore': 'Ketahui Lebih Lanjut',
     
@@ -106,7 +106,7 @@ const translations = {
     
     // Landing Page
     'hero.title': 'Malaysian AI Prompt Assistant',
-    'hero.subtitle': 'Advanced platform for generating high-quality AI prompts in Bahasa Malaysia and English',
+    'hero.subtitle': 'Advanced platform for generating high-quality AI prompts',
     'hero.cta': 'Get Started',
     'hero.learnMore': 'Learn More',
     

@@ -31,7 +31,8 @@ export default async function handler(req: Request): Promise<Response> {
 
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
-      return new Response(JSON.stringify({ error: 'Missing GEMINI_API_KEY' }), {
+      console.error('GEMINI_API_KEY is not set in the environment.');
+      return new Response(JSON.stringify({ error: 'Server configuration error: GEMINI_API_KEY is missing.' }), {
         status: 500,
         headers: jsonHeaders(req),
       });

@@ -6,7 +6,11 @@
 const nextAvailableAtByIdentity: Map<string, number> = new Map();
 const MIN_SPACING_MS = 900; // ~1s between requests per identity
 
-export default async function handler(req: Request): Promise<Response> {
+const handler = async (req: Request): Promise<Response> => {
+  // ... existing function body ...
+};
+
+export default handler;
   if (req.method === 'OPTIONS') {
     return new Response(null, { status: 204, headers: corsHeaders(req) });
   }

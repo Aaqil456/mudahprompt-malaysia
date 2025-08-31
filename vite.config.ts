@@ -2,9 +2,6 @@ import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
-import dotenv from 'dotenv';
-
-dotenv.config(); // Load environment variables from .env
 
 // https://vitejs.dev/config/
 function localGeminiApi(): Plugin {

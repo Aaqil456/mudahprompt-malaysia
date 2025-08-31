@@ -7,10 +7,6 @@ const nextAvailableAtByIdentity: Map<string, number> = new Map();
 const MIN_SPACING_MS = 900; // ~1s between requests per identity
 
 const handler = async (req: Request): Promise<Response> => {
-  // ... existing function body ...
-};
-
-export default handler;
   if (req.method === 'OPTIONS') {
     return new Response(null, { status: 204, headers: corsHeaders(req) });
   }
@@ -84,7 +80,9 @@ export default handler;
       headers: jsonHeaders(req),
     });
   }
-}
+};
+
+export default handler;
 
 function corsHeaders(req: Request): HeadersInit {
   const origin = req.headers.get('origin') || '*';

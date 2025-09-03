@@ -34,19 +34,19 @@ export default function Landing() {
       name: 'Content Writer',
       description: 'Pembantu untuk menulis kandungan kreatif',
       category: 'Writing',
-      users: '2.5k'
+      
     },
     {
       name: 'Email Marketing',
       description: 'Cipta email pemasaran yang berkesan',
       category: 'Marketing',
-      users: '1.8k'
+      
     },
     {
       name: 'Social Media',
       description: 'Pos media sosial yang menarik',
       category: 'Social',
-      users: '3.2k'
+    
     }
   ];
 
@@ -91,7 +91,7 @@ export default function Landing() {
             </div>
 
             {/* Stats */}
-            <div className="mt-16 grid grid-cols-3 gap-8 max-w-lg mx-auto">
+            {/*<div className="mt-16 grid grid-cols-3 gap-8 max-w-lg mx-auto">
               <div className="text-center">
                 <div className="text-2xl font-bold">10k+</div>
                 <div className="text-sm text-white/80">Prompts</div>
@@ -104,7 +104,7 @@ export default function Landing() {
                 <div className="text-2xl font-bold">99%</div>
                 <div className="text-sm text-white/80">Kepuasan</div>
               </div>
-            </div>
+            </div>*/}
           </div>
         </div>
 
@@ -162,17 +162,10 @@ export default function Landing() {
                       {assistant.category}
                     </span>
                   </div>
-                  <div className="flex items-center text-sm text-muted-foreground">
-                    <Users className="h-4 w-4 mr-1" />
-                    {assistant.users}
-                  </div>
+
                 </div>
                 <p className="text-muted-foreground mb-4">{assistant.description}</p>
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center text-sm">
-                    <Star className="h-4 w-4 text-yellow-400 mr-1" />
-                    <span>4.8</span>
-                  </div>
                   <Link to="/prompt-assistant">
                     <Button variant="ghost" size="sm">
                       Lihat Detail

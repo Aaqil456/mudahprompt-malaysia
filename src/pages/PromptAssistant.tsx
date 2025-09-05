@@ -251,7 +251,7 @@ export default function PromptAssistant() {
   };
 
   const filteredAssistants = assistants.filter(assistant => {
-    const matchesSearch = assistant.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    const matchesSearch = assistant.name[lang].toLowerCase().includes(searchQuery.toLowerCase()) ||
                          assistant.description[lang].toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = selectedCategory === 'All' || assistant.category === selectedCategory;
     return matchesSearch && matchesCategory;
@@ -323,7 +323,7 @@ export default function PromptAssistant() {
                         : "border-border hover:border-primary/50 hover:bg-primary/5"
                     )}
                   >
-                    <div className="font-medium mb-1">{assistant.name}</div>
+                    <div className="font-medium mb-1">{assistant.name[lang]}</div>
                     <div className="text-sm text-muted-foreground mb-2">
                       {assistant.description[lang]}
                     </div>
@@ -341,7 +341,7 @@ export default function PromptAssistant() {
             {/* Fields Container */}
             <div ref={fieldsContainerRef}>
               <Card className="card-gradient p-6">
-                <h3 className="font-semibold mb-4">{selectedAssistant.name}</h3>
+                <h3 className="font-semibold mb-4">{selectedAssistant.name[lang]}</h3>
                 <p className="text-muted-foreground mb-6">
                   {selectedAssistant.description[lang]}
                 </p>

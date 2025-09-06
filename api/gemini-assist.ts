@@ -17,7 +17,7 @@ const handler = async (req: Request): Promise<Response> => {
 
   try {
     // Derive an identity key (per user/IP best-effort)
-    const forwardedFor = req.headers.get('x-forwarded-for') || '';
+    const forwardedFor = (req.headers['x-forwarded-for'] as string) || '';
     const ip = forwardedFor.split(',')[0]?.trim() || 'anonymous';
     const identity = ip;
 
@@ -85,7 +85,7 @@ const handler = async (req: Request): Promise<Response> => {
 export default handler;
 
 function corsHeaders(req: Request): HeadersInit {
-  const origin = req.headers.get('origin') || '*';
+  const origin = (req.headers['origin'] as string) || '*';
   return {
     'Access-Control-Allow-Origin': origin,
     'Access-Control-Allow-Methods': 'POST, OPTIONS',

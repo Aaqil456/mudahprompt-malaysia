@@ -7,6 +7,7 @@ const nextAvailableAtByIdentity: Map<string, number> = new Map();
 const MIN_SPACING_MS = 900; // ~1s between requests per identity
 
 const handler = async (req: Request): Promise<Response> => {
+  console.log(`[${new Date().toISOString()}] Function started.`);
   if (req.method === 'OPTIONS') {
     return new Response(null, { status: 204, headers: corsHeaders(req) });
   }
@@ -16,6 +17,7 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
+    console.log(`[${new Date().toISOString()}] Processing request.`);
     // Derive an identity key (per user/IP best-effort)
     const forwardedFor = (req.headers['x-forwarded-for'] as string) || '';
     const ip = forwardedFor.split(',')[0]?.trim() || 'anonymous';
@@ -26,22 +28,26 @@ const handler = async (req: Request): Promise<Response> => {
     const nextAt = nextAvailableAtByIdentity.get(identity) || 0;
     if (now < nextAt) {
       const waitMs = Math.min(nextAt - now, 2000);
+      console.log(`[${new Date().toISOString()}] Rate limit hit, waiting for ${waitMs}ms.`);
       await new Promise(r => setTimeout(r, waitMs));
     }
 
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
-      console.error('GEMINI_API_KEY is not set in the environment.');
+      console.error(`[${new Date().toISOString()}] GEMINI_API_KEY is not set in the environment.`);
       return new Response(JSON.stringify({ error: 'Server configuration error: GEMINI_API_KEY is missing.' }), {
         status: 500,
         headers: jsonHeaders(req),
       });
     }
+    console.log(`[${new Date().toISOString()}] API Key checked.`);
 
     const { promptText, systemInstruction, model } = await req.json();
+    console.log(`[${new Date().toISOString()}] Request body parsed. Prompt length: ${promptText?.length || 0}, System Instruction length: ${systemInstruction?.length || 0}.`);
 
     const modelName = typeof model === 'string' && model.length > 0 ? model : 'gemini-1.5-flash';
     const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
+    console.log(`[${new Date().toISOString()}] Using model: ${modelName}, URL: ${url}`);
 
     const payload: any = {
       contents: [],
@@ -50,15 +56,19 @@ const handler = async (req: Request): Promise<Response> => {
       payload.contents.push({ role: 'user', parts: [{ text: String(systemInstruction) }] });
     }
     payload.contents.push({ role: 'user', parts: [{ text: String(promptText || '') }] });
+    console.log(`[${new Date().toISOString()}] Payload prepared.`);
 
+    console.log(`[${new Date().toISOString()}] Calling external Gemini API...`);
     const r = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     });
+    console.log(`[${new Date().toISOString()}] External Gemini API call returned with status: ${r.status}.`);
 
     if (!r.ok) {
       const errText = await r.text();
+      console.error(`[${new Date().toISOString()}] Gemini API returned error: ${errText}`);
       return new Response(JSON.stringify({ error: errText }), {
         status: r.status,
         headers: jsonHeaders(req),
@@ -68,17 +78,22 @@ const handler = async (req: Request): Promise<Response> => {
     const data = await r.json();
     const answer =
       data?.candidates?.[0]?.content?.parts?.map((p: any) => p?.text ?? '').join('') ?? '';
+    console.log(`[${new Date().toISOString()}] Gemini response parsed. Answer length: ${answer.length}.`);
 
     // Update next available time for this identity
     nextAvailableAtByIdentity.set(identity, Date.now() + MIN_SPACING_MS);
+    console.log(`[${new Date().toISOString()}] Rate limit updated.`);
 
     // Include both keys for compatibility with older clients
     return new Response(JSON.stringify({ answer, revisedPrompt: answer }), { status: 200, headers: jsonHeaders(req) });
   } catch (error: any) {
+    console.error(`[${new Date().toISOString()}] Function caught an error: ${String(error?.message || error)}`);
     return new Response(JSON.stringify({ error: String(error?.message || error) }), {
       status: 500,
       headers: jsonHeaders(req),
     });
+  } finally {
+    console.log(`[${new Date().toISOString()}] Function finished.`);
   }
 };
 

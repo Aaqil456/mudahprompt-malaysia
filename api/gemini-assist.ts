@@ -6,7 +6,7 @@
 const nextAvailableAtByIdentity: Map<string, number> = new Map();
 const MIN_SPACING_MS = 900; // ~1s between requests per identity
 
-const handler = async (req: Request): Promise<Response> => {
+const handler = async (req: any): Promise<Response> => {
   console.log(`[${new Date().toISOString()}] Function started.`);
   if (req.method === 'OPTIONS') {
     return new Response(null, { status: 204, headers: corsHeaders(req) });
@@ -17,7 +17,7 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    console.log(`[${new Date().toISOString()}] Processing request. Content-Type: ${req.headers.get('content-type')}`);
+    console.log(`[${new Date().toISOString()}] Processing request.`);
     // Derive an identity key (per user/IP best-effort)
     const forwardedFor = (req.headers['x-forwarded-for'] as string) || '';
     const ip = forwardedFor.split(',')[0]?.trim() || 'anonymous';
@@ -44,7 +44,11 @@ const handler = async (req: Request): Promise<Response> => {
 
     let requestBody;
     try {
-      const rawBody = await req.text();
+      const chunks: Buffer[] = [];
+      for await (const chunk of req) {
+        chunks.push(typeof chunk === 'string' ? Buffer.from(chunk) : chunk);
+      }
+      const rawBody = Buffer.concat(chunks).toString('utf8');
       requestBody = JSON.parse(rawBody);
     } catch (parseError: any) {
       console.error(`[${new Date().toISOString()}] Error parsing request body: ${String(parseError?.message || parseError)}`);
@@ -104,12 +108,14 @@ const handler = async (req: Request): Promise<Response> => {
       status: 500,
       headers: jsonHeaders(req),
     });
+  } finally {
+    console.log(`[${new Date().toISOString()}] Function finished.`);
   }
 };
 
 export default handler;
 
-function corsHeaders(req: Request): HeadersInit {
+function corsHeaders(req: any): HeadersInit {
   const origin = (req.headers['origin'] as string) || '*';
   return {
     'Access-Control-Allow-Origin': origin,
@@ -124,3 +130,4 @@ function jsonHeaders(req: Request): HeadersInit {
     ...corsHeaders(req),
   };
 }
+

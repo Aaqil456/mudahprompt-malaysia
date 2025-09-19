@@ -218,6 +218,9 @@ export default function PromptAssistant() {
     
     setIsGettingAnswer(true);
     
+    const abortController = new AbortController();
+    const timeoutId = setTimeout(() => abortController.abort(), 25000); // 25 seconds timeout
+
     try {
       await requestQueue.add(async () => {
         const response = await fetch('/api/gemini-assist', {
@@ -227,8 +230,11 @@ export default function PromptAssistant() {
             promptText: generatedPrompt,
             assistantId: selectedAssistant.id,
             systemInstruction: customInstructions
-          })
+          }),
+          signal: abortController.signal, // Attach the abort signal
         });
+        clearTimeout(timeoutId); // Clear timeout if fetch completes
+
         const raw = await response.text();
         let data: any = {};
         try {
@@ -243,8 +249,13 @@ export default function PromptAssistant() {
         setAiAnswer(data.answer || data.revisedPrompt || 'No answer received');
       });
     } catch (error) {
+      clearTimeout(timeoutId); // Ensure timeout is cleared on error too
       console.error('Error getting AI answer:', error);
-      setAiAnswer(String((error as Error)?.message || error) || 'Error getting AI response. Please try again.');
+      let errorMessage = String((error as Error)?.message || error);
+      if (error instanceof DOMException && error.name === 'AbortError') {
+        errorMessage = 'Request timed out. Please try again.';
+      }
+      setAiAnswer(errorMessage || 'Error getting AI response. Please try again.');
     } finally {
       setIsGettingAnswer(false);
     }

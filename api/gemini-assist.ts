@@ -17,7 +17,7 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    console.log(`[${new Date().toISOString()}] Processing request.`);
+    console.log(`[${new Date().toISOString()}] Processing request. Content-Type: ${req.headers.get('content-type')}`);
     // Derive an identity key (per user/IP best-effort)
     const forwardedFor = (req.headers['x-forwarded-for'] as string) || '';
     const ip = forwardedFor.split(',')[0]?.trim() || 'anonymous';
@@ -42,7 +42,19 @@ const handler = async (req: Request): Promise<Response> => {
     }
     console.log(`[${new Date().toISOString()}] API Key checked.`);
 
-    const { promptText, systemInstruction, model } = await req.json();
+    let requestBody;
+    try {
+      const rawBody = await req.text();
+      requestBody = JSON.parse(rawBody);
+    } catch (parseError: any) {
+      console.error(`[${new Date().toISOString()}] Error parsing request body: ${String(parseError?.message || parseError)}`);
+      return new Response(JSON.stringify({ error: 'Invalid JSON in request body.' }), {
+        status: 400,
+        headers: jsonHeaders(req),
+      });
+    }
+
+    const { promptText, systemInstruction, model } = requestBody;
     console.log(`[${new Date().toISOString()}] Request body parsed. Prompt length: ${promptText?.length || 0}, System Instruction length: ${systemInstruction?.length || 0}.`);
 
     const modelName = typeof model === 'string' && model.length > 0 ? model : 'gemini-1.5-flash';
@@ -92,8 +104,6 @@ const handler = async (req: Request): Promise<Response> => {
       status: 500,
       headers: jsonHeaders(req),
     });
-  } finally {
-    console.log(`[${new Date().toISOString()}] Function finished.`);
   }
 };
 
@@ -114,5 +124,3 @@ function jsonHeaders(req: Request): HeadersInit {
     ...corsHeaders(req),
   };
 }
-
-

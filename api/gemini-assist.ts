@@ -85,7 +85,16 @@ const handler = async (req: any): Promise<Response> => {
     if (!r.ok) {
       const errText = await r.text();
       console.error(`[${new Date().toISOString()}] Gemini API returned error: ${errText}`);
-      return new Response(JSON.stringify({ error: errText }), {
+      let clientErrorMessage = errText;
+      try {
+        const parsedError = JSON.parse(errText);
+        if (parsedError?.error?.message) {
+          clientErrorMessage = parsedError.error.message;
+        }
+      } catch (parseError) {
+        // If errText is not valid JSON, use it as is.
+      }
+      return new Response(JSON.stringify({ error: clientErrorMessage }), {
         status: r.status,
         headers: jsonHeaders(req),
       });

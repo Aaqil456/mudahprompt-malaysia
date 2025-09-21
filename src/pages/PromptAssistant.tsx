@@ -219,7 +219,7 @@ export default function PromptAssistant() {
     setIsGettingAnswer(true);
     
     const abortController = new AbortController();
-    const timeoutId = setTimeout(() => abortController.abort(), 45000); // 45 seconds timeout
+    const timeoutId = setTimeout(() => abortController.abort(), 60000); // 60 seconds timeout
 
     try {
       await requestQueue.add(async () => {

@@ -222,7 +222,6 @@ export default function PromptAssistant() {
     const timeoutId = setTimeout(() => abortController.abort(), 60000); // 60 seconds timeout
 
     try {
-      await requestQueue.add(async () => {
         const response = await fetch('/api/gemini-assist', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -247,7 +246,6 @@ export default function PromptAssistant() {
           throw new Error(message);
         }
         setAiAnswer(data.answer || data.revisedPrompt || 'No answer received');
-      });
     } catch (error) {
       clearTimeout(timeoutId); // Ensure timeout is cleared on error too
       console.error('Error getting AI answer:', error);

@@ -61,7 +61,7 @@ const handler = async (req: any): Promise<Response> => {
     const { promptText, systemInstruction, model } = requestBody;
     console.log(`[${new Date().toISOString()}] Request body parsed. Prompt length: ${promptText?.length || 0}, System Instruction length: ${systemInstruction?.length || 0}.`);
 
-    const modelName = typeof model === 'string' && model.length > 0 ? model : 'gemini-1.5-flash';
+    const modelName = typeof model === 'string' && model.length > 0 ? model : 'gemini-2.5-flash';
     const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
     console.log(`[${new Date().toISOString()}] Using model: ${modelName}, URL: ${url}`);
 
@@ -75,12 +75,17 @@ const handler = async (req: any): Promise<Response> => {
     console.log(`[${new Date().toISOString()}] Payload prepared.`);
 
     console.log(`[${new Date().toISOString()}] Calling external Gemini API...`);
+    console.log(`[${new Date().toISOString()}] Gemini Request Details - Prompt Length: ${promptText?.length || 0}, System Instruction Length: ${systemInstruction?.length || 0}.`);
+    console.log(`[${new Date().toISOString()}] Prompt Text (first 200 chars): ${String(promptText || '').substring(0, 200)}`);
+    console.log(`[${new Date().toISOString()}] System Instruction (first 200 chars): ${String(systemInstruction || '').substring(0, 200)}`);
+    const geminiApiCallStartTime = Date.now();
     const r = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     });
-    console.log(`[${new Date().toISOString()}] External Gemini API call returned with status: ${r.status}.`);
+    const geminiApiCallEndTime = Date.now();
+    console.log(`[${new Date().toISOString()}] External Gemini API call returned with status: ${r.status}. Duration: ${geminiApiCallEndTime - geminiApiCallStartTime}ms.`);
 
     if (!r.ok) {
       const errText = await r.text();

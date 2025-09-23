@@ -56,9 +56,10 @@ export default function PromptAssistant() {
   const fieldsContainerRef = useRef<HTMLDivElement>(null);
   const generatedPromptRef = useRef<HTMLDivElement>(null);
   const promptBuilderRef = useRef<HTMLDivElement>(null);
-  const promptBuilderTitleRef = useRef<HTMLHeadingElement>(null);
   
   const [selectedAssistant, setSelectedAssistant] = useState<any | null>(assistants.length > 0 ? assistants[0] : null);
+  const [selectedAssistantForModal, setSelectedAssistantForModal] = useState<any | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [fieldValues, setFieldValues] = useState<Record<string, string>>({});
   const [generatedPrompt, setGeneratedPrompt] = useState('');
   const [editedPrompt, setEditedPrompt] = useState('');
@@ -75,21 +76,32 @@ export default function PromptAssistant() {
     }
   }, [selectedAssistant?.id]);
 
+  useEffect(() => {
+    if (!isModalOpen) {
+      setSelectedAssistantForModal(null);
+      setFieldValues({});
+      setGeneratedPrompt("");
+      setEditedPrompt("");
+      setIsEditing(false);
+      setIsGenerating(false);
+    }
+  }, [isModalOpen]);
+
 
 
 
 
   const generatePrompt = async () => {
-    if (selectedAssistant && Object.keys(fieldValues).length > 0) {
+    if (selectedAssistantForModal && Object.keys(fieldValues).length > 0) {
       setIsGenerating(true);
       
       try {
         await requestQueue.add(async () => {
-          let prompt = selectedAssistant.template[lang];
+          let prompt = selectedAssistantForModal.template[lang];
           
           // Create field mappings using the improved logic from the other project
           const fieldMappings: Record<string, string> = {};
-          selectedAssistant.fields.forEach((field: any) => {
+          selectedAssistantForModal.fields.forEach((field: any) => {
             const fieldKey = field.name.toLowerCase().replace(/\s+/g, '');
             fieldMappings[fieldKey] = fieldValues[field.name] || '';
           });
@@ -116,14 +128,14 @@ export default function PromptAssistant() {
   };
 
   const savePromptHistory = async (prompt: string) => {
-    if (!selectedAssistant) return;
+    if (!selectedAssistantForModal) return;
     try {
       // Fire-and-forget POST request
       fetch('/api/save-prompt-history', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          assistantId: selectedAssistant.id,
+          assistantId: selectedAssistantForModal.id,
           prompt
         })
       }).catch(err => console.error('History save failed:', err));
@@ -241,12 +253,10 @@ export default function PromptAssistant() {
               <Button
                 onClick={() => {
                   setSelectedAssistant(assistant);
+                  setSelectedAssistantForModal(assistant);
                   setFieldValues({});
                   setGeneratedPrompt("");
-                  setEditedPrompt("");
-                  setIsEditing(false);
-                  setIsGenerating(false);
-                  promptBuilderTitleRef.current?.scrollIntoView({ behavior: 'smooth' });
+                  setIsModalOpen(true); // Open modal
                 }}
                 className="w-full mt-auto"
                 variant="accent"
@@ -258,104 +268,114 @@ export default function PromptAssistant() {
           ))}
         </div>
 
-        {/* Prompt Builder/Editor Section */}
-        {selectedAssistant && (
-          <Card ref={promptBuilderRef} className="card-gradient p-6 mt-8">
-            <h2 ref={promptBuilderTitleRef} className="text-2xl font-bold mb-4">{selectedAssistant.name[lang]}</h2>
-            <p className="text-muted-foreground mb-6">
-              {selectedAssistant.description[lang]}
-            </p>
+        {/* Modal/Drawer for Builder/Editor */}
+        {isModalOpen && selectedAssistantForModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+            <Card className="card-gradient p-6 w-11/12 max-w-3xl max-h-[90vh] overflow-y-auto relative">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="absolute top-4 right-4"
+                onClick={() => setIsModalOpen(false)}
+              >
+                X
+              </Button>
+              <h2 className="text-2xl font-bold mb-4">{selectedAssistantForModal.name[lang]}</h2>
+              <p className="text-muted-foreground mb-6">
+                {selectedAssistantForModal.description[lang]}
+              </p>
 
-            {/* Fields Container */}
-            <div ref={fieldsContainerRef} className="mb-6">
-              <div className="grid gap-4">
-                {selectedAssistant.fields.map((field) => (
-                  <div key={field.name}>
-                    <label className="block text-sm font-medium mb-2">
-                      {field.label[lang]}
-                    </label>
-                    <Input
-                      placeholder={field.placeholder[lang]}
-                      value={fieldValues[field.name] || ''}
-                      onChange={(e) => setFieldValues(prev => ({
-                        ...prev,
-                        [field.name]: e.target.value
-                      }))}
-                    />
-                  </div>
-                ))}
+              {/* Fields Container */}
+              <div ref={fieldsContainerRef} className="mb-6">
+                <div className="grid gap-4">
+                  {selectedAssistantForModal.fields.map((field) => (
+                    <div key={field.name}>
+                      <label className="block text-sm font-medium mb-2">
+                        {field.label[lang]}
+                      </label>
+                      <Input
+                        placeholder={field.placeholder[lang]}
+                        value={fieldValues[field.name] || ''}
+                        onChange={(e) => setFieldValues(prev => ({
+                          ...prev,
+                          [field.name]: e.target.value
+                        }))}
+                      />
+                    </div>
+                  ))}
+                </div>
+
+                <Button
+                  onClick={generatePrompt}
+                  disabled={!selectedAssistantForModal || Object.keys(fieldValues).length === 0 || isGenerating}
+                  className="w-full mt-6"
+                  variant="accent"
+                >
+                  {isGenerating ? (
+                    <>
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2" />
+                      {t('common.loading')}
+                    </>
+                  ) : (
+                    <>
+                      <Wand2 className="h-4 w-4 mr-2" />
+                      {t('assistant.generatePrompt')}
+                    </>
+                  )}
+                </Button>
               </div>
 
-              <Button
-                onClick={generatePrompt}
-                disabled={!selectedAssistant || Object.keys(fieldValues).length === 0 || isGenerating}
-                className="w-full mt-6"
-                variant="accent"
-              >
-                {isGenerating ? (
-                  <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2" />
-                    {t('common.loading')}
-                  </>
-                ) : (
-                  <>
-                    <Wand2 className="h-4 w-4 mr-2" />
-                    {t('assistant.generatePrompt')}
-                  </>
-                )}
-              </Button>
-            </div>
-
-            {/* Generated Prompt */}
-            {generatedPrompt && (
-              <div ref={generatedPromptRef} className="mb-6">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-semibold">Generated Prompt</h3>
-                  <div className="flex gap-2">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setIsEditing(!isEditing)}
-                    >
-                      <Edit3 className="h-4 w-4 mr-2" />
-                      {t('assistant.editPrompt')}
-                    </Button>
-                    {isEditing && (
+              {/* Generated Prompt */}
+              {generatedPrompt && (
+                <div ref={generatedPromptRef} className="mb-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="font-semibold">Generated Prompt</h3>
+                    <div className="flex gap-2">
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={savePrompt}
+                        onClick={() => setIsEditing(!isEditing)}
                       >
-                        <Save className="h-4 w-4 mr-2" />
-                        {t('assistant.savePrompt')}
+                        <Edit3 className="h-4 w-4 mr-2" />
+                        {t('assistant.editPrompt')}
                       </Button>
-                    )}
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={copyPrompt}
-                    >
-                      <Copy className="h-4 w-4 mr-2" />
-                      {t('assistant.copyPrompt')}
-                    </Button>
+                      {isEditing && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={savePrompt}
+                        >
+                          <Save className="h-4 w-4 mr-2" />
+                          {t('assistant.savePrompt')}
+                        </Button>
+                      )}
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={copyPrompt}
+                      >
+                        <Copy className="h-4 w-4 mr-2" />
+                        {t('assistant.copyPrompt')}
+                      </Button>
+                    </div>
                   </div>
-                </div>
 
-                {isEditing ? (
-                  <Textarea
-                    value={editedPrompt}
-                    onChange={(e) => setEditedPrompt(e.target.value)}
-                    rows={6}
-                    className="mb-4"
-                  />
-                ) : (
-                  <div className="p-4 bg-muted/30 rounded-lg mb-4 whitespace-pre-wrap">
-                    {generatedPrompt}
-                  </div>
-                )}
-              </div>
-            )}
-          </Card>
+                  {isEditing ? (
+                    <Textarea
+                      value={editedPrompt}
+                      onChange={(e) => setEditedPrompt(e.target.value)}
+                      rows={6}
+                      className="mb-4"
+                    />
+                  ) : (
+                    <div className="p-4 bg-muted/30 rounded-lg mb-4 whitespace-pre-wrap">
+                      {generatedPrompt}
+                    </div>
+                  )}
+                </div>
+              )}
+            </Card>
+          </div>
         )}
       </div>
     </div>

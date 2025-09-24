@@ -167,6 +167,16 @@ export default function PromptAssistant() {
   };
 
 
+  const copyAndNavigateToChatGPT = async () => {
+    await copyPrompt();
+    window.open('https://chat.openai.com/chat', '_blank');
+  };
+
+  const copyAndNavigateToGemini = async () => {
+    await copyPrompt();
+    window.open('https://gemini.google.com/chat', '_blank');
+  };
+
   const filteredAssistants = assistants.filter(assistant => {
     const matchesSearch = assistant.name[lang].toLowerCase().includes(searchQuery.toLowerCase()) ||
                          assistant.description[lang].toLowerCase().includes(searchQuery.toLowerCase());
@@ -235,13 +245,21 @@ export default function PromptAssistant() {
                   : "border-border hover:border-primary/50 hover:bg-primary/5"
               )}
             >
-              <div className="flex items-center mb-3">
-                {/* Placeholder for icon/thumbnail */}
-                <div className="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center mr-3">
-                  <Wand2 className="h-5 w-5 text-primary" />
+              <h3 className="font-bold text-lg mb-3">{assistant.name[lang]}</h3>
+              {assistant.imageSrc ? (
+                <div className="relative w-full pb-[100%] overflow-hidden rounded-lg mb-3"> {/* 1:1 ratio, fills top, rounded corners */}
+                  <img
+                    src={assistant.imageSrc}
+                    alt={assistant.name[lang]}
+                    className="absolute inset-0 w-full h-full object-cover" // object-fit: cover
+                    loading="lazy" // Lazy loading
+                  />
                 </div>
-                <h3 className="font-bold text-lg">{assistant.name[lang]}</h3>
-              </div>
+              ) : (
+                <div className="relative w-full pb-[100%] bg-primary/20 rounded-lg mb-3 flex items-center justify-center"> {/* Placeholder with similar styling */}
+                  <Wand2 className="h-1/2 w-1/2 text-primary" /> {/* Adjust icon size for larger placeholder */}
+                </div>
+              )}
               <p className="text-sm text-muted-foreground mb-3 line-clamp-3">
                 {assistant.description[lang]}
               </p>
@@ -275,17 +293,42 @@ export default function PromptAssistant() {
               <Button
                 variant="ghost"
                 size="sm"
-                className="absolute top-4 right-4"
+                className="absolute top-4 right-4 z-10 bg-yellow-400 hover:bg-yellow-500 text-black"
                 onClick={() => setIsModalOpen(false)}
               >
                 X
               </Button>
-              <h2 className="text-2xl font-bold mb-4">{selectedAssistantForModal.name[lang]}</h2>
-              <p className="text-muted-foreground mb-6">
+
+              {/* Large banner image at the top */}
+              {selectedAssistantForModal.imageSrc ? (
+                <div className="relative w-full mt-16 pb-[56.25%] overflow-hidden rounded-lg mb-4"> {/* 16:9 ratio, full width, with top margin */}
+                  <img
+                    src={selectedAssistantForModal.imageSrc}
+                    alt={selectedAssistantForModal.name[lang]}
+                    className="absolute inset-0 w-full h-full object-cover" // object-fit: cover
+                    loading="lazy" // Lazy loading
+                  />
+                </div>
+              ) : (
+                <div className="relative w-full mt-16 pb-[56.25%] bg-primary/20 rounded-lg mb-4 flex items-center justify-center"> {/* Placeholder with similar styling */}
+                  <Wand2 className="h-1/2 w-1/2 text-primary" /> {/* Adjust icon size for larger placeholder */}
+                </div>
+              )}
+
+              {/* Title and subtitle directly under the image */}
+              <h2 className="text-2xl font-bold mb-2">{selectedAssistantForModal.name[lang]}</h2>
+              <p className="text-muted-foreground text-sm mb-4">
                 {selectedAssistantForModal.description[lang]}
               </p>
 
-              {/* Fields Container */}
+              {/* Category */}
+              <div className="flex flex-wrap gap-2 mb-4">
+                <span className="text-xs bg-accent/20 text-accent-foreground px-2 py-1 rounded inline-block">
+                  {selectedAssistantForModal.category}
+                </span>
+              </div>
+
+              {/* Fields Container (main content area) */}
               <div ref={fieldsContainerRef} className="mb-6">
                 <div className="grid gap-4">
                   {selectedAssistantForModal.fields.map((field) => (
@@ -304,28 +347,9 @@ export default function PromptAssistant() {
                     </div>
                   ))}
                 </div>
-
-                <Button
-                  onClick={generatePrompt}
-                  disabled={!selectedAssistantForModal || Object.keys(fieldValues).length === 0 || isGenerating}
-                  className="w-full mt-6"
-                  variant="accent"
-                >
-                  {isGenerating ? (
-                    <>
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2" />
-                      {t('common.loading')}
-                    </>
-                  ) : (
-                    <>
-                      <Wand2 className="h-4 w-4 mr-2" />
-                      {t('assistant.generatePrompt')}
-                    </>
-                  )}
-                </Button>
               </div>
 
-              {/* Generated Prompt */}
+              {/* Generated Prompt (if exists) */}
               {generatedPrompt && (
                 <div ref={generatedPromptRef} className="mb-6">
                   <div className="flex items-center justify-between mb-4">
@@ -374,6 +398,46 @@ export default function PromptAssistant() {
                   )}
                 </div>
               )}
+
+              {/* Generate Prompt button fixed at the bottom */}
+              <div className="sticky bottom-0 bg-background pt-4 pb-2 -mx-6 px-6 border-t border-border">
+                <Button
+                  onClick={generatePrompt}
+                  disabled={!selectedAssistantForModal || Object.keys(fieldValues).length === 0 || isGenerating}
+                  className="w-full mb-2"
+                  variant="accent"
+                >
+                  {isGenerating ? (
+                    <>
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2" />
+                      {t('common.loading')}
+                    </>
+                  ) : (
+                    <>
+                      <Wand2 className="h-4 w-4 mr-2" />
+                      {t('assistant.generatePrompt')}
+                    </>
+                  )}
+                </Button>
+                <Button
+                  onClick={copyAndNavigateToChatGPT}
+                  disabled={!generatedPrompt}
+                  className="w-full mb-2"
+                  variant="outline"
+                >
+                  <Copy className="h-4 w-4 mr-2" />
+                  {t('assistant.copyAndGoToChatGPT')}
+                </Button>
+                <Button
+                  onClick={copyAndNavigateToGemini}
+                  disabled={!generatedPrompt}
+                  className="w-full"
+                  variant="outline"
+                >
+                  <Copy className="h-4 w-4 mr-2" />
+                  {t('assistant.copyAndGoToGemini')}
+                </Button>
+              </div>
             </Card>
           </div>
         )}

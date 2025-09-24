@@ -10,6 +10,7 @@ export const assistants = [
       ms: 'Jana skrip YouTube panjang berdasarkan topik, gaya dan objektif. Sesuai untuk video 10-15 minit.',
       en: 'Generate full YouTube scripts based on topic, style and goal. Ideal for 10–15 min videos.'
     },
+    imageSrc: '/public/placeholder.svg',
     fields: [
       {
         name: 'Topik',
@@ -70,6 +71,7 @@ Maintain the [gaya] tone throughout. The script should be long enough for a 10�
       ms: 'Tulis thread Instagram gaya storytelling atau borak mamak untuk tarik perhatian dan jual produk/idea.',
       en: 'Write Instagram threads using storytelling or casual style to attract attention and promote products/ideas.'
     },
+    imageSrc: '/public/placeholder.svg',
     fields: [
       {
         name: 'Topik',
@@ -132,6 +134,7 @@ Format: Malaysian-friendly writing, short and punchy.`
     ms: 'Jana skrip TikTok lengkap dengan hook, isi utama, dan punchline. Sesuai untuk video 60–90 saat.',
     en: 'Generate a full TikTok script including hook, core content, and punchline. Ideal for 60–90 second videos.'
   },
+  imageSrc: '/public/placeholder.svg',
   fields: [
     {
       name: 'Topik',
@@ -189,6 +192,7 @@ Use simple, engaging language tailored for TikTok. Length should fit within 60�
     ms: 'Pecahkan idea kompleks kepada 5–7 slide karusel dengan gaya visual dan CTA yang menarik.',
     en: 'Break down complex ideas into 5–7 carousel slides with visual cues and strong CTA.'
   },
+  imageSrc: '/public/placeholder.svg',
   fields: [
     {
       name: 'Topik',
@@ -247,6 +251,7 @@ Maintain the [gaya] style throughout. Use short, punchy lines, visual cues, and 
     ms: 'Tukar gaya penulisan mesej kepada nada khas seperti Makcik Bawang, Sifu, atau Boss untuk tarik perhatian audiens Malaysia.',
     en: 'Convert writing tone into iconic Malaysian personas like Makcik Bawang, Sifu, or Boss to grab local attention.'
   },
+  imageSrc: '/public/placeholder.svg',
   fields: [
     {
       name: 'Mesej',
@@ -287,6 +292,7 @@ The rewritten message should reflect the character of [watak] authentically with
     ms: 'Bina tawaran produk yang memikat dengan kombinasi elemen utama, bonus dan urgensi (scarcity).',
     en: 'Build irresistible product offers using a combination of core, bonus, and urgency (scarcity) elements.'
   },
+  imageSrc: '/public/placeholder.svg',
   fields: [
     {
       name: 'Produk',
@@ -345,6 +351,7 @@ Tone: persuasive, clear, and suited for Malaysian audiences.`
     ms: 'Ubah USP anda mengikut sudut berbeza berdasarkan kesakitan pelanggan, keinginan, atau halangan yang mereka hadapi.',
     en: 'Reframe your Unique Selling Proposition based on different angles: customer pain, desire, or objection.'
   },
+  imageSrc: '/public/placeholder.svg',
   fields: [
     {
       name: 'USP',
@@ -391,6 +398,7 @@ Generate 3 stronger and more persuasive USP versions that address the [fokus] pe
     ms: 'Jana siri emel automasi (5 emel) berdasarkan AIDA — dari tarik perhatian hingga kepada ajakan beli.',
     en: 'Generate a 5-email automation series using AIDA — from grabbing attention to final CTA to buy.'
   },
+  imageSrc: '/public/placeholder.svg',
   fields: [
     {
       name: 'Produk',
@@ -453,6 +461,7 @@ Keep tone [gaya], sentences short, and language reader-friendly for Malaysian au
     ms: 'Guna prinsip psikologi untuk cadang strategi harga: berdasarkan nilai, penetapan anchor, atau model tier.',
     en: 'Use psychological principles to suggest pricing strategies: value-based, anchoring, or tiered models.'
   },
+  imageSrc: '/public/placeholder.svg',
   fields: [
     {
       name: 'Produk',
@@ -501,6 +510,7 @@ Use relevant pricing psychology principles tailored for Malaysian audiences. Pro
     ms: 'Cadangkan model bisnes dan strategi jana wang berdasarkan idea startup atau produk anda.',
     en: 'Suggest business models and monetization strategies based on your startup or product idea.'
   },
+  imageSrc: '/public/placeholder.svg',
   fields: [
     {
       name: 'Idea',
@@ -551,6 +561,7 @@ Tone should be clear, practical, and tailored to Malaysian users.`
     ms: 'Ubah ayat biasa kepada format copywriting popular (PAS, AIDA, FAB) untuk iklan, post atau thread.',
     en: 'Transform plain sentences into popular copywriting frameworks (PAS, AIDA, FAB) for ads, posts, or threads.'
   },
+  imageSrc: '/public/placeholder.svg',
   fields: [
     {
       name: 'Ayat',
@@ -597,6 +608,7 @@ Make it concise, punchy, and suitable for ads, social media, or thread writing. 
     ms: 'Ubah ayat pengalaman kerja anda kepada bullet point resume profesional dan ringkasan LinkedIn yang menonjol.',
     en: 'Turn your work experience text into polished resume bullet points and a standout LinkedIn summary.'
   },
+  imageSrc: '/public/placeholder.svg',
   fields: [
     {
       name: 'Pengalaman',
@@ -649,6 +661,7 @@ Original text:
     ms: 'Bina salinan penuh untuk laman jualan dari tajuk utama hingga ajakan bertindak, termasuk bukti sosial dan point manfaat.',
     en: 'Generate full landing page copy from hero section to CTA, including trust signals and benefit bullets.'
   },
+  imageSrc: '/public/placeholder.svg',
   fields: [
     {
       name: 'Produk',
@@ -712,6 +725,7 @@ The tone should be [gaya] and resonate with Malaysian readers.`
     ms: 'Ambil salinan lama dan ubah kepada sudut baru (berdasarkan audiens atau tawaran), tanpa ubah isi penting.',
     en: 'Take old sales copy and rewrite it with a fresh angle (based on audience or offer), without changing the core message.'
   },
+  imageSrc: '/public/placeholder.svg',
   fields: [
     {
       name: 'Salinan',
@@ -758,6 +772,7 @@ Keep the core message intact. Only reframe the angle and delivery to suit the ne
     ms: 'Hasilkan ayat pitch padat dan menarik dalam gaya bio Twitter atau elevator pitch untuk produk, jenama atau diri sendiri.',
     en: 'Generate a punchy one-liner pitch in the style of a Twitter bio or elevator pitch for a product, brand, or personal intro.'
   },
+  imageSrc: '/public/placeholder.svg',
   fields: [
     {
       name: 'Info',
@@ -798,6 +813,7 @@ Make it concise, attention-grabbing, and suitable for bios, intros, or quick pre
     ms: 'Tukar nota mesyuarat mentah kepada ringkasan profesional dan senarai tindakan (next steps) yang boleh diambil.',
     en: 'Turn raw meeting notes into a clean professional summary and actionable next steps list.'
   },
+  imageSrc: '/public/placeholder.svg',
   fields: [
     {
       name: 'Nota',
@@ -844,6 +860,7 @@ Keep it concise, structured, and easy for all participants to understand.`
     ms: 'Ubah tugas atau proses kepada SOP lengkap — siapa buat apa, bila dan bagaimana.',
     en: 'Turn a task or process into a structured SOP — who does what, when, and how.'
   },
+  imageSrc: '/public/placeholder.svg',
   fields: [
     {
       name: 'Tugas',
@@ -904,6 +921,7 @@ Keep it simple, clear, and executable.`
     ms: 'Ubah matlamat mingguan kepada senarai tugasan atau jadual masa harian (time-blocking).',
     en: 'Convert weekly goals into a structured task list or time-blocked daily schedule.'
   },
+  imageSrc: '/public/placeholder.svg',
   fields: [
     {
       name: 'Matlamat',
@@ -952,6 +970,7 @@ Generate a complete plan to achieve [matlamat] using the [gaya] format. Keep it 
     ms: 'Tukar matlamat umum atau kabur kepada format SMART — Specific, Measurable, Achievable, Relevant, Timely.',
     en: 'Convert vague or broad goals into SMART format — Specific, Measurable, Achievable, Relevant, Timely.'
   },
+  imageSrc: '/public/placeholder.svg',
   fields: [
     {
       name: 'Matlamat',
@@ -998,6 +1017,7 @@ Output should be a clearer, measurable version that’s ready for action.`
     ms: 'Bina peta minda ringkas bermula dari topik utama → pecahan subtopik → tindakan spesifik untuk setiap cabang.',
     en: 'Generate a simple mind map starting from main topic → subtopics → actionable tasks for each branch.'
   },
+  imageSrc: '/public/placeholder.svg',
   fields: [
     {
       name: 'Topik',
@@ -1040,6 +1060,7 @@ Format should be clear, structured, and usable for planning or execution.`
     ms: 'Bina struktur prompt untuk gunakan dengan API, LangChain tools, agents atau chains. Sesuai untuk few-shot dan modular design.',
     en: 'Build prompt structures for use with APIs, LangChain tools, agents, or chains. Suitable for few-shot and modular design.'
   },
+  imageSrc: '/public/placeholder.svg',
   fields: [
     {
       name: 'Tujuan',
@@ -1090,6 +1111,7 @@ Include proper few-shot style and generate main prompt + sample completions read
     ms: 'Tulis semula kod untuk lebih kemas, modular atau mudah dibaca — dan tambah komen jelas untuk setiap fungsi atau logik utama.',
     en: 'Rewrite code to be cleaner, more modular, or more readable — and add clear comments for each function or key logic.'
   },
+  imageSrc: '/public/placeholder.svg',
   fields: [
     {
       name: 'Kod',
@@ -1138,6 +1160,7 @@ Provide a cleaned-up version of the code with comments for each major function o
     ms: 'Tukar ciri teknikal produk SaaS kepada penerangan yang mudah difahami dan berfokus kepada manfaat pelanggan.',
     en: 'Translate technical SaaS features into clear explanations focused on customer benefits.'
   },
+  imageSrc: '/public/placeholder.svg',
   fields: [
     {
       name: 'Ciri',
@@ -1182,6 +1205,7 @@ Focus on the main benefit and why the user should care — not just the technica
     ms: 'Bantu reka aliran automasi langkah demi langkah berdasarkan hasil yang diingini — sesuai untuk Zapier, Make, atau n8n.',
     en: 'Design multi-step automation flows based on desired outcome — suitable for Zapier, Make, or n8n.'
   },
+  imageSrc: '/public/placeholder.svg',
   fields: [
     {
       name: 'Tujuan',
@@ -1230,6 +1254,7 @@ Explain each step clearly including trigger, actions, and app-to-app connections
     ms: 'Ubah mesej ralat atau isu teknikal kepada prompt AI yang jelas untuk bantu diagnosis dan penyelesaian.',
     en: 'Convert error messages or technical issues into a clear AI-debuggable prompt for faster diagnosis and fix.'
   },
+  imageSrc: '/public/placeholder.svg',
   fields: [
     {
       name: 'Isu',
@@ -1278,6 +1303,7 @@ Generate a concise and logical prompt that makes the error easier to understand 
     ms: 'Ubah kekeliruan, dilema atau isu peribadi kepada soalan reflektif untuk bantu fikir dengan lebih jelas.',
     en: 'Turn personal confusion, dilemmas, or internal issues into self-coaching prompts for clearer thinking.'
   },
+  imageSrc: '/public/placeholder.svg',
   fields: [
     {
       name: 'Isu',
@@ -1318,6 +1344,7 @@ The questions should be supportive, non-judgmental, and designed for solo person
     ms: 'Bina ucapan lengkap berdasarkan acara, audiens dan nada — sesuai untuk majlis perkahwinan, graduasi, atau korporat.',
     en: 'Generate a full speech based on the event, audience, and tone — suitable for weddings, graduations, or corporate functions.'
   },
+  imageSrc: '/public/placeholder.svg',
   fields: [
     {
       name: 'Acara',
@@ -1366,6 +1393,7 @@ The speech should include an opening, body, and closing tailored to the [acara] 
     ms: 'Cipta profil watak lengkap untuk penulisan fiksyen atau permainan — termasuk trait, kelemahan, matlamat, dan arc watak.',
     en: 'Create a complete character profile for fiction or RPG — including traits, flaw, goal, and character arc.'
   },
+  imageSrc: '/public/placeholder.svg',
   fields: [
     {
       name: 'Vibe',
@@ -1426,6 +1454,7 @@ Use creative tone suitable for fiction writing or RPG gameplay.`
     ms: 'Tukar mesej atau ayat kepada nada yang lebih sesuai — contohnya lebih yakin, lebih lembut, lebih ringkas, atau lebih formal.',
     en: 'Rewrite a message or text to match a different tone — e.g., more confident, softer, simpler, or more formal.'
   },
+  imageSrc: '/public/placeholder.svg',
   fields: [
     {
       name: 'Mesej',
@@ -1464,6 +1493,7 @@ Make sure the core meaning stays the same, but the delivery is aligned with the 
     ms: 'Tukar idea atau mesej panjang kepada 3–5 versi tweet yang ringkas, padat, dan berpotensi viral.',
     en: 'Transform a long idea or message into 3–5 tweet versions that are short, punchy, and built for virality.'
   },
+  imageSrc: '/public/placeholder.svg',
   fields: [
     {
       name: 'Idea',

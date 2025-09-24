@@ -60,6 +60,8 @@ const translations = {
     'assistant.editPrompt': 'Edit Prompt',
     'assistant.savePrompt': 'Simpan Prompt',
     'assistant.copyPrompt': 'Salin Prompt',
+    'assistant.copyAndGoToChatGPT': 'Salin & Ke ChatGPT',
+    'assistant.copyAndGoToGemini': 'Salin & Ke Gemini',
     
     // Contact
     'contact.title': 'Hubungi Kami',
@@ -128,6 +130,8 @@ const translations = {
     'assistant.editPrompt': 'Edit Prompt',
     'assistant.savePrompt': 'Save Prompt',
     'assistant.copyPrompt': 'Copy Prompt',
+    'assistant.copyAndGoToChatGPT': 'Copy & Go to ChatGPT',
+    'assistant.copyAndGoToGemini': 'Copy & Go to Gemini',
     
     // Contact
     'contact.title': 'Contact Us',

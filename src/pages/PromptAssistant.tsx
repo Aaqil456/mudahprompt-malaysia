@@ -68,6 +68,7 @@ export default function PromptAssistant() {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [sortOrder, setSortOrder] = useState<'newest' | 'oldest'>('newest');
 
   // Load custom instructions when assistant changes
   useEffect(() => {
@@ -184,6 +185,17 @@ export default function PromptAssistant() {
     return matchesSearch && matchesCategory;
   });
 
+  const sortedAssistants = [...filteredAssistants].sort((a, b) => {
+    const indexA = assistants.findIndex(assistant => assistant.id === a.id);
+    const indexB = assistants.findIndex(assistant => assistant.id === b.id);
+
+    if (sortOrder === 'newest') {
+      return indexB - indexA; // Sort descending by index (newest first)
+    } else {
+      return indexA - indexB; // Sort ascending by index (oldest first)
+    }
+  });
+
   const categories = ['All', ...Array.from(new Set(assistants.map(a => a.category)))];
 
   return (
@@ -221,10 +233,13 @@ export default function PromptAssistant() {
           {/* Sort and Toggle (Placeholder) */}
           <div className="flex justify-end items-center gap-2 mt-4">
             <span className="text-sm text-muted-foreground">{t('common.sortBy')}:</span>
-            <select className="p-2 rounded-lg border border-border bg-background text-foreground text-sm">
-              <option value="popular">Popular</option>
-              <option value="new">New</option>
-              <option value="allTime">All Time</option>
+            <select
+              className="p-2 rounded-lg border border-border bg-background text-foreground text-sm"
+              value={sortOrder}
+              onChange={(e) => setSortOrder(e.target.value as 'newest' | 'oldest')}
+            >
+              <option value="newest">Newest</option>
+              <option value="oldest">Oldest</option>
             </select>
             {/* Grid/List Toggle Placeholder */}
             <Button variant="outline" size="icon">
@@ -235,7 +250,7 @@ export default function PromptAssistant() {
 
         {/* Assistant Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-8">
-          {filteredAssistants.map((assistant) => (
+          {sortedAssistants.map((assistant) => (
             <Card
               key={assistant.id}
               className={cn(

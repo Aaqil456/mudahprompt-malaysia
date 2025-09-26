@@ -26,6 +26,7 @@ const translations = {
     'common.back': 'Kembali',
     'common.next': 'Seterusnya',
     'common.previous': 'Sebelumnya',
+    'common.sortBy': 'Susun Mengikut',
     
     // Navigation
     'nav.home': 'Laman Utama',
@@ -96,6 +97,7 @@ const translations = {
     'common.back': 'Back',
     'common.next': 'Next',
     'common.previous': 'Previous',
+    'common.sortBy': 'Sort By',
     
     // Navigation
     'nav.home': 'Home',

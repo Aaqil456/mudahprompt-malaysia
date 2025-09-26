@@ -49,8 +49,8 @@ const translations = {
     'features.bilingual.desc': 'Pilih daripada pelbagai pembantu AI dengan fungsi tersusun mengikut kategori',
     'features.ai.title': 'Penjana Prompt Pintar',
     'features.ai.desc': 'Isi maklumat → Jana prompt berkualiti tinggi secara automatik',
-    'features.mobile.title': 'Custom Prompt',
-    'features.mobile.desc': 'Masukkan arahan khas untuk hasil yang lebih peribadi & relevan',
+    'features.mobile.title': 'Edit Prompt',
+    'features.mobile.desc': 'Edit prompt sedia ada untuk hasil yang lebih peribadi & relevan',
     
     // Prompt Assistant
     'assistant.title': 'Pembantu Prompt',
@@ -120,8 +120,8 @@ const translations = {
     'features.bilingual.desc': 'Choose from multiple AI assistants organized by category',
     'features.ai.title': 'Smart Prompt Generator',
     'features.ai.desc': 'Fill in details → Auto-generate high-quality prompts',
-    'features.mobile.title': 'Custom Prompt',
-    'features.mobile.desc': 'Add custom instructions for more personalized & relevant results',
+    'features.mobile.title': 'Edit Prompt',
+    'features.mobile.desc': 'Edit your prompt for more personalized & relevant results',
     
     // Prompt Assistant
     'assistant.title': 'Prompt Assistant',

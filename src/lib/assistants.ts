@@ -10,7 +10,7 @@ export const assistants = [
       ms: 'Jana skrip YouTube panjang berdasarkan topik, gaya dan objektif. Sesuai untuk video 10-15 minit.',
       en: 'Generate full YouTube scripts based on topic, style and goal. Ideal for 10–15 min videos.'
     },
-    imageSrc: '/public/placeholder.svg',
+    imageSrc: '/src/assets/hero-bg.jpg',
     fields: [
       {
         name: 'Topik',
@@ -1493,7 +1493,7 @@ Make sure the core meaning stays the same, but the delivery is aligned with the 
     ms: 'Tukar idea atau mesej panjang kepada 3–5 versi tweet yang ringkas, padat, dan berpotensi viral.',
     en: 'Transform a long idea or message into 3–5 tweet versions that are short, punchy, and built for virality.'
   },
-  imageSrc: '/public/placeholder.svg',
+  imageSrc: '/src/assets/hero-bg.jpg',
   fields: [
     {
       name: 'Idea',

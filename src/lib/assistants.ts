@@ -10,7 +10,7 @@ export const assistants = [
       ms: 'Jana skrip YouTube panjang berdasarkan topik, gaya dan objektif. Sesuai untuk video 10-15 minit.',
       en: 'Generate full YouTube scripts based on topic, style and goal. Ideal for 10â€“15 min videos.'
     },
-    imageSrc: '/public/hero-bg.jpg',
+    imageSrc: 'https://ik.imagekit.io/b6q4ycaer/6e5dc912-40aa-40d4-9e50-0c56085ee86a-cover-image-CFuR.png/tr:w-1280',
     fields: [
       {
         name: 'Topik',
@@ -71,7 +71,7 @@ Maintain the [gaya] tone throughout. The script should be long enough for a 10â€
       ms: 'Tulis thread Instagram gaya storytelling atau borak mamak untuk tarik perhatian dan jual produk/idea.',
       en: 'Write Instagram threads using storytelling or casual style to attract attention and promote products/ideas.'
     },
-    imageSrc: '/public/placeholder.svg',
+    imageSrc: 'https://ik.imagekit.io/b6q4ycaer/6e5dc912-40aa-40d4-9e50-0c56085ee86a-cover-image-CFuR.png/tr:w-1280',
     fields: [
       {
         name: 'Topik',

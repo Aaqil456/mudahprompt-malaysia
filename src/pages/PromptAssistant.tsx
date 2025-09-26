@@ -415,7 +415,7 @@ export default function PromptAssistant() {
               )}
 
               {/* Generate Prompt button fixed at the bottom */}
-              <div className="sticky bottom-0 bg-background pt-4 pb-2 -mx-6 px-6 border-t border-border">
+              <div className="bg-background pt-4 pb-2 -mx-6 px-6 border-t border-border">
                 <Button
                   onClick={generatePrompt}
                   disabled={!selectedAssistantForModal || Object.keys(fieldValues).length === 0 || isGenerating}

@@ -31,6 +31,7 @@ const translations = {
     // Navigation
     'nav.home': 'Laman Utama',
     'nav.promptAssistant': 'Pembantu Prompt',
+    'nav.learn': 'Belajar',
     'nav.contact': 'Hubungi Kami',
     'nav.privacy': 'Dasar Privasi',
     'nav.terms': 'Terma & Syarat',
@@ -102,6 +103,7 @@ const translations = {
     // Navigation
     'nav.home': 'Home',
     'nav.promptAssistant': 'Prompt Assistant',
+    'nav.learn': 'Learn',
     'nav.contact': 'Contact',
     'nav.privacy': 'Privacy Policy',
     'nav.terms': 'Terms & Conditions',

@@ -63,6 +63,14 @@ export function Header() {
               {t('nav.promptAssistant')}
             </Button>
           </Link>
+          <Link to="/learn">
+            <Button 
+              variant={isCurrentPath('/learn') ? 'secondary' : 'ghost'} 
+              size="sm"
+            >
+              {t('nav.learn')}
+            </Button>
+          </Link>
           <Link to="/contact">
             <Button 
               variant={isCurrentPath('/contact') ? 'secondary' : 'ghost'} 
@@ -172,6 +180,19 @@ export function Header() {
                 className="w-full justify-start"
               >
                 {t('nav.promptAssistant')}
+              </Button>
+            </Link>
+            <Link 
+              to="/learn" 
+              onClick={() => setIsMenuOpen(false)}
+              className="block"
+            >
+              <Button 
+                variant={isCurrentPath('/learn') ? 'secondary' : 'ghost'} 
+                size="sm"
+                className="w-full justify-start"
+              >
+                {t('nav.learn')}
               </Button>
             </Link>
             <Link 

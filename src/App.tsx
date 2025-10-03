@@ -46,14 +46,14 @@ const App = () => (
                     } 
                   />
 
-<Route 
+                {/* <Route 
                     path="/learn" 
                     element={
                       <AuthGuard>
                         <Learn />
                       </AuthGuard>
                     } 
-                  />
+                  /> */}
                   <Route path="/login" element={<Login />} />
                   <Route path="/auth/callback" element={<AuthCallback />} />
                   <Route path="/contact" element={<Contact />} />

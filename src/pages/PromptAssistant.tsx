@@ -67,7 +67,7 @@ export default function PromptAssistant() {
   const [isGenerating, setIsGenerating] = useState(false);
 
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedCategory, setSelectedCategory] = useState(t('common.all'));
   const [sortOrder, setSortOrder] = useState<'newest' | 'oldest'>('newest');
 
   // Load custom instructions when assistant changes
@@ -181,7 +181,7 @@ export default function PromptAssistant() {
   const filteredAssistants = assistants.filter(assistant => {
     const matchesSearch = assistant.name[lang].toLowerCase().includes(searchQuery.toLowerCase()) ||
                          assistant.description[lang].toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategory === 'All' || assistant.category === selectedCategory;
+    const matchesCategory = selectedCategory === t('common.all') || assistant.category[lang] === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
@@ -196,7 +196,7 @@ export default function PromptAssistant() {
     }
   });
 
-  const categories = ['All', ...Array.from(new Set(assistants.map(a => a.category)))];
+  const categories = [t('common.all'), ...Array.from(new Set(assistants.map(a => a.category[lang])))];
 
   return (
     <div className="min-h-screen bg-background">
@@ -280,7 +280,7 @@ export default function PromptAssistant() {
               </p>
               <div className="flex flex-wrap gap-2 mb-4">
                 <span className="text-xs bg-accent/20 text-accent-foreground px-2 py-1 rounded inline-block">
-                  {assistant.category}
+                  {assistant.category[lang]}
                 </span>
               </div>
               <Button
@@ -339,7 +339,7 @@ export default function PromptAssistant() {
               {/* Category */}
               <div className="flex flex-wrap gap-2 mb-4">
                 <span className="text-xs bg-accent/20 text-accent-foreground px-2 py-1 rounded inline-block">
-                  {selectedAssistantForModal.category}
+                  {selectedAssistantForModal.category[lang]}
                 </span>
               </div>
 

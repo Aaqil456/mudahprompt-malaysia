@@ -18,7 +18,7 @@ export default function Learn() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedCategory, setSelectedCategory] = useState(t('common.all'));
   const [sortOrder, setSortOrder] = useState<'newest' | 'oldest'>('newest');
 
   useEffect(() => {
@@ -30,7 +30,7 @@ export default function Learn() {
   const filteredEbooks = learn.filter(ebook => {
     const matchesSearch = ebook.name[lang].toLowerCase().includes(searchQuery.toLowerCase()) ||
                          ebook.description[lang].toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategory === 'All' || ebook.category === selectedCategory;
+    const matchesCategory = selectedCategory === t('common.all') || ebook.category[lang] === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
@@ -45,7 +45,7 @@ export default function Learn() {
     }
   });
 
-  const ebookCategories = ['All', ...Array.from(new Set(learn.map(e => e.category)))];
+  const ebookCategories = [t('common.all'), ...Array.from(new Set(learn.map(e => e.category[lang])))];
 
   return (
     <div className="min-h-screen bg-background">
@@ -129,7 +129,7 @@ export default function Learn() {
               </p>
               <div className="flex flex-wrap gap-2 mb-4">
                 <span className="text-xs bg-accent/20 text-accent-foreground px-2 py-1 rounded inline-block">
-                  {ebook.category}
+                  {ebook.category[lang]}
                 </span>
                 <span className="text-xs bg-secondary/20 text-secondary-foreground px-2 py-1 rounded inline-block">
                   {ebook.price}
@@ -188,7 +188,7 @@ export default function Learn() {
               {/* Category and Price */}
               <div className="flex flex-wrap gap-2 mb-4">
                 <span className="text-xs bg-accent/20 text-accent-foreground px-2 py-1 rounded inline-block">
-                  {selectedEbookForModal.category}
+                  {selectedEbookForModal.category[lang]}
                 </span>
                 <span className="text-xs bg-secondary/20 text-secondary-foreground px-2 py-1 rounded inline-block">
                   {selectedEbookForModal.price}

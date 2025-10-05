@@ -67,7 +67,7 @@ export default function PromptAssistant() {
   const [isGenerating, setIsGenerating] = useState(false);
 
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState(t('common.all'));
+  const [selectedCategory, setSelectedCategory] = useState('all'); // Use 'all' as the language-agnostic key for "All"
   const [sortOrder, setSortOrder] = useState<'newest' | 'oldest'>('newest');
 
   // Load custom instructions when assistant changes
@@ -87,6 +87,14 @@ export default function PromptAssistant() {
       setIsGenerating(false);
     }
   }, [isModalOpen]);
+
+  // Effect to reset selectedCategory when language changes, if the current category key is no longer valid
+  useEffect(() => {
+    const allCategoryKeys = ['all', ...Array.from(new Set(assistants.map(a => a.category.key)))];
+    if (!allCategoryKeys.includes(selectedCategory)) {
+      setSelectedCategory('all'); // Reset to 'all' if the current key is not found in the new language's categories
+    }
+  }, [lang, selectedCategory]);
 
 
 
@@ -181,7 +189,7 @@ export default function PromptAssistant() {
   const filteredAssistants = assistants.filter(assistant => {
     const matchesSearch = assistant.name[lang].toLowerCase().includes(searchQuery.toLowerCase()) ||
                          assistant.description[lang].toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategory === t('common.all') || assistant.category[lang] === selectedCategory;
+    const matchesCategory = selectedCategory === 'all' || assistant.category.key === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
@@ -196,7 +204,7 @@ export default function PromptAssistant() {
     }
   });
 
-  const categories = [t('common.all'), ...Array.from(new Set(assistants.map(a => a.category[lang])))];
+  const categories = ['all', ...Array.from(new Set(assistants.map(a => a.category.key)))];
 
   return (
     <div className="min-h-screen bg-background">
@@ -218,14 +226,14 @@ export default function PromptAssistant() {
 
           {/* Category Filters */}
           <div className="flex overflow-x-auto space-x-3 pb-2 scrollbar-hide">
-            {categories.map(category => (
+            {categories.map(categoryKey => (
               <Button
-                key={category}
-                variant={selectedCategory === category ? "default" : "outline"}
-                onClick={() => setSelectedCategory(category)}
+                key={categoryKey}
+                variant={selectedCategory === categoryKey ? "default" : "outline"}
+                onClick={() => setSelectedCategory(categoryKey)}
                 className="flex-shrink-0"
               >
-                {category}
+                {categoryKey === 'all' ? t('common.all') : assistants.find(a => a.category.key === categoryKey)?.category[lang]}
               </Button>
             ))}
           </div>

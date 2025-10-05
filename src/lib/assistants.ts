@@ -5,7 +5,7 @@ export const assistants = [
   {
     id: 'youtube-script-generator',
     name: { ms: '🎥 Penjana Skrip YouTube', en: '🎥 YouTube Script Generator' },
-    category: { ms: 'Penciptaan Kandungan', en: 'Content Creation' },
+    category: { key: 'content_creation', ms: 'Penciptaan Kandungan', en: 'Content Creation' },
     description: {
       ms: 'Jana skrip YouTube panjang berdasarkan topik, gaya dan objektif. Sesuai untuk video 10-15 minit.',
       en: 'Generate full YouTube scripts based on topic, style and goal. Ideal for 10–15 min videos.'
@@ -66,7 +66,7 @@ Maintain the [gaya] tone throughout. The script should be long enough for a 10�
   {
     id: 'instagram-thread-writer',
     name: { ms: '📋 Penulis Thread Instagram', en: '📋 Instagram Thread Writer' },
-    category: { ms: 'Penciptaan Kandungan', en: 'Content Creation' },
+    category: { key: 'content_creation',ms: 'Penciptaan Kandungan', en: 'Content Creation' },
     description: {
       ms: 'Tulis thread Instagram gaya storytelling atau borak mamak untuk tarik perhatian dan jual produk/idea.',
       en: 'Write Instagram threads using storytelling or casual style to attract attention and promote products/ideas.'
@@ -129,7 +129,7 @@ Format: Malaysian-friendly writing, short and punchy.`
 {
   id: 'tiktok-script-hook-builder',
   name: { ms: '🎬 Penjana Skrip TikTok', en: '🎬 TikTok Script & Hook Builder' },
-  category: { ms: 'Penciptaan Kandungan', en: 'Content Creation' },
+  category: { key: 'content_creation',ms: 'Penciptaan Kandungan', en: 'Content Creation' },
   description: {
     ms: 'Jana skrip TikTok lengkap dengan hook, isi utama, dan punchline. Sesuai untuk video 60–90 saat.',
     en: 'Generate a full TikTok script including hook, core content, and punchline. Ideal for 60–90 second videos.'
@@ -187,7 +187,7 @@ Use simple, engaging language tailored for TikTok. Length should fit within 60�
 {
   id: 'carousel-designer',
   name: { ms: '🖼️ Pereka Karusel Instagram/LinkedIn', en: '🖼️ Carousel Designer (Instagram/LinkedIn)' },
-  category: { ms: 'Penciptaan Kandungan', en: 'Content Creation' },
+  category: { key: 'content_creation', ms: 'Penciptaan Kandungan', en: 'Content Creation' },
   description: {
     ms: 'Pecahkan idea kompleks kepada 5–7 slide karusel dengan gaya visual dan CTA yang menarik.',
     en: 'Break down complex ideas into 5–7 carousel slides with visual cues and strong CTA.'
@@ -246,7 +246,7 @@ Maintain the [gaya] style throughout. Use short, punchy lines, visual cues, and 
 {
   id: 'persona-voice-converter',
   name: { ms: '🎭 Penukar Gaya Watak Malaysia', en: '🎭 Persona Voice Converter' },
-  category: { ms: 'Penciptaan Kandungan', en: 'Content Creation' },
+  category: { key: 'content_creation',ms: 'Penciptaan Kandungan', en: 'Content Creation' },
   description: {
     ms: 'Tukar gaya penulisan mesej kepada nada khas seperti Makcik Bawang, Sifu, atau Boss untuk tarik perhatian audiens Malaysia.',
     en: 'Convert writing tone into iconic Malaysian personas like Makcik Bawang, Sifu, or Boss to grab local attention.'
@@ -287,7 +287,7 @@ The rewritten message should reflect the character of [watak] authentically with
 {
   id: 'offer-builder',
   name: { ms: '💥 Penjana Tawaran Produk', en: '💥 Offer Builder' },
-  category: { ms: 'Pemasaran & Strategi Bisnes', en: 'Marketing & Business Strategy' },
+  category: { key: 'marketing_strategy', ms: 'Pemasaran & Strategi Bisnes', en: 'Marketing & Business Strategy' },
   description: {
     ms: 'Bina tawaran produk yang memikat dengan kombinasi elemen utama, bonus dan urgensi (scarcity).',
     en: 'Build irresistible product offers using a combination of core, bonus, and urgency (scarcity) elements.'
@@ -346,7 +346,7 @@ Tone: persuasive, clear, and suited for Malaysian audiences.`
 {
   id: 'usp-reframer',
   name: { ms: '🧠 Penjana Semula USP Anda', en: '🧠 Reframe Your USP' },
-  category: { ms: 'Pemasaran & Strategi Bisnes', en: 'Marketing & Business Strategy' },
+  category: { key: 'marketing_strategy', ms: 'Pemasaran & Strategi Bisnes', en: 'Marketing & Business Strategy' },
   description: {
     ms: 'Ubah USP anda mengikut sudut berbeza berdasarkan kesakitan pelanggan, keinginan, atau halangan yang mereka hadapi.',
     en: 'Reframe your Unique Selling Proposition based on different angles: customer pain, desire, or objection.'
@@ -393,7 +393,7 @@ Generate 3 stronger and more persuasive USP versions that address the [fokus] pe
 {
   id: 'email-campaign-generator',
   name: { ms: '📨 Penjana Kempen Emel 5 Siri', en: '📨 Email Campaign Generator (5-email series)' },
-  category: { ms: 'Pemasaran & Strategi Bisnes', en: 'Marketing & Business Strategy' },
+  category: { key: 'marketing_strategy', ms: 'Pemasaran & Strategi Bisnes', en: 'Marketing & Business Strategy' },
   description: {
     ms: 'Jana siri emel automasi (5 emel) berdasarkan AIDA — dari tarik perhatian hingga kepada ajakan beli.',
     en: 'Generate a 5-email automation series using AIDA — from grabbing attention to final CTA to buy.'
@@ -456,7 +456,7 @@ Keep tone [gaya], sentences short, and language reader-friendly for Malaysian au
 {
   id: 'pricing-psychology-prompter',
   name: { ms: '💰 Penjana Psikologi Harga', en: '💰 Pricing Psychology Prompter' },
-  category: { ms: 'Pemasaran & Strategi Bisnes', en: 'Marketing & Business Strategy' },
+  category: { key: 'marketing_strategy', ms: 'Pemasaran & Strategi Bisnes', en: 'Marketing & Business Strategy' },
   description: {
     ms: 'Guna prinsip psikologi untuk cadang strategi harga: berdasarkan nilai, penetapan anchor, atau model tier.',
     en: 'Use psychological principles to suggest pricing strategies: value-based, anchoring, or tiered models.'
@@ -505,7 +505,7 @@ Use relevant pricing psychology principles tailored for Malaysian audiences. Pro
 {
   id: 'business-model-monetization',
   name: { ms: '🗺️ Pereka Model Bisnes & Penjana Wang', en: '🗺️ Business Model & Monetization Designer' },
-  category: { ms: 'Pemasaran & Strategi Bisnes', en: 'Marketing & Business Strategy' },
+  category: { key: 'marketing_strategy', ms: 'Pemasaran & Strategi Bisnes', en: 'Marketing & Business Strategy' },
   description: {
     ms: 'Cadangkan model bisnes dan strategi jana wang berdasarkan idea startup atau produk anda.',
     en: 'Suggest business models and monetization strategies based on your startup or product idea.'
@@ -556,7 +556,7 @@ Tone should be clear, practical, and tailored to Malaysian users.`
 {
   id: 'viral-copywriter',
   name: { ms: '📢 Penulis Salinan Viral', en: '📢 Viral Copywriter (PAS, AIDA, FAB)' },
-  category: { ms: 'Penulisan Iklan & Jualan', en: 'Copywriting & Sales' },
+  category: { key: 'copywriting_sales', ms: 'Penulisan Iklan & Jualan', en: 'Copywriting & Sales' },
   description: {
     ms: 'Ubah ayat biasa kepada format copywriting popular (PAS, AIDA, FAB) untuk iklan, post atau thread.',
     en: 'Transform plain sentences into popular copywriting frameworks (PAS, AIDA, FAB) for ads, posts, or threads.'
@@ -603,7 +603,7 @@ Make it concise, punchy, and suitable for ads, social media, or thread writing. 
 {
   id: 'resume-linkedin-optimizer',
   name: { ms: '💼 Penambah Resume & Ringkasan LinkedIn', en: '💼 Resume + LinkedIn Summary Optimizer' },
-  category: { ms: 'Penulisan Iklan & Jualan', en: 'Copywriting & Sales' },
+  category: { key: 'copywriting_sales',ms: 'Penulisan Iklan & Jualan', en: 'Copywriting & Sales' },
   description: {
     ms: 'Ubah ayat pengalaman kerja anda kepada bullet point resume profesional dan ringkasan LinkedIn yang menonjol.',
     en: 'Turn your work experience text into polished resume bullet points and a standout LinkedIn summary.'
@@ -656,7 +656,7 @@ Original text:
 {
   id: 'landing-page-copywriter',
   name: { ms: '📈 Penulis Laman Jualan', en: '📈 Landing Page Copywriter (Hero > CTA)' },
-  category: { ms: 'Penulisan Iklan & Jualan', en: 'Copywriting & Sales' },
+  category: { key: 'copywriting_sales', ms: 'Penulisan Iklan & Jualan', en: 'Copywriting & Sales' },
   description: {
     ms: 'Bina salinan penuh untuk laman jualan dari tajuk utama hingga ajakan bertindak, termasuk bukti sosial dan point manfaat.',
     en: 'Generate full landing page copy from hero section to CTA, including trust signals and benefit bullets.'
@@ -720,7 +720,7 @@ The tone should be [gaya] and resonate with Malaysian readers.`
 {
   id: 'rewrite-sales-page',
   name: { ms: '🔁 Ubah Laman Jualan Lama', en: '🔁 Rewrite Old Sales Page for New Angle' },
-  category: { ms: 'Penulisan Iklan & Jualan', en: 'Copywriting & Sales' },
+  category: { key: 'copywriting_sales', ms: 'Penulisan Iklan & Jualan', en: 'Copywriting & Sales' },
   description: {
     ms: 'Ambil salinan lama dan ubah kepada sudut baru (berdasarkan audiens atau tawaran), tanpa ubah isi penting.',
     en: 'Take old sales copy and rewrite it with a fresh angle (based on audience or offer), without changing the core message.'
@@ -767,7 +767,7 @@ Keep the core message intact. Only reframe the angle and delivery to suit the ne
 {
   id: 'one-liner-pitch',
   name: { ms: '🪄 Penjana Pitch Satu Ayat', en: '🪄 One-Liner Pitch Generator' },
-  category: { ms: 'Penulisan Iklan & Jualan', en: 'Copywriting & Sales' },
+  category: { key: 'copywriting_sales', ms: 'Penulisan Iklan & Jualan', en: 'Copywriting & Sales' },
   description: {
     ms: 'Hasilkan ayat pitch padat dan menarik dalam gaya bio Twitter atau elevator pitch untuk produk, jenama atau diri sendiri.',
     en: 'Generate a punchy one-liner pitch in the style of a Twitter bio or elevator pitch for a product, brand, or personal intro.'
@@ -808,7 +808,7 @@ Make it concise, attention-grabbing, and suitable for bios, intros, or quick pre
 {
   id: 'meeting-summarizer-nextsteps',
   name: { ms: '📊 Penjana Ringkasan Mesyuarat + Tindakan Lanjut', en: '📊 AI Meeting Summarizer + Next Steps Generator' },
-  category: { ms: 'Produktiviti & Kehidupan Profesional', en: 'Productivity & Professional Life' },
+  category: { key: 'productivity_professional', ms: 'Produktiviti & Kehidupan Profesional', en: 'Productivity & Professional Life' },
   description: {
     ms: 'Tukar nota mesyuarat mentah kepada ringkasan profesional dan senarai tindakan (next steps) yang boleh diambil.',
     en: 'Turn raw meeting notes into a clean professional summary and actionable next steps list.'
@@ -855,7 +855,7 @@ Keep it concise, structured, and easy for all participants to understand.`
 {
   id: 'sop-generator',
   name: { ms: '🗂️ Penjana SOP Langkah Demi Langkah', en: '🗂️ SOP Generator (Operations or Personal Task)' },
-  category: { ms: 'Produktiviti & Kehidupan Profesional', en: 'Productivity & Professional Life' },
+  category: { key: 'productivity_professional', ms: 'Produktiviti & Kehidupan Profesional', en: 'Productivity & Professional Life' },
   description: {
     ms: 'Ubah tugas atau proses kepada SOP lengkap — siapa buat apa, bila dan bagaimana.',
     en: 'Turn a task or process into a structured SOP — who does what, when, and how.'
@@ -916,7 +916,7 @@ Keep it simple, clear, and executable.`
 {
   id: 'weekly-planner-assistant',
   name: { ms: '📆 Penolong Jadual Mingguan', en: '📆 Weekly Planner Assistant (Goal → Schedule)' },
-  category: { ms: 'Produktiviti & Kehidupan Profesional', en: 'Productivity & Professional Life' },
+  category: { key: 'productivity_professional', ms: 'Produktiviti & Kehidupan Profesional', en: 'Productivity & Professional Life' },
   description: {
     ms: 'Ubah matlamat mingguan kepada senarai tugasan atau jadual masa harian (time-blocking).',
     en: 'Convert weekly goals into a structured task list or time-blocked daily schedule.'
@@ -965,7 +965,7 @@ Generate a complete plan to achieve [matlamat] using the [gaya] format. Keep it 
 {
   id: 'smart-goal-structurer',
   name: { ms: '🎯 Penukar Matlamat kepada SMART', en: '🎯 SMART Goal Structurer' },
-  category: { ms: 'Produktiviti & Kehidupan Profesional', en: 'Productivity & Professional Life' },
+  category: { key: 'productivity_professional', ms: 'Produktiviti & Kehidupan Profesional', en: 'Productivity & Professional Life' },
   description: {
     ms: 'Tukar matlamat umum atau kabur kepada format SMART — Specific, Measurable, Achievable, Relevant, Timely.',
     en: 'Convert vague or broad goals into SMART format — Specific, Measurable, Achievable, Relevant, Timely.'
@@ -1012,7 +1012,7 @@ Output should be a clearer, measurable version that’s ready for action.`
 {
   id: 'mind-map-generator',
   name: { ms: '🧠 Penjana Peta Minda', en: '🧠 Mind Map Generator (Topic > Sub > Action)' },
-  category: { ms: 'Produktiviti & Kehidupan Profesional', en: 'Productivity & Professional Life' },
+  category: { key: 'productivity_professional', ms: 'Produktiviti & Kehidupan Profesional', en: 'Productivity & Professional Life' },
   description: {
     ms: 'Bina peta minda ringkas bermula dari topik utama → pecahan subtopik → tindakan spesifik untuk setiap cabang.',
     en: 'Generate a simple mind map starting from main topic → subtopics → actionable tasks for each branch.'
@@ -1055,7 +1055,7 @@ Format should be clear, structured, and usable for planning or execution.`
 {
   id: 'prompt-builder-langchain',
   name: { ms: '📡 Penjana Prompt untuk API / LangChain', en: '📡 Prompt Builder for API & LangChain' },
-  category: { ms: 'Teknologi, Alat & Prompts Dev', en: 'Tech, Tools & Dev Prompts' },
+  category: { key: 'tech_tools_dev',ms: 'Teknologi, Alat & Prompts Dev', en: 'Tech, Tools & Dev Prompts' },
   description: {
     ms: 'Bina struktur prompt untuk gunakan dengan API, LangChain tools, agents atau chains. Sesuai untuk few-shot dan modular design.',
     en: 'Build prompt structures for use with APIs, LangChain tools, agents, or chains. Suitable for few-shot and modular design.'
@@ -1106,7 +1106,7 @@ Include proper few-shot style and generate main prompt + sample completions read
 {
   id: 'code-comment-refactor',
   name: { ms: '🧱 Penambah & Pembaik Kod', en: '🧱 Code Commenter & Refactor Assistant' },
-  category: { ms: 'Teknologi, Alat & Prompts Dev', en: 'Tech, Tools & Dev Prompts' },
+  category: { key: 'tech_tools_dev', ms: 'Teknologi, Alat & Prompts Dev', en: 'Tech, Tools & Dev Prompts' },
   description: {
     ms: 'Tulis semula kod untuk lebih kemas, modular atau mudah dibaca — dan tambah komen jelas untuk setiap fungsi atau logik utama.',
     en: 'Rewrite code to be cleaner, more modular, or more readable — and add clear comments for each function or key logic.'
@@ -1155,7 +1155,7 @@ Provide a cleaned-up version of the code with comments for each major function o
 {
   id: 'saas-feature-explainer',
   name: { ms: '🔌 Penjelas Ciri Produk SaaS', en: '🔌 SaaS Feature Explainer Generator' },
-  category: { ms: 'Teknologi, Alat & Prompts Dev', en: 'Tech, Tools & Dev Prompts' },
+  category: { key: 'tech_tools_dev', ms: 'Teknologi, Alat & Prompts Dev', en: 'Tech, Tools & Dev Prompts' },
   description: {
     ms: 'Tukar ciri teknikal produk SaaS kepada penerangan yang mudah difahami dan berfokus kepada manfaat pelanggan.',
     en: 'Translate technical SaaS features into clear explanations focused on customer benefits.'
@@ -1200,7 +1200,7 @@ Focus on the main benefit and why the user should care — not just the technica
 {
   id: 'automation-flow-designer',
   name: { ms: '⚙️ Pereka Aliran Automasi (Zapier / n8n)', en: '⚙️ Zapier / n8n Flow Designer' },
-  category: { ms: 'Teknologi, Alat & Prompts Dev', en: 'Tech, Tools & Dev Prompts' },
+  category: { key: 'tech_tools_dev', ms: 'Teknologi, Alat & Prompts Dev', en: 'Tech, Tools & Dev Prompts' },
   description: {
     ms: 'Bantu reka aliran automasi langkah demi langkah berdasarkan hasil yang diingini — sesuai untuk Zapier, Make, atau n8n.',
     en: 'Design multi-step automation flows based on desired outcome — suitable for Zapier, Make, or n8n.'
@@ -1249,7 +1249,7 @@ Explain each step clearly including trigger, actions, and app-to-app connections
 {
   id: 'debug-prompt-generator',
   name: { ms: '🧪 Penjana Prompt Debug / Bug', en: '🧪 Debug Prompt Generator (Explain Bug or Error)' },
-  category: { ms: 'Teknologi, Alat & Prompts Dev', en: 'Tech, Tools & Dev Prompts' },
+  category: { key: 'tech_tools_dev', ms: 'Teknologi, Alat & Prompts Dev', en: 'Tech, Tools & Dev Prompts' },
   description: {
     ms: 'Ubah mesej ralat atau isu teknikal kepada prompt AI yang jelas untuk bantu diagnosis dan penyelesaian.',
     en: 'Convert error messages or technical issues into a clear AI-debuggable prompt for faster diagnosis and fix.'
@@ -1298,7 +1298,7 @@ Generate a concise and logical prompt that makes the error easier to understand 
 {
   id: 'self-coaching-builder',
   name: { ms: '🧘 Penjana Prompt Refleksi Diri', en: '🧘 Self-Coaching Prompt Builder' },
-  category: { ms: 'Peribadi & Kreatif', en: 'Personal & Creative' },
+  category: { key: 'personal_creative', ms: 'Peribadi & Kreatif', en: 'Personal & Creative' },
   description: {
     ms: 'Ubah kekeliruan, dilema atau isu peribadi kepada soalan reflektif untuk bantu fikir dengan lebih jelas.',
     en: 'Turn personal confusion, dilemmas, or internal issues into self-coaching prompts for clearer thinking.'
@@ -1339,7 +1339,7 @@ The questions should be supportive, non-judgmental, and designed for solo person
 {
   id: 'speech-generator',
   name: { ms: '🗣️ Penjana Ucapan Majlis', en: '🗣️ Speech Generator (Wedding, Graduation, Corporate)' },
-  category: { ms: 'Peribadi & Kreatif', en: 'Personal & Creative' },
+  category: { key: 'personal_creative', ms: 'Peribadi & Kreatif', en: 'Personal & Creative' },
   description: {
     ms: 'Bina ucapan lengkap berdasarkan acara, audiens dan nada — sesuai untuk majlis perkahwinan, graduasi, atau korporat.',
     en: 'Generate a full speech based on the event, audience, and tone — suitable for weddings, graduations, or corporate functions.'
@@ -1388,7 +1388,7 @@ The speech should include an opening, body, and closing tailored to the [acara] 
 {
   id: 'character-personality-prompt',
   name: { ms: '🎭 Penjana Watak Cerita / RPG', en: '🎭 Character Personality Prompt (Fiction/RPG)' },
-  category: { ms: 'Peribadi & Kreatif', en: 'Personal & Creative' },
+  category: { key: 'personal_creative', ms: 'Peribadi & Kreatif', en: 'Personal & Creative' },
   description: {
     ms: 'Cipta profil watak lengkap untuk penulisan fiksyen atau permainan — termasuk trait, kelemahan, matlamat, dan arc watak.',
     en: 'Create a complete character profile for fiction or RPG — including traits, flaw, goal, and character arc.'
@@ -1449,7 +1449,7 @@ Use creative tone suitable for fiction writing or RPG gameplay.`
 {
   id: 'prompt-tone-rewriter',
   name: { ms: '💬 Penukar Nada Teks', en: '💬 Prompt Rewriter for Tone Matching' },
-  category: { ms: 'Peribadi & Kreatif', en: 'Personal & Creative' },
+  category: { key: 'personal_creative', ms: 'Peribadi & Kreatif', en: 'Personal & Creative' },
   description: {
     ms: 'Tukar mesej atau ayat kepada nada yang lebih sesuai — contohnya lebih yakin, lebih lembut, lebih ringkas, atau lebih formal.',
     en: 'Rewrite a message or text to match a different tone — e.g., more confident, softer, simpler, or more formal.'
@@ -1488,7 +1488,7 @@ Make sure the core meaning stays the same, but the delivery is aligned with the 
 {
   id: 'viral-tweet-rewriter',
   name: { ms: '📝 Tukar Idea Jadi Tweet Viral', en: '📝 Rewrite My Idea into Viral Tweet' },
-  category: { ms: 'Peribadi & Kreatif', en: 'Personal & Creative' },
+  category: { key: 'personal_creative', ms: 'Peribadi & Kreatif', en: 'Personal & Creative' },
   description: {
     ms: 'Tukar idea atau mesej panjang kepada 3–5 versi tweet yang ringkas, padat, dan berpotensi viral.',
     en: 'Transform a long idea or message into 3–5 tweet versions that are short, punchy, and built for virality.'

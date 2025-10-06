@@ -1,92 +1,69 @@
 import { useState } from 'react';
-import { Send, Mail } from 'lucide-react';
-import { Button } from '@/components/ui/enhanced-button';
+import { Mail, Send } from 'lucide-react';
+import { Button } from '@/components/ui/button'; // Using standard button
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useToast } from '@/hooks/use-toast';
-
-interface Message {
-  id: string;
-  text: string;
-  isUser: boolean;
-  timestamp: Date;
-}
 
 export default function Contact() {
   const { t } = useLanguage();
   const { toast } = useToast();
-  const [message, setMessage] = useState('');
+
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [subject, setSubject] = useState('');
+  const [feedbackMessage, setFeedbackMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [chatHistory, setChatHistory] = useState<Message[]>([
-    {
-      id: '1',
-      text: t('lang') === 'ms' 
-        ? 'Selamat datang! Bagaimana kami boleh membantu anda hari ini?'
-        : 'Welcome! How can we help you today?',
-      isUser: false,
-      timestamp: new Date()
-    }
-  ]);
 
-  const handleSendMessage = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!message.trim() || isLoading) return;
+    if (!feedbackMessage.trim() || isLoading) {
+      toast({
+        title: t('contact.form.validationError'),
+        description: t('contact.form.messageRequired'),
+        variant: 'destructive',
+      });
+      return;
+    }
 
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      text: message,
-      isUser: true,
-      timestamp: new Date()
-    };
-
-    setChatHistory(prev => [...prev, userMessage]);
-    setMessage('');
     setIsLoading(true);
 
     try {
-      const response = await fetch('/api/chatbot', {
+      const response = await fetch('/api/submit-feedback', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          message: message,
-          history: chatHistory
-        })
+          name,
+          email,
+          subject,
+          message: feedbackMessage,
+        }),
       });
 
-      const data = await response.json();
-      
-      const botReply: Message = {
-        id: (Date.now() + 1).toString(),
-        text: data.reply || (t('lang') === 'ms' 
-          ? 'Terima kasih atas mesej anda. Tim kami akan menghubungi anda tidak lama lagi.'
-          : 'Thank you for your message. Our team will get back to you shortly.'),
-        isUser: false,
-        timestamp: new Date()
-      };
-
-      setChatHistory(prev => [...prev, botReply]);
+      if (!response.ok) {
+        throw new Error('Failed to submit feedback');
+      }
 
       toast({
-        title: t('lang') === 'ms' ? 'Mesej Dihantar' : 'Message Sent',
-        description: t('lang') === 'ms' 
-          ? 'Mesej anda telah berjaya dihantar'
-          : 'Your message has been sent successfully',
+        title: t('contact.form.successTitle'),
+        description: t('contact.form.successDescription'),
       });
-    } catch (error) {
-      console.error('Error sending message:', error);
-      
-      const errorReply: Message = {
-        id: (Date.now() + 1).toString(),
-        text: t('lang') === 'ms'
-          ? 'Maaf, berlaku ralat. Sila cuba lagi atau hubungi kami di support@mudahprompt.my'
-          : 'Sorry, there was an error. Please try again or contact us at support@mudahprompt.my',
-        isUser: false,
-        timestamp: new Date()
-      };
 
-      setChatHistory(prev => [...prev, errorReply]);
+      // Clear form fields
+      setName('');
+      setEmail('');
+      setSubject('');
+      setFeedbackMessage('');
+    } catch (error) {
+      console.error('Error submitting feedback:', error);
+      toast({
+        title: t('contact.form.errorTitle'),
+        description: t('contact.form.errorDescription'),
+        variant: 'destructive',
+      });
     } finally {
       setIsLoading(false);
     }
@@ -108,89 +85,78 @@ export default function Contact() {
           </div>
         </div>
 
-        {/* Chat Interface */}
+        {/* Feedback Form */}
         <div className="max-w-2xl mx-auto">
-          <Card className="card-gradient">
-            {/* Chat History */}
-            <div className="h-96 overflow-y-auto p-6 space-y-4">
-              {chatHistory.map((msg) => (
-                <div
-                  key={msg.id}
-                  className={`flex ${msg.isUser ? 'justify-end' : 'justify-start'}`}
-                >
-                  <div
-                    className={`max-w-xs lg:max-w-md px-4 py-2 rounded-2xl ${
-                      msg.isUser
-                        ? 'bg-primary text-primary-foreground'
-                        : 'bg-muted text-muted-foreground'
-                    }`}
-                  >
-                    <p className="text-sm">{msg.text}</p>
-                    <span className="text-xs opacity-70">
-                      {msg.timestamp.toLocaleTimeString([], {
-                        hour: '2-digit',
-                        minute: '2-digit'
-                      })}
-                    </span>
-                  </div>
-                </div>
-              ))}
-              
-              {isLoading && (
-                <div className="flex justify-start">
-                  <div className="bg-muted text-muted-foreground px-4 py-2 rounded-2xl">
-                    <div className="flex space-x-1">
-                      <div className="w-2 h-2 bg-current rounded-full animate-bounce"></div>
-                      <div className="w-2 h-2 bg-current rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                      <div className="w-2 h-2 bg-current rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Message Input */}
-            <div className="border-t border-border p-6">
-              <form onSubmit={handleSendMessage} className="flex space-x-2">
+          <Card className="p-8 card-gradient">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div>
+                <Label htmlFor="name">{t('contact.form.nameLabel')}</Label>
                 <Input
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  placeholder={t('contact.placeholder')}
-                  className="flex-1"
+                  id="name"
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder={t('contact.form.namePlaceholder')}
                   disabled={isLoading}
                 />
-                <Button
-                  type="submit"
-                  disabled={!message.trim() || isLoading}
-                  variant="accent"
-                >
-                  <Send className="h-4 w-4" />
-                  <span className="sr-only">{t('contact.send')}</span>
-                </Button>
-              </form>
-            </div>
+              </div>
+              <div>
+                <Label htmlFor="email">{t('contact.form.emailLabel')}</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder={t('contact.form.emailPlaceholder')}
+                  disabled={isLoading}
+                />
+              </div>
+              <div>
+                <Label htmlFor="subject">{t('contact.form.subjectLabel')}</Label>
+                <Input
+                  id="subject"
+                  type="text"
+                  value={subject}
+                  onChange={(e) => setSubject(e.target.value)}
+                  placeholder={t('contact.form.subjectPlaceholder')}
+                  disabled={isLoading}
+                />
+              </div>
+              <div>
+                <Label htmlFor="message">{t('contact.form.messageLabel')}</Label>
+                <Textarea
+                  id="message"
+                  value={feedbackMessage}
+                  onChange={(e) => setFeedbackMessage(e.target.value)}
+                  placeholder={t('contact.form.messagePlaceholder')}
+                  rows={5}
+                  disabled={isLoading}
+                />
+              </div>
+              <Button type="submit" className="w-full" disabled={isLoading}>
+                {isLoading ? t('contact.form.submitting') : t('contact.form.submitButton')}
+                <Send className="ml-2 h-4 w-4" />
+              </Button>
+            </form>
           </Card>
 
           {/* Additional Contact Info */}
           <div className="mt-8 text-center">
             <p className="text-muted-foreground mb-4">
-              {t('lang') === 'ms'
-                ? 'Atau hubungi kami melalui:'
-                : 'Or reach us through:'
-              }
+              {t('contact.additionalContactInfo')}
             </p>
             
             <div className="grid md:grid-cols-2 gap-4">
               <Card className="p-4 text-center">
                 <h3 className="font-semibold mb-2">
-                  {t('lang') === 'ms' ? 'Sokongan Teknikal' : 'Technical Support'}
+                  {t('contact.technicalSupport')}
                 </h3>
                 <p className="text-sm text-muted-foreground">support@mudahprompt.my</p>
               </Card>
               
               <Card className="p-4 text-center">
                 <h3 className="font-semibold mb-2">
-                  {t('lang') === 'ms' ? 'Perniagaan' : 'Business'}
+                  {t('contact.businessInquiries')}
                 </h3>
                 <p className="text-sm text-muted-foreground">business@mudahprompt.my</p>
               </Card>

@@ -3,6 +3,19 @@ import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
+import { createClient } from '@supabase/supabase-js';
+
+// Initialize Supabase client for Vite plugin
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
+
+let supabase: ReturnType<typeof createClient>;
+
+if (supabaseUrl && supabaseAnonKey) {
+  supabase = createClient(supabaseUrl, supabaseAnonKey);
+} else {
+  console.error('Missing Supabase environment variables for Vite plugin.');
+}
 
 // https://vitejs.dev/config/
 function localGeminiApi(): Plugin {
@@ -77,6 +90,71 @@ function localGeminiApi(): Plugin {
   };
 }
 
+function localFeedbackApi(): Plugin {
+  return {
+    name: 'local-feedback-api',
+    configureServer(server) {
+      server.middlewares.use('/api/submit-feedback', async (req, res) => {
+        if (req.method === 'OPTIONS') {
+          res.statusCode = 204;
+          res.end();
+          return;
+        }
+        if (req.method !== 'POST') {
+          res.statusCode = 405;
+          res.end('Method not allowed');
+          return;
+        }
+
+        if (!supabase) {
+          res.statusCode = 500;
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify({ error: 'Supabase client not initialized.' }));
+          return;
+        }
+
+        try {
+          const chunks: Buffer[] = [];
+          await new Promise<void>((resolve) => {
+            req.on('data', (c) => chunks.push(c));
+            req.on('end', () => resolve());
+          });
+          const bodyRaw = Buffer.concat(chunks).toString('utf8');
+          const { subject, message, userId } = bodyRaw ? JSON.parse(bodyRaw) : {};
+
+          if (!subject || !message) {
+            res.statusCode = 400;
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify({ error: 'Subject and message are required.' }));
+            return;
+          }
+
+          const { data, error } = await supabase
+            .from('feedback_submissions')
+            .insert([{ subject, message, user_id: userId }]);
+
+          if (error) {
+            console.error('Supabase insert error:', error);
+            res.statusCode = 500;
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify({ error: error.message }));
+            return;
+          }
+
+          res.statusCode = 200;
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify({ message: 'Feedback submitted successfully', data }));
+        } catch (error: any) {
+          console.error('Server error:', error);
+          res.statusCode = 500;
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify({ error: String(error?.message || error) }));
+        }
+      });
+    },
+  };
+}
+
 export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
@@ -87,6 +165,7 @@ export default defineConfig(({ mode }) => ({
     mode === 'development' &&
     componentTagger(),
     mode === 'development' && localGeminiApi(),
+    mode === 'development' && localFeedbackApi(),
   ].filter(Boolean),
   resolve: {
     alias: {

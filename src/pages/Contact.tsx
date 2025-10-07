@@ -7,13 +7,13 @@ import { Card } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function Contact() {
   const { t } = useLanguage();
   const { toast } = useToast();
+  const { user } = useAuth();
 
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
   const [subject, setSubject] = useState('');
   const [feedbackMessage, setFeedbackMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -36,10 +36,9 @@ export default function Contact() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name,
-          email,
           subject,
           message: feedbackMessage,
+          userId: user?.id || null,
         }),
       });
 
@@ -53,8 +52,6 @@ export default function Contact() {
       });
 
       // Clear form fields
-      setName('');
-      setEmail('');
       setSubject('');
       setFeedbackMessage('');
     } catch (error) {
@@ -89,28 +86,6 @@ export default function Contact() {
         <div className="max-w-2xl mx-auto">
           <Card className="p-8 card-gradient">
             <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <Label htmlFor="name">{t('contact.form.nameLabel')}</Label>
-                <Input
-                  id="name"
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder={t('contact.form.namePlaceholder')}
-                  disabled={isLoading}
-                />
-              </div>
-              <div>
-                <Label htmlFor="email">{t('contact.form.emailLabel')}</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder={t('contact.form.emailPlaceholder')}
-                  disabled={isLoading}
-                />
-              </div>
               <div>
                 <Label htmlFor="subject">{t('contact.form.subjectLabel')}</Label>
                 <Input

@@ -28,6 +28,10 @@ const translations = {
     'common.previous': 'Sebelumnya',
     'common.sortBy': 'Susun Mengikut',
     'common.all': 'Semua',
+    "common.newest": 'terbaru',
+    "common.oldest": 'paling lama',
+    "common.trending": 'popular',
+
     
     // Navigation
     'nav.home': 'Laman Utama',
@@ -120,6 +124,9 @@ const translations = {
     'common.previous': 'Previous',
     'common.sortBy': 'Sort By',
     'common.all': 'All',
+    "common.newest": 'newest',
+    "common.oldest": 'oldest',
+    "common.trending": 'trending',
     
     // Navigation
     'nav.home': 'Home',

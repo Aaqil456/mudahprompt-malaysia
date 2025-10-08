@@ -155,6 +155,78 @@ function localFeedbackApi(): Plugin {
   };
 }
 
+function localIncrementTrendingApi(supabaseUrl: string, supabaseAnonKey: string): Plugin {
+  let supabase: ReturnType<typeof createClient>;
+
+  if (supabaseUrl && supabaseAnonKey) {
+    supabase = createClient(supabaseUrl, supabaseAnonKey);
+  } else {
+    console.error('Missing Supabase environment variables for Vite plugin (trending).');
+  }
+
+  return {
+    name: 'local-increment-trending-api',
+    configureServer(server) {
+      server.middlewares.use('/api/increment-trending', async (req, res) => {
+        if (req.method === 'OPTIONS') {
+          res.statusCode = 204;
+          res.end();
+          return;
+        }
+        if (req.method !== 'POST') {
+          res.statusCode = 405;
+          res.end('Method not allowed');
+          return;
+        }
+
+        if (!supabase) {
+          res.statusCode = 500;
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify({ error: 'Supabase client not initialized for trending.' }));
+          return;
+        }
+
+        try {
+          const chunks: Buffer[] = [];
+          await new Promise<void>((resolve) => {
+            req.on('data', (c) => chunks.push(c));
+            req.on('end', () => resolve());
+          });
+          const bodyRaw = Buffer.concat(chunks).toString('utf8');
+          const { assistantId } = bodyRaw ? JSON.parse(bodyRaw) : {};
+
+          if (!assistantId) {
+            res.statusCode = 400;
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify({ error: 'Assistant ID is required.' }));
+            return;
+          }
+
+          const { data, error } = await supabase
+            .rpc('increment_trending_score', { assistant_id_param: assistantId });
+
+          if (error) {
+            console.error('Supabase trending score update error:', error);
+            res.statusCode = 500;
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify({ error: error.message }));
+            return;
+          }
+
+          res.statusCode = 200;
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify({ message: 'Trending score updated successfully', data }));
+        } catch (error: any) {
+          console.error('Server error (trending):', error);
+          res.statusCode = 500;
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify({ error: String(error?.message || error) }));
+        }
+      });
+    },
+  };
+}
+
 export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
@@ -165,7 +237,8 @@ export default defineConfig(({ mode }) => ({
     mode === 'development' &&
     componentTagger(),
     mode === 'development' && localGeminiApi(),
-    mode === 'development' && localFeedbackApi(),
+    mode === 'development' && localFeedbackApi(process.env.SUPABASE_URL!, process.env.SUPABASE_ANON_KEY!),
+    mode === 'development' && localIncrementTrendingApi(process.env.SUPABASE_URL!, process.env.SUPABASE_ANON_KEY!),
   ].filter(Boolean),
   resolve: {
     alias: {

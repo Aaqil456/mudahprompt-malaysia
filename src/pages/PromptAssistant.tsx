@@ -7,7 +7,7 @@ import { Card } from '@/components/ui/card';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
-import { assistants } from '@/lib/assistants';
+import { getAssistants } from '@/lib/assistants';
 
 // RequestQueue class for spacing tasks
 class RequestQueue {
@@ -57,7 +57,8 @@ export default function PromptAssistant() {
   const generatedPromptRef = useRef<HTMLDivElement>(null);
   const promptBuilderRef = useRef<HTMLDivElement>(null);
   
-  const [selectedAssistant, setSelectedAssistant] = useState<any | null>(assistants.length > 0 ? assistants[0] : null);
+  const [allAssistants, setAllAssistants] = useState<any[]>([]);
+  const [selectedAssistant, setSelectedAssistant] = useState<any | null>(null);
   const [selectedAssistantForModal, setSelectedAssistantForModal] = useState<any | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [fieldValues, setFieldValues] = useState<Record<string, string>>({});
@@ -68,7 +69,19 @@ export default function PromptAssistant() {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all'); // Use 'all' as the language-agnostic key for "All"
-  const [sortOrder, setSortOrder] = useState<'newest' | 'oldest'>('newest');
+  const [sortOrder, setSortOrder] = useState<'newest' | 'oldest' | 'trending'>('newest');
+
+  // Fetch assistants from Supabase on component mount
+  useEffect(() => {
+    const fetchAssistants = async () => {
+      const fetchedAssistants = await getAssistants();
+      setAllAssistants(fetchedAssistants);
+      if (fetchedAssistants.length > 0) {
+        setSelectedAssistant(fetchedAssistants[0]);
+      }
+    };
+    fetchAssistants();
+  }, []);
 
   // Load custom instructions when assistant changes
   useEffect(() => {
@@ -90,11 +103,13 @@ export default function PromptAssistant() {
 
   // Effect to reset selectedCategory when language changes, if the current category key is no longer valid
   useEffect(() => {
-    const allCategoryKeys = ['all', ...Array.from(new Set(assistants.map(a => a.category.key)))];
-    if (!allCategoryKeys.includes(selectedCategory)) {
-      setSelectedCategory('all'); // Reset to 'all' if the current key is not found in the new language's categories
+    if (allAssistants.length > 0) {
+      const allCategoryKeys = ['all', ...Array.from(new Set(allAssistants.map(a => a.category.key)))];
+      if (!allCategoryKeys.includes(selectedCategory)) {
+        setSelectedCategory('all'); // Reset to 'all' if the current key is not found in the new language's categories
+      }
     }
-  }, [lang, selectedCategory]);
+  }, [lang, selectedCategory, allAssistants]);
 
 
 
@@ -121,18 +136,32 @@ export default function PromptAssistant() {
             prompt = prompt.replace(placeholder, value);
           });
           
+          console.log('Generated Prompt (JSON.stringify):', JSON.stringify(prompt)); // <--- ADDED FOR DEBUGGING
+
           setGeneratedPrompt(prompt);
           setEditedPrompt(prompt);
           setIsEditing(false);
           
-          // Save to history (fire-and-forget)
-          savePromptHistory(prompt);
+          // Increment trending score (fire-and-forget)
+          incrementTrendingScore(selectedAssistantForModal.id);
         });
       } catch (error) {
         console.error('Error generating prompt:', error);
       } finally {
         setIsGenerating(false);
       }
+    }
+  };
+
+  const incrementTrendingScore = async (assistantId: string) => {
+    try {
+      fetch('/api/increment-trending', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ assistantId })
+      }).catch(err => console.error('Trending score update failed:', err));
+    } catch (error) {
+      console.error('Failed to increment trending score:', error);
     }
   };
 
@@ -186,7 +215,7 @@ export default function PromptAssistant() {
     window.open('https://gemini.google.com/chat', '_blank');
   };
 
-  const filteredAssistants = assistants.filter(assistant => {
+  const filteredAssistants = allAssistants.filter(assistant => {
     const matchesSearch = assistant.name[lang].toLowerCase().includes(searchQuery.toLowerCase()) ||
                          assistant.description[lang].toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = selectedCategory === 'all' || assistant.category.key === selectedCategory;
@@ -194,17 +223,17 @@ export default function PromptAssistant() {
   });
 
   const sortedAssistants = [...filteredAssistants].sort((a, b) => {
-    const indexA = assistants.findIndex(assistant => assistant.id === a.id);
-    const indexB = assistants.findIndex(assistant => assistant.id === b.id);
-
-    if (sortOrder === 'newest') {
-      return indexB - indexA; // Sort descending by index (newest first)
-    } else {
-      return indexA - indexB; // Sort ascending by index (oldest first)
+    if (sortOrder === 'trending') {
+      return b.trending_score - a.trending_score; // Sort descending by trending_score
+    } else if (sortOrder === 'newest') {
+      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime(); // Sort descending by created_at
+    } else if (sortOrder === 'oldest') {
+      return new Date(a.created_at).getTime() - new Date(b.created_at).getTime(); // Sort ascending by created_at
     }
+    return 0;
   });
 
-  const categories = ['all', ...Array.from(new Set(assistants.map(a => a.category.key)))];
+  const categories = ['all', ...Array.from(new Set(allAssistants.map(a => a.category.key)))];
 
   return (
     <div className="min-h-screen bg-background">
@@ -233,7 +262,7 @@ export default function PromptAssistant() {
                 onClick={() => setSelectedCategory(categoryKey)}
                 className="flex-shrink-0"
               >
-                {categoryKey === 'all' ? t('common.all') : assistants.find(a => a.category.key === categoryKey)?.category[lang]}
+                {categoryKey === 'all' ? t('common.all') : allAssistants.find(a => a.category.key === categoryKey)?.category[lang]}
               </Button>
             ))}
           </div>
@@ -244,10 +273,11 @@ export default function PromptAssistant() {
             <select
               className="p-2 rounded-lg border border-border bg-background text-foreground text-sm"
               value={sortOrder}
-              onChange={(e) => setSortOrder(e.target.value as 'newest' | 'oldest')}
+              onChange={(e) => setSortOrder(e.target.value as 'newest' | 'oldest' | 'trending')}
             >
-              <option value="newest">Newest</option>
-              <option value="oldest">Oldest</option>
+              <option value="trending">{t('common.trending')}</option>
+              <option value="newest">{t('common.newest')}</option>
+              <option value="oldest">{t('common.oldest')}</option>
             </select>
             {/* Grid/List Toggle Placeholder */}
             <Button variant="outline" size="icon">
@@ -412,11 +442,13 @@ export default function PromptAssistant() {
                       value={editedPrompt}
                       onChange={(e) => setEditedPrompt(e.target.value)}
                       rows={6}
-                      className="mb-4"
+                      className="mb-4 whitespace-pre-wrap"
                     />
                   ) : (
-                    <div className="p-4 bg-muted/30 rounded-lg mb-4 whitespace-pre-wrap">
-                      {generatedPrompt}
+                    <div className="p-4 bg-muted/30 rounded-lg mb-4">
+                      {generatedPrompt.split('\n').map((line, index) => (
+                        <div key={index}>{line}</div>
+                      ))}
                     </div>
                   )}
                 </div>

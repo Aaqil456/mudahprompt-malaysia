@@ -38,6 +38,57 @@ export type Database = {
         }
         Relationships: []
       }
+      assistants: {
+        Row: {
+          id: string
+          name_ms: string
+          name_en: string
+          category_key: string
+          category_ms: string
+          category_en: string
+          description_ms: string
+          description_en: string
+          image_src: string | null
+          fields: Json
+          template_ms: string
+          template_en: string
+          trending_score: number
+          created_at: string
+        }
+        Insert: {
+          id: string
+          name_ms: string
+          name_en: string
+          category_key: string
+          category_ms: string
+          category_en: string
+          description_ms: string
+          description_en: string
+          image_src?: string | null
+          fields: Json
+          template_ms: string
+          template_en: string
+          trending_score?: number
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          name_ms?: string
+          name_en?: string
+          category_key?: string
+          category_ms?: string
+          category_en?: string
+          description_ms?: string
+          description_en?: string
+          image_src?: string | null
+          fields?: Json
+          template_ms?: string
+          template_en?: string
+          trending_score?: number
+          created_at?: string
+        }
+        Relationships: []
+      }
       prompt_history: {
         Row: {
           assistant_id: string

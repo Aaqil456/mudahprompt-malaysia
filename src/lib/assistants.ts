@@ -11,6 +11,7 @@ export const assistants = [
       en: 'Generate full YouTube scripts based on topic, style and goal. Ideal for 10–15 min videos.'
     },
     imageSrc: 'https://plus.unsplash.com/premium_photo-1683287925874-f8b46c6437ae?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8eW91dHViZSUyMHN0dWRpb3xlbnwwfHwwfHx8MA%3D%3D',
+    trending_score: 0,
     fields: [
       {
         name: 'Topik',
@@ -72,6 +73,7 @@ Maintain the [gaya] tone throughout. The script should be long enough for a 10�
       en: 'Write Instagram threads using storytelling or casual style to attract attention and promote products/ideas.'
     },
     imageSrc: 'https://plus.unsplash.com/premium_photo-1719819203376-b73baffc4758?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW5zdGFncmFtJTIwYXBwJTIwcGhvbmV8ZW58MHx8MHx8fDA%3D',
+    trending_score: 0,
     fields: [
       {
         name: 'Topik',
@@ -135,6 +137,7 @@ Format: Malaysian-friendly writing, short and punchy.`
     en: 'Generate a full TikTok script including hook, core content, and punchline. Ideal for 60–90 second videos.'
   },
   imageSrc: 'https://images.unsplash.com/photo-1611605698323-b1e99cfd37ea?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fHNob3J0JTIwdmlkZW98ZW58MHx8MHx8fDA%3D',
+  trending_score: 0,
   fields: [
     {
       name: 'Topik',
@@ -193,6 +196,7 @@ Use simple, engaging language tailored for TikTok. Length should fit within 60�
     en: 'Break down complex ideas into 5–7 carousel slides with visual cues and strong CTA.'
   },
   imageSrc: 'https://media.istockphoto.com/id/1404229146/photo/close-up-of-young-businesspeople-meeting-about-new-project-with-colleagues-in-conference-room.webp?a=1&b=1&s=612x612&w=0&k=20&c=rTE-zC9j8AdKGN8lwrBMPaUGw4-1u5KgAzWbqKV-u1A=',
+  trending_score: 0,
   fields: [
     {
       name: 'Topik',
@@ -252,6 +256,7 @@ Maintain the [gaya] style throughout. Use short, punchy lines, visual cues, and 
     en: 'Convert writing tone into iconic Malaysian personas like Makcik Bawang, Sifu, or Boss to grab local attention.'
   },
   imageSrc: 'https://media.istockphoto.com/id/994140476/photo/3d-rendering-set-of-emoji-isolated-on-white.webp?a=1&b=1&s=612x612&w=0&k=20&c=aGLauC-ysGSVsi_AFVJXHRxivpl5Xry4isZKaDf4Wqk=',
+  trending_score: 0,
   fields: [
     {
       name: 'Mesej',
@@ -293,6 +298,7 @@ The rewritten message should reflect the character of [watak] authentically with
     en: 'Build irresistible product offers using a combination of core, bonus, and urgency (scarcity) elements.'
   },
   imageSrc: 'https://media.istockphoto.com/id/2193354467/photo/close-up-of-a-handshake-between-a-real-estate-agent-and-a-businessman-with-a-small-house-plan.webp?a=1&b=1&s=612x612&w=0&k=20&c=xjhef7AuRZnMpyzqbGiEQeONCt0aMQ3eF6aYEG4AsHU=',
+  trending_score: 0,
   fields: [
     {
       name: 'Produk',
@@ -352,6 +358,7 @@ Tone: persuasive, clear, and suited for Malaysian audiences.`
     en: 'Reframe your Unique Selling Proposition based on different angles: customer pain, desire, or objection.'
   },
   imageSrc: 'https://images.unsplash.com/photo-1725379448168-e33c5e09d47e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fFVuaXF1ZSUyMFNlbGxpbmclMjBQcm9wb3NpdGlvbnxlbnwwfHwwfHx8MA%3D%3D',
+  trending_score: 0,
   fields: [
     {
       name: 'USP',
@@ -399,6 +406,7 @@ Generate 3 stronger and more persuasive USP versions that address the [fokus] pe
     en: 'Generate a 5-email automation series using AIDA — from grabbing attention to final CTA to buy.'
   },
   imageSrc: 'https://images.unsplash.com/photo-1596526131083-e8c633c948d2?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZW1haWwlMjBtYXJrZXRpbmd8ZW58MHx8MHx8fDA%3D',
+  trending_score: 0,
   fields: [
     {
       name: 'Produk',
@@ -462,6 +470,7 @@ Keep tone [gaya], sentences short, and language reader-friendly for Malaysian au
     en: 'Use psychological principles to suggest pricing strategies: value-based, anchoring, or tiered models.'
   },
   imageSrc: 'https://images.unsplash.com/photo-1594969155368-f19485a9d88c?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8cHJpY2UlMjB0YWd8ZW58MHx8MHx8fDA%3D',
+  trending_score: 0,
   fields: [
     {
       name: 'Produk',
@@ -511,6 +520,7 @@ Use relevant pricing psychology principles tailored for Malaysian audiences. Pro
     en: 'Suggest business models and monetization strategies based on your startup or product idea.'
   },
   imageSrc: 'https://plus.unsplash.com/premium_photo-1661963588720-838fd19183ee?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8c3RhcnR1cCUyMGJyYWluc3Rvcm1pbmd8ZW58MHx8MHx8fDA%3D',
+  trending_score: 0,
   fields: [
     {
       name: 'Idea',
@@ -562,6 +572,7 @@ Tone should be clear, practical, and tailored to Malaysian users.`
     en: 'Transform plain sentences into popular copywriting frameworks (PAS, AIDA, FAB) for ads, posts, or threads.'
   },
   imageSrc: 'https://plus.unsplash.com/premium_photo-1725408044110-eff678909e0a?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8c29jaWFsJTIwbWVkaWElMjB2aXJhbHxlbnwwfHwwfHx8MA%3D%3D',
+  trending_score: 0,
   fields: [
     {
       name: 'Ayat',
@@ -609,6 +620,7 @@ Make it concise, punchy, and suitable for ads, social media, or thread writing. 
     en: 'Turn your work experience text into polished resume bullet points and a standout LinkedIn summary.'
   },
   imageSrc: 'https://plus.unsplash.com/premium_photo-1661779134041-9d618ec4c812?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cmVzdW1lJTIwaW50ZXJ2aWV3fGVufDB8fDB8fHww',
+  trending_score: 0,
   fields: [
     {
       name: 'Pengalaman',
@@ -662,6 +674,7 @@ Original text:
     en: 'Generate full landing page copy from hero section to CTA, including trust signals and benefit bullets.'
   },
   imageSrc: 'https://images.unsplash.com/photo-1678690832311-bb6e361989ca?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8d2Vic2l0ZSUyMGRlc2lnbnxlbnwwfHwwfHx8MA%3D%3D',
+  trending_score: 0,
   fields: [
     {
       name: 'Produk',
@@ -726,6 +739,7 @@ The tone should be [gaya] and resonate with Malaysian readers.`
     en: 'Take old sales copy and rewrite it with a fresh angle (based on audience or offer), without changing the core message.'
   },
   imageSrc: 'https://images.unsplash.com/photo-1556745757-8d76bdb6984b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDF8MHxzZWFyY2h8MXx8YnVzaW5lc3N8ZW58MHx8MHx8fDA%3D',
+  trending_score: 0,
   fields: [
     {
       name: 'Salinan',
@@ -773,6 +787,7 @@ Keep the core message intact. Only reframe the angle and delivery to suit the ne
     en: 'Generate a punchy one-liner pitch in the style of a Twitter bio or elevator pitch for a product, brand, or personal intro.'
   },
   imageSrc: 'https://images.unsplash.com/photo-1590098563686-06ab8778a6a7?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cGl0Y2glMjBkZWNrfGVufDB8fDB8fHww',
+  trending_score: 0,
   fields: [
     {
       name: 'Info',
@@ -814,6 +829,7 @@ Make it concise, attention-grabbing, and suitable for bios, intros, or quick pre
     en: 'Turn raw meeting notes into a clean professional summary and actionable next steps list.'
   },
   imageSrc: 'https://plus.unsplash.com/premium_photo-1664298826344-dacdb6940c60?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fGJ1c2luZXNzJTIwbWVldGluZyUyMG5vdGVzfGVufDB8fDB8fHww',
+  trending_score: 0,
   fields: [
     {
       name: 'Nota',
@@ -861,6 +877,7 @@ Keep it concise, structured, and easy for all participants to understand.`
     en: 'Turn a task or process into a structured SOP — who does what, when, and how.'
   },
   imageSrc: 'https://media.istockphoto.com/id/2195941514/photo/3d-curved-arrow-with-focus-circles-and-check-marks-surrounded-by-gears-representing-process.webp?a=1&b=1&s=612x612&w=0&k=20&c=n89yrmtRzSpbDFNitqG3357FR1p8eL995wOKqRTdaQ8=',
+  trending_score: 0,
   fields: [
     {
       name: 'Tugas',
@@ -922,6 +939,7 @@ Keep it simple, clear, and executable.`
     en: 'Convert weekly goals into a structured task list or time-blocked daily schedule.'
   },
   imageSrc: 'https://images.unsplash.com/photo-1506485338023-6ce5f36692df?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8d2Vla2x5JTIwcGxhbm5lcnxlbnwwfHwwfHx8MA%3D%3D',
+  trending_score: 0,
   fields: [
     {
       name: 'Matlamat',
@@ -971,6 +989,7 @@ Generate a complete plan to achieve [matlamat] using the [gaya] format. Keep it 
     en: 'Convert vague or broad goals into SMART format — Specific, Measurable, Achievable, Relevant, Timely.'
   },
   imageSrc: 'https://images.unsplash.com/photo-1531403009284-440f080d1e12?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cGxhbm5pbmd8ZW58MHx8MHx8fDA%3D',
+  trending_score: 0,
   fields: [
     {
       name: 'Matlamat',
@@ -1018,6 +1037,7 @@ Output should be a clearer, measurable version that’s ready for action.`
     en: 'Generate a simple mind map starting from main topic → subtopics → actionable tasks for each branch.'
   },
   imageSrc: 'https://plus.unsplash.com/premium_photo-1726790429834-7712c12b4062?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8bWluZCUyMG1hcCUyMGRyYXdpbmd8ZW58MHx8MHx8fDA%3D',
+  trending_score: 0,
   fields: [
     {
       name: 'Topik',
@@ -1061,6 +1081,7 @@ Format should be clear, structured, and usable for planning or execution.`
     en: 'Build prompt structures for use with APIs, LangChain tools, agents, or chains. Suitable for few-shot and modular design.'
   },
   imageSrc: 'https://media.istockphoto.com/id/2195607659/photo/ai-artificial-intelligence-technology-for-data-analysis-research-planning-and-work-generate.webp?a=1&b=1&s=612x612&w=0&k=20&c=nqgzw4nlXTa--oa_J0s0_z--mSMRVu7Dhmhg1SWKwEQ=',
+  trending_score: 0,
   fields: [
     {
       name: 'Tujuan',
@@ -1112,6 +1133,7 @@ Include proper few-shot style and generate main prompt + sample completions read
     en: 'Rewrite code to be cleaner, more modular, or more readable — and add clear comments for each function or key logic.'
   },
   imageSrc: 'https://images.unsplash.com/photo-1603943761979-879c839ac8e6?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y29kZSUyMGVkaXRvcnxlbnwwfHwwfHx8MA%3D%3D',
+  trending_score: 0,
   fields: [
     {
       name: 'Kod',
@@ -1161,6 +1183,7 @@ Provide a cleaned-up version of the code with comments for each major function o
     en: 'Translate technical SaaS features into clear explanations focused on customer benefits.'
   },
   imageSrc: 'https://plus.unsplash.com/premium_photo-1720589103335-43589b70bd20?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZGFzaGJvYXJkJTIwc29mdHdhcmV8ZW58MHx8MHx8fDA%3D',
+  trending_score: 0,
   fields: [
     {
       name: 'Ciri',
@@ -1206,6 +1229,7 @@ Focus on the main benefit and why the user should care — not just the technica
     en: 'Design multi-step automation flows based on desired outcome — suitable for Zapier, Make, or n8n.'
   },
   imageSrc: 'https://plus.unsplash.com/premium_photo-1725907643701-9ba38affe7bb?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8YXV0b21hdGlvbiUyMGZsb3djaGFydHxlbnwwfHwwfHx8MA%3D%3D',
+  trending_score: 0,
   fields: [
     {
       name: 'Tujuan',
@@ -1255,6 +1279,7 @@ Explain each step clearly including trigger, actions, and app-to-app connections
     en: 'Convert error messages or technical issues into a clear AI-debuggable prompt for faster diagnosis and fix.'
   },
   imageSrc: 'https://media.istockphoto.com/id/2160045488/photo/warning-alert-of-error-or-security-breach-something-is-wrong-compliance-problem.webp?a=1&b=1&s=612x612&w=0&k=20&c=pKhIgp9n29b7j8TTR8xo4um408CCsfsPBVaYwXzWr9U=',
+  trending_score: 0,
   fields: [
     {
       name: 'Isu',
@@ -1304,6 +1329,7 @@ Generate a concise and logical prompt that makes the error easier to understand 
     en: 'Turn personal confusion, dilemmas, or internal issues into self-coaching prompts for clearer thinking.'
   },
   imageSrc: 'https://plus.unsplash.com/premium_photo-1698529718640-6384ae59f40b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8c2VsZiUyMGdyb3d0aHxlbnwwfHwwfHx8MA%3D%3D',
+  trending_score: 0,
   fields: [
     {
       name: 'Isu',
@@ -1345,6 +1371,7 @@ The questions should be supportive, non-judgmental, and designed for solo person
     en: 'Generate a full speech based on the event, audience, and tone — suitable for weddings, graduations, or corporate functions.'
   },
   imageSrc: 'https://images.unsplash.com/photo-1544531586-fde5298cdd40?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8cHVibGljJTIwc3BlYWtpbmd8ZW58MHx8MHx8fDA%3D',
+  trending_score: 0,
   fields: [
     {
       name: 'Acara',
@@ -1394,6 +1421,7 @@ The speech should include an opening, body, and closing tailored to the [acara] 
     en: 'Create a complete character profile for fiction or RPG — including traits, flaw, goal, and character arc.'
   },
   imageSrc: 'https://plus.unsplash.com/premium_photo-1681488007344-c75b0cf8b0cd?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y3JlYXRpdmV8ZW58MHx8MHx8fDA%3D',
+  trending_score: 0,
   fields: [
     {
       name: 'Vibe',
@@ -1455,6 +1483,7 @@ Use creative tone suitable for fiction writing or RPG gameplay.`
     en: 'Rewrite a message or text to match a different tone — e.g., more confident, softer, simpler, or more formal.'
   },
   imageSrc: 'https://plus.unsplash.com/premium_photo-1682023587356-86065925727a?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fHJvYm90JTIwc3BlYWt8ZW58MHx8MHx8fDA%3D',
+  trending_score: 0,
   fields: [
     {
       name: 'Mesej',
@@ -1494,6 +1523,7 @@ Make sure the core meaning stays the same, but the delivery is aligned with the 
     en: 'Transform a long idea or message into 3–5 tweet versions that are short, punchy, and built for virality.'
   },
   imageSrc: 'https://images.unsplash.com/photo-1678329888526-548b49617c23?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8dmlyYWwlMjB0d2VldHxlbnwwfHwwfHx8MA%3D%3D',
+  trending_score: 0,
   fields: [
     {
       name: 'Idea',

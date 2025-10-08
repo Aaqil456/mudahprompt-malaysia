@@ -8,6 +8,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { getAssistants } from '@/lib/assistants';
+import { supabase } from '@/integrations/supabase/client';
 
 // RequestQueue class for spacing tasks
 class RequestQueue {
@@ -155,11 +156,12 @@ export default function PromptAssistant() {
 
   const incrementTrendingScore = async (assistantId: string) => {
     try {
-      fetch('/api/increment-trending', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ assistantId })
-      }).catch(err => console.error('Trending score update failed:', err));
+      const { error } = await supabase
+        .rpc('increment_trending_score', { assistant_id_param: assistantId });
+
+      if (error) {
+        console.error('Supabase trending score update error:', error);
+      }
     } catch (error) {
       console.error('Failed to increment trending score:', error);
     }
@@ -168,15 +170,18 @@ export default function PromptAssistant() {
   const savePromptHistory = async (prompt: string) => {
     if (!selectedAssistantForModal) return;
     try {
-      // Fire-and-forget POST request
-      fetch('/api/save-prompt-history', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          assistantId: selectedAssistantForModal.id,
-          prompt
-        })
-      }).catch(err => console.error('History save failed:', err));
+      const { error } = await supabase
+        .from('prompt_history')
+        .insert([
+          {
+            assistant_id: selectedAssistantForModal.id,
+            prompt_content: prompt,
+          },
+        ]);
+
+      if (error) {
+        console.error('Supabase prompt history save error:', error);
+      }
     } catch (error) {
       console.error('Failed to save prompt history:', error);
     }

@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
 
 export default function Contact() {
   const { t } = useLanguage();
@@ -32,18 +33,18 @@ export default function Contact() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('/api/submit-feedback', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          subject,
-          message: feedbackMessage,
-          userId: user?.id || null,
-        }),
-      });
+      const { error } = await supabase
+        .from('feedback_submissions')
+        .insert([
+          {
+            subject,
+            message: feedbackMessage,
+            user_id: user?.id || null,
+          },
+        ]);
 
-      if (!response.ok) {
-        throw new Error('Failed to submit feedback');
+      if (error) {
+        throw new Error(error.message);
       }
 
       toast({

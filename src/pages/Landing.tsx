@@ -31,21 +31,21 @@ export default function Landing() {
 
   const assistantPreviews = [
     {
-      name: 'Content Writer',
-      description: 'Pembantu untuk menulis kandungan kreatif',
-      category: 'Writing',
+      name: t('assistantPreviews.contentWriter.name'),
+      description: t('assistantPreviews.contentWriter.desc'),
+      category: t('assistantPreviews.category.writing'),
       
     },
     {
-      name: 'Email Marketing',
-      description: 'Cipta email pemasaran yang berkesan',
-      category: 'Marketing',
+      name: t('assistantPreviews.emailMarketing.name'),
+      description: t('assistantPreviews.emailMarketing.desc'),
+      category: t('assistantPreviews.category.marketing'),
       
     },
     {
-      name: 'Social Media',
-      description: 'Pos media sosial yang menarik',
-      category: 'Social',
+      name: t('assistantPreviews.socialMedia.name'),
+      description: t('assistantPreviews.socialMedia.desc'),
+      category: t('assistantPreviews.category.social'),
     
     }
   ];
@@ -124,7 +124,7 @@ export default function Landing() {
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">{t('features.title')}</h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Platform yang direka khas untuk keperluan pengguna awam dengan teknologi AI terkini
+              {t('features.subtitle')}
             </p>
           </div>
 
@@ -146,9 +146,9 @@ export default function Landing() {
       <section className="py-24 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">Pembantu Popular</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">{t('assistantPreviews.title')}</h2>
             <p className="text-muted-foreground text-lg">
-              Pilih daripada pelbagai pembantu AI yang telah disediakan
+              {t('assistantPreviews.subtitle')}
             </p>
           </div>
 
@@ -168,7 +168,7 @@ export default function Landing() {
                 <div className="flex items-center justify-between">
                   <Link to="/prompt-assistant">
                     <Button variant="ghost" size="sm">
-                      Lihat Detail
+                      {t('assistantPreviews.viewDetail')}
                     </Button>
                   </Link>
                 </div>
@@ -179,7 +179,7 @@ export default function Landing() {
           <div className="text-center mt-12">
             <Link to="/prompt-assistant">
               <Button variant="accent" size="lg">
-                Lihat Semua Pembantu
+                {t('assistantPreviews.viewAllAssistants')}
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
@@ -192,10 +192,10 @@ export default function Landing() {
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center text-white">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Mulakan Perjalanan AI Anda Hari Ini
+              {t('cta.title')}
             </h2>
             <p className="text-xl mb-8 text-white/90">
-              Tingkatkan produktiviti anda dengan MudahPrompt
+              {t('cta.subtitle')}
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -210,15 +210,15 @@ export default function Landing() {
             <div className="mt-12 flex items-center justify-center space-x-8 text-white/80">
               <div className="flex items-center">
                 <CheckCircle className="h-5 w-5 mr-2" />
-                Percuma untuk bermula
+                {t('cta.freeToStart')}
               </div>
               <div className="flex items-center">
                 <CheckCircle className="h-5 w-5 mr-2" />
-                Tanpa kad kredit
+                {t('cta.noCreditCard')}
               </div>
               <div className="flex items-center">
                 <CheckCircle className="h-5 w-5 mr-2" />
-                Sokongan 24/7
+                {t('cta.support247')}
               </div>
             </div>
           </div>

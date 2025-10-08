@@ -57,6 +57,29 @@ const translations = {
     'features.ai.desc': 'Isi maklumat → Jana prompt berkualiti tinggi secara automatik',
     'features.mobile.title': 'Edit Prompt',
     'features.mobile.desc': 'Edit prompt sedia ada untuk hasil yang lebih peribadi & relevan',
+    'features.subtitle': 'Platform yang direka khas untuk keperluan pengguna awam dengan teknologi AI terkini',
+
+    // Assistant Previews
+    'assistantPreviews.title': 'Pembantu Popular',
+    'assistantPreviews.subtitle': 'Pilih daripada pelbagai pembantu AI yang telah disediakan',
+    'assistantPreviews.contentWriter.desc': 'Pembantu untuk menulis kandungan kreatif',
+    'assistantPreviews.contentWriter.name': 'Penulis Kandungan',
+    'assistantPreviews.emailMarketing.desc': 'Cipta email pemasaran yang berkesan',
+    'assistantPreviews.emailMarketing.name': 'Pemasaran E-mel',
+    'assistantPreviews.socialMedia.desc': 'Pos media sosial yang menarik',
+    'assistantPreviews.socialMedia.name': 'Media Sosial',
+    'assistantPreviews.viewDetail': 'Lihat Detail',
+    'assistantPreviews.viewAllAssistants': 'Lihat Semua Pembantu',
+    'assistantPreviews.category.writing': 'Penulisan',
+    'assistantPreviews.category.marketing': 'Pemasaran',
+    'assistantPreviews.category.social': 'Sosial',
+
+    // CTA Section
+    'cta.title': 'Mulakan Perjalanan AI Anda Hari Ini',
+    'cta.subtitle': 'Tingkatkan produktiviti anda dengan MudahPrompt',
+    'cta.freeToStart': 'Percuma untuk bermula',
+    'cta.noCreditCard': 'Tanpa kad kredit',
+    'cta.support247': 'Sokongan 24/7',
     
     // Prompt Assistant
     'assistant.title': 'Pembantu Prompt',
@@ -152,6 +175,29 @@ const translations = {
     'features.ai.desc': 'Fill in details → Auto-generate high-quality prompts',
     'features.mobile.title': 'Edit Prompt',
     'features.mobile.desc': 'Edit your prompt for more personalized & relevant results',
+    'features.subtitle': 'Platform designed specifically for the needs of the general public with the latest AI technology',
+
+    // Assistant Previews
+    'assistantPreviews.title': 'Popular Assistants',
+    'assistantPreviews.subtitle': 'Choose from a variety of pre-built AI assistants',
+    'assistantPreviews.contentWriter.desc': 'Assistant for writing creative content',
+    'assistantPreviews.contentWriter.name': 'Content Writer',
+    'assistantPreviews.emailMarketing.desc': 'Create effective marketing emails',
+    'assistantPreviews.emailMarketing.name': 'Email Marketing',
+    'assistantPreviews.socialMedia.desc': 'Engaging social media posts',
+    'assistantPreviews.socialMedia.name': 'Social Media',
+    'assistantPreviews.viewDetail': 'View Detail',
+    'assistantPreviews.viewAllAssistants': 'View All Assistants',
+    'assistantPreviews.category.writing': 'Writing',
+    'assistantPreviews.category.marketing': 'Marketing',
+    'assistantPreviews.category.social': 'Social',
+    
+    // Prompt Assistant
+    'cta.title': 'Start Your AI Journey Today',
+    'cta.subtitle': 'Boost your productivity with MudahPrompt',
+    'cta.freeToStart': 'Free to start',
+    'cta.noCreditCard': 'No credit card required',
+    'cta.support247': '24/7 Support',
     
     // Prompt Assistant
     'assistant.title': 'Prompt Assistant',

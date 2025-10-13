@@ -94,14 +94,14 @@ export type Database = {
           assistant_id: string
           created_at: string
           id: string
-          prompt: string
+          prompt_content: string
           user_id: string | null
         }
         Insert: {
           assistant_id: string
           created_at?: string
           id?: string
-          prompt: string
+          prompt_content: string
           user_id?: string | null
         }
         Update: {
@@ -118,7 +118,12 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      increment_trending_score: {
+        Args: {
+          assistant_id_param: string;
+        };
+        Returns: number; // Assuming it returns the new trending score or a success indicator
+      };
     }
     Enums: {
       [_ in never]: never

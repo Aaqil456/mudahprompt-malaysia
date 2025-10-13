@@ -142,6 +142,9 @@ export default function PromptAssistant() {
           setGeneratedPrompt(prompt);
           setEditedPrompt(prompt);
           setIsEditing(false);
+
+          // Save prompt to history
+          savePromptHistory(prompt);
           
           // Increment trending score (fire-and-forget)
           incrementTrendingScore(selectedAssistantForModal.id);
@@ -322,7 +325,7 @@ export default function PromptAssistant() {
                 {assistant.description[lang]}
               </p>
               <div className="flex flex-wrap gap-2 mb-4">
-                <span className="text-xs bg-accent/20 text-accent-foreground px-2 py-1 rounded inline-block">
+                <span className="text-xs bg-accent/20 dark:bg-accent text-accent-foreground px-2 py-1 rounded inline-block">
                   {assistant.category[lang]}
                 </span>
               </div>
@@ -381,7 +384,7 @@ export default function PromptAssistant() {
 
               {/* Category */}
               <div className="flex flex-wrap gap-2 mb-4">
-                <span className="text-xs bg-accent/20 text-accent-foreground px-2 py-1 rounded inline-block">
+                <span className="text-xs bg-accent/20 dark:bg-accent text-accent-foreground px-2 py-1 rounded inline-block">
                   {selectedAssistantForModal.category[lang]}
                 </span>
               </div>

@@ -1,73 +1,77 @@
-# Welcome to your Lovable project
+# MudahPrompt - Your AI Prompt Engineering Assistant
 
-## Project info
+## Project Overview
 
-**URL**: https://lovable.dev/projects/82b61507-e0aa-4f76-b8c5-c5b0b09ec42e
+MudahPrompt is a web application designed to simplify and enhance your AI prompt engineering workflow. Built with modern web technologies, it provides a user-friendly interface for crafting, managing, and optimizing prompts for various AI models. Whether you're a developer, researcher, or enthusiast, MudahPrompt aims to make prompt engineering "mudah" (easy in Malay).
 
-## How can I edit this code?
+## Features
 
-There are several ways of editing your application.
+*   **Intuitive Prompt Editor:** Craft and refine your AI prompts with a rich and responsive editor.
+*   **Prompt Management:** Organize and store your prompts for easy access and reuse.
+*   **Authentication:** Secure user authentication powered by Supabase.
+*   **Responsive Design:** A seamless experience across various devices, built with shadcn-ui and Tailwind CSS.
+*   **Learning Resources:** Dedicated sections for learning and exploring prompt engineering concepts.
 
-**Use Lovable**
+## Technologies Used
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/82b61507-e0aa-4f76-b8c5-c5b0b09ec42e) and start prompting.
+*   **Frontend:**
+    *   [Vite](https://vitejs.dev/)
+    *   [React](https://react.dev/)
+    *   [TypeScript](https://www.typescriptlang.org/)
+    *   [shadcn-ui](https://ui.shadcn.com/)
+    *   [Tailwind CSS](https://tailwindcss.com/)
+*   **Backend/Database:**
+    *   [Supabase](https://supabase.com/) (for authentication, database, and potentially other services)
 
-Changes made via Lovable will be committed automatically to this repo.
+## Getting Started
 
-**Use your preferred IDE**
+Follow these steps to set up and run MudahPrompt locally.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Prerequisites
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+*   Node.js (LTS recommended)
+*   npm or Yarn
+*   A Supabase project with the necessary tables and authentication configured. You'll need your Supabase URL and Anon Key.
 
-Follow these steps:
+### Installation
+
+1.  **Clone the repository:**
+    ```sh
+    git clone <YOUR_REPOSITORY_URL>
+    cd mudahprompt-malaysia
+    ```
+2.  **Install dependencies:**
+    ```sh
+    npm install
+    # or yarn install
+    ```
+3.  **Environment Variables:**
+    Create a `.env` file in the root directory of the project and add your Supabase credentials:
+    ```
+    VITE_SUPABASE_URL="YOUR_SUPABASE_URL"
+    VITE_SUPABASE_ANON_KEY="YOUR_SUPABASE_ANON_KEY"
+    ```
+    Replace `YOUR_SUPABASE_URL` and `YOUR_SUPABASE_ANON_KEY` with your actual Supabase project details.
+
+### Running the Development Server
+
+To start the development server with hot-reloading:
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
 npm run dev
+# or yarn dev
 ```
 
-**Edit a file directly in GitHub**
+Open your browser and navigate to `http://localhost:5173` (or the port indicated in your terminal).
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Deployment
 
-**Use GitHub Codespaces**
+(Instructions for deployment can be added here, e.g., Vercel, Netlify, etc., once the project is ready for deployment.)
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Contributing
 
-## What technologies are used for this project?
+We welcome contributions! Please see our `CONTRIBUTING.md` (if available) for guidelines on how to contribute.
 
-This project is built with:
+## License
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/82b61507-e0aa-4f76-b8c5-c5b0b09ec42e) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+This project is licensed under the MIT License.

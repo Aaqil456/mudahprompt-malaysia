@@ -62,16 +62,4 @@ npm run dev
 # or yarn dev
 ```
 
-Open your browser and navigate to `http://localhost:5173` (or the port indicated in your terminal).
-
-## Deployment
-
-(Instructions for deployment can be added here, e.g., Vercel, Netlify, etc., once the project is ready for deployment.)
-
-## Contributing
-
-We welcome contributions! Please see our `CONTRIBUTING.md` (if available) for guidelines on how to contribute.
-
-## License
-
-This project is licensed under the MIT License.
+Open your browser and navigate to `http://localhost:8080` (or the port indicated in your terminal).

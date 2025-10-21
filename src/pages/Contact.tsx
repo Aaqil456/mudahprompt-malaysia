@@ -116,28 +116,7 @@ export default function Contact() {
             </form>
           </Card>
 
-          {/* Additional Contact Info */}
-          <div className="mt-8 text-center">
-            <p className="text-muted-foreground mb-4">
-              {t('contact.additionalContactInfo')}
-            </p>
-            
-            <div className="grid md:grid-cols-2 gap-4">
-              <Card className="p-4 text-center">
-                <h3 className="font-semibold mb-2">
-                  {t('contact.technicalSupport')}
-                </h3>
-                <p className="text-sm text-muted-foreground">support@mudahprompt.my</p>
-              </Card>
-              
-              <Card className="p-4 text-center">
-                <h3 className="font-semibold mb-2">
-                  {t('contact.businessInquiries')}
-                </h3>
-                <p className="text-sm text-muted-foreground">business@mudahprompt.my</p>
-              </Card>
-            </div>
-          </div>
+
         </div>
       </div>
     </div>

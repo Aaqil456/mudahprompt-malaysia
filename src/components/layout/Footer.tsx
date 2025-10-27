@@ -27,7 +27,7 @@ export function Footer() {
             <div className="space-y-2 text-sm text-muted-foreground">
               <div className="flex items-center">
                 <Mail className="h-4 w-4 mr-2" />
-                <span>support@mudahprompt.my</span>
+                <span>contact@mudahprompt.com</span>
               </div>
               <div className="flex items-center">
                 <MapPin className="h-4 w-4 mr-2" />

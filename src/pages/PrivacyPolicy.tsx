@@ -59,7 +59,7 @@ Kami mematuhi Akta Perlindungan Data Peribadi (PDPA) 2010 Malaysia dan peraturan
         {
           title: 'Hubungi Kami',
           content: `Untuk sebarang pertanyaan mengenai dasar privasi ini:
-E-mel: privacy@mudahprompt.my
+E-mel: contact@mudahprompt.com
 Alamat: Kuala Lumpur, Malaysia`
         }
       ]
@@ -118,7 +118,7 @@ We comply with Malaysia's Personal Data Protection Act (PDPA) 2010 and relevant 
         {
           title: 'Contact Us',
           content: `For any questions about this privacy policy:
-Email: privacy@mudahprompt.my
+Email: contact@mudahprompt.com
 Address: Kuala Lumpur, Malaysia`
         }
       ]

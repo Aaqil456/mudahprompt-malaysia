@@ -48,6 +48,7 @@ const translations = {
     'hero.subtitle': 'Platform canggih untuk menjana prompt AI yang berkualiti tinggi',
     'hero.cta': 'Mulakan Sekarang',
     'hero.learnMore': 'Ketahui Lebih Lanjut',
+    'footer.description': 'Platform AI terkemuka Malaysia untuk menjana prompt berkualiti tinggi. Tingkatkan produktiviti anda dengan teknologi AI terdepan.',
     
     // Features
     'features.title': 'Ciri-ciri Utama',
@@ -166,6 +167,7 @@ const translations = {
     'hero.subtitle': 'Advanced platform for generating high-quality AI prompts',
     'hero.cta': 'Get Started',
     'hero.learnMore': 'Learn More',
+    'footer.description': 'Malaysia leading AI platform for generating high-quality prompts. Boost your productivity with cutting-edge AI technology.',
     
     // Features
     'features.title': 'Key Features',

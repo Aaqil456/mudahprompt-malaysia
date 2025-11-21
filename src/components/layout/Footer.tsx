@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { Mail, MapPin, Phone } from 'lucide-react';
+import { Mail, MapPin, Phone, Twitter, Instagram } from 'lucide-react';
+import { FaTiktok } from 'react-icons/fa';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 export function Footer() {
@@ -18,10 +19,7 @@ export function Footer() {
               <span className="font-bold text-xl text-hero-gradient">MudahPrompt</span>
             </div>
             <p className="text-muted-foreground mb-6 max-w-md">
-              {t('lang') === 'ms'
-                ? 'Platform AI terkemuka Malaysia untuk menjana prompt berkualiti tinggi. Tingkatkan produktiviti anda dengan teknologi AI terdepan.'
-                : 'Malaysia\'s leading AI platform for generating high-quality prompts. Boost your productivity with cutting-edge AI technology.'
-              }
+              {t('footer.description')}
             </p>
             
             <div className="space-y-2 text-sm text-muted-foreground">
@@ -90,8 +88,16 @@ export function Footer() {
             © 2024 MudahPrompt. {t('lang') === 'ms' ? 'Hak cipta terpelihara.' : 'All rights reserved.'}
           </div>
           
-          <div className="text-sm text-muted-foreground">
-            {t('legal.governingLaw')} • {t('legal.pdpaCompliance')}
+          <div className="flex space-x-4">
+            <a href="https://x.com/MudahPrompt" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+              <Twitter className="h-5 w-5" />
+            </a>
+            <a href="https://www.threads.com/@mudahprompt" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+              <Instagram className="h-5 w-5" />
+            </a>
+            <a href="#" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+              <FaTiktok className="h-5 w-5" />
+            </a>
           </div>
         </div>
       </div>

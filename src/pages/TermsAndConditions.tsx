@@ -76,7 +76,7 @@ Penggunaan berterusan selepas perubahan bermakna penerimaan terma baharu.`
           title: 'Undang-undang Yang Berkaitan',
           content: `Terma ini dikawal oleh undang-undang Malaysia. Sebarang pertikaian akan diselesaikan di mahkamah Malaysia.
 
-Untuk pertanyaan: legal@mudahprompt.my`
+Untuk pertanyaan: contact@mudahprompt.com`
         }
       ]
     },
@@ -151,7 +151,7 @@ Continued use after changes means acceptance of new terms.`
           title: 'Governing Law',
           content: `These terms are governed by Malaysian law. Any disputes will be resolved in Malaysian courts.
 
-For questions: legal@mudahprompt.my`
+For questions: contact@mudahprompt.com`
         }
       ]
     }

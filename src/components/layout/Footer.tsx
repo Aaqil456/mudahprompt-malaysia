@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Mail, MapPin, Phone, Twitter, Instagram } from 'lucide-react';
-import { FaTiktok } from 'react-icons/fa';
+import { FaTiktok, FaFacebookF } from 'react-icons/fa';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 export function Footer() {
@@ -95,8 +95,11 @@ export function Footer() {
             <a href="https://www.threads.com/@mudahprompt" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
               <Instagram className="h-5 w-5" />
             </a>
-            <a href="#" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+            <a href="https://www.tiktok.com/@mudah.prompt" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
               <FaTiktok className="h-5 w-5" />
+            </a>
+            <a href="https://www.facebook.com/mudahprompt" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+              <FaFacebookF className="h-5 w-5" />
             </a>
           </div>
         </div>

@@ -85,7 +85,7 @@ export function Footer() {
 
         <div className="border-t border-border mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
           <div className="text-sm text-muted-foreground mb-4 md:mb-0">
-            © 2024 MudahPrompt. {t('lang') === 'ms' ? 'Hak cipta terpelihara.' : 'All rights reserved.'}
+            © 2025 MudahPrompt. {t('lang') === 'ms' ? 'Hak cipta terpelihara.' : 'All rights reserved.'}
           </div>
           
           <div className="flex space-x-4">

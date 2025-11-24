@@ -7,7 +7,7 @@ export default function PrivacyPolicy() {
   const content = {
     ms: {
       title: 'Dasar Privasi',
-      effectiveDate: '1 Januari 2024',
+      effectiveDate: '1 November 2025',
       sections: [
         {
           title: 'Pengenalan',
@@ -66,7 +66,7 @@ Alamat: Kuala Lumpur, Malaysia`
     },
     en: {
       title: 'Privacy Policy',
-      effectiveDate: 'January 1, 2024',
+      effectiveDate: 'November 1, 2025',
       sections: [
         {
           title: 'Introduction',

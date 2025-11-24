@@ -7,7 +7,7 @@ export default function TermsAndConditions() {
   const content = {
     ms: {
       title: 'Terma & Syarat',
-      effectiveDate: '1 Januari 2024',
+      effectiveDate: '1 November 2025',
       sections: [
         {
           title: 'Penerimaan Terma',
@@ -82,7 +82,7 @@ Untuk pertanyaan: contact@mudahprompt.com`
     },
     en: {
       title: 'Terms & Conditions',
-      effectiveDate: 'January 1, 2024',
+      effectiveDate: 'November 1, 2025',
       sections: [
         {
           title: 'Acceptance of Terms',

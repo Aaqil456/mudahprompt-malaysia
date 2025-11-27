@@ -85,9 +85,6 @@ export default function Landing() {
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
-              <Button variant="outline" size="xl" className="bg-white/10 border-white/30 text-white hover:bg-white/20">
-                {t('hero.learnMore')}
-              </Button>
             </div>
 
             {/* Stats */}

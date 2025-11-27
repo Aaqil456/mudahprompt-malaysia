@@ -45,7 +45,7 @@ const translations = {
     
     // Landing Page
     'hero.title': 'Pembantu Prompt AI Malaysia',
-    'hero.subtitle': 'Platform canggih untuk menjana prompt AI yang berkualiti tinggi',
+    'hero.subtitle': 'Jana prompt AI yang jelas, tepat & siap pakai—tanpa pening kepala',
     'hero.cta': 'Mulakan Sekarang',
     'hero.learnMore': 'Ketahui Lebih Lanjut',
     'footer.description': 'Platform AI terkemuka Malaysia untuk menjana prompt berkualiti tinggi. Tingkatkan produktiviti anda dengan teknologi AI terdepan.',
@@ -58,7 +58,7 @@ const translations = {
     'features.ai.desc': 'Isi maklumat → Jana prompt berkualiti tinggi secara automatik',
     'features.mobile.title': 'Edit Prompt',
     'features.mobile.desc': 'Edit prompt sedia ada untuk hasil yang lebih peribadi & relevan',
-    'features.subtitle': 'Platform yang direka khas untuk keperluan pengguna awam dengan teknologi AI terkini',
+    'features.subtitle': 'Direka untuk pengguna biasa & profesional — supaya anda boleh hasilkan prompt yang mantap dalam beberapa saat.',
 
     // Assistant Previews
     'assistantPreviews.title': 'Pembantu Popular',
@@ -77,7 +77,7 @@ const translations = {
 
     // CTA Section
     'cta.title': 'Mulakan Perjalanan AI Anda Hari Ini',
-    'cta.subtitle': 'Tingkatkan produktiviti anda dengan MudahPrompt',
+    'cta.subtitle': 'Hasilkan Prompt Yang Lebih Baik Untuk Kerja Lebih Laju & Berkualiti.',
     'cta.freeToStart': 'Percuma untuk bermula',
     'cta.noCreditCard': 'Tanpa kad kredit',
     'cta.support247': 'Sokongan 24/7',
@@ -164,7 +164,7 @@ const translations = {
     
     // Landing Page
     'hero.title': 'Malaysian AI Prompt Assistant',
-    'hero.subtitle': 'Advanced platform for generating high-quality AI prompts',
+    'hero.subtitle': 'Hassle-free AI prompts: clear, accurate, and ready instantly.',
     'hero.cta': 'Get Started',
     'hero.learnMore': 'Learn More',
     'footer.description': 'Malaysia leading AI platform for generating high-quality prompts. Boost your productivity with cutting-edge AI technology.',
@@ -177,7 +177,7 @@ const translations = {
     'features.ai.desc': 'Fill in details → Auto-generate high-quality prompts',
     'features.mobile.title': 'Edit Prompt',
     'features.mobile.desc': 'Edit your prompt for more personalized & relevant results',
-    'features.subtitle': 'Platform designed specifically for the needs of the general public with the latest AI technology',
+    'features.subtitle': 'Built for everyone to deliver powerful prompts instantly.',
 
     // Assistant Previews
     'assistantPreviews.title': 'Popular Assistants',
@@ -196,7 +196,7 @@ const translations = {
     
     // Prompt Assistant
     'cta.title': 'Start Your AI Journey Today',
-    'cta.subtitle': 'Boost your productivity with MudahPrompt',
+    'cta.subtitle': 'Generate Better Prompts for Faster, Higher-Quality Work',
     'cta.freeToStart': 'Free to start',
     'cta.noCreditCard': 'No credit card required',
     'cta.support247': '24/7 Support',

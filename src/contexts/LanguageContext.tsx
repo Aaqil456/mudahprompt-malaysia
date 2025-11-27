@@ -45,7 +45,7 @@ const translations = {
     
     // Landing Page
     'hero.title': 'Pembantu Prompt AI Malaysia',
-    'hero.subtitle': 'Jana prompt AI yang jelas, tepat & siap pakai—tanpa pening kepala',
+    'hero.subtitle': 'Jana prompt AI yang jelas, tepat & siap pakai tanpa pening kepala',
     'hero.cta': 'Mulakan Sekarang',
     'hero.learnMore': 'Ketahui Lebih Lanjut',
     'footer.description': 'Platform AI terkemuka Malaysia untuk menjana prompt berkualiti tinggi. Tingkatkan produktiviti anda dengan teknologi AI terdepan.',
@@ -58,7 +58,7 @@ const translations = {
     'features.ai.desc': 'Isi maklumat → Jana prompt berkualiti tinggi secara automatik',
     'features.mobile.title': 'Edit Prompt',
     'features.mobile.desc': 'Edit prompt sedia ada untuk hasil yang lebih peribadi & relevan',
-    'features.subtitle': 'Direka untuk pengguna biasa & profesional — supaya anda boleh hasilkan prompt yang mantap dalam beberapa saat.',
+    'features.subtitle': 'Direka untuk pengguna biasa & profesional supaya anda boleh hasilkan prompt yang mantap dalam beberapa saat.',
 
     // Assistant Previews
     'assistantPreviews.title': 'Pembantu Popular',
@@ -164,7 +164,7 @@ const translations = {
     
     // Landing Page
     'hero.title': 'Malaysian AI Prompt Assistant',
-    'hero.subtitle': 'Hassle-free AI prompts: clear, accurate, and ready instantly.',
+    'hero.subtitle': 'Hassle-free AI prompts clear, accurate, and ready instantly.',
     'hero.cta': 'Get Started',
     'hero.learnMore': 'Learn More',
     'footer.description': 'Malaysia leading AI platform for generating high-quality prompts. Boost your productivity with cutting-edge AI technology.',

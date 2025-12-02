@@ -204,19 +204,19 @@ export default function Landing() {
               </Link>
             </div>
 
-            <div className="mt-12 flex items-center justify-center space-x-8 text-white/80">
+            <div className="mt-12 flex items-center justify-center text-white/80 text-2xl font-bold">
               <div className="flex items-center">
                 <CheckCircle className="h-5 w-5 mr-2" />
                 {t('cta.freeToStart')}
               </div>
-              <div className="flex items-center">
+              {/* <div className="flex items-center">
                 <CheckCircle className="h-5 w-5 mr-2" />
                 {t('cta.noCreditCard')}
               </div>
               <div className="flex items-center">
                 <CheckCircle className="h-5 w-5 mr-2" />
                 {t('cta.support247')}
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

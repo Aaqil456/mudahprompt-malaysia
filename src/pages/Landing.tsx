@@ -206,7 +206,7 @@ export default function Landing() {
 
             <div className="mt-12 flex items-center justify-center text-white/80 text-2xl font-bold">
               <div className="flex items-center">
-                <CheckCircle className="h-5 w-5 mr-2" />
+                <CheckCircle className="h-6 w-6 mr-1" />
                 {t('cta.freeToStart')}
               </div>
               {/* <div className="flex items-center">

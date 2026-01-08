@@ -407,8 +407,8 @@ export default function PromptAssistant() {
                           }))}
                         >
                           <option value="">{field.placeholder[lang]}</option>
-                          {field.options?.map((option: any) => (
-                            <option key={option.value} value={option.value}>
+                          {field.options?.map((option: any, index: number) => (
+                            <option key={index} value={option.value[lang]}>
                               {option.label[lang]}
                             </option>
                           ))}

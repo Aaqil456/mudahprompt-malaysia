@@ -32,9 +32,9 @@ class RequestQueue {
 
   private async process() {
     if (this.isProcessing || this.queue.length === 0) return;
-    
+
     this.isProcessing = true;
-    
+
     while (this.queue.length > 0) {
       const task = this.queue.shift();
       if (task) {
@@ -44,7 +44,7 @@ class RequestQueue {
         }
       }
     }
-    
+
     this.isProcessing = false;
   }
 }
@@ -57,7 +57,7 @@ export default function PromptAssistant() {
   const fieldsContainerRef = useRef<HTMLDivElement>(null);
   const generatedPromptRef = useRef<HTMLDivElement>(null);
   const promptBuilderRef = useRef<HTMLDivElement>(null);
-  
+
   const [allAssistants, setAllAssistants] = useState<any[]>([]);
   const [selectedAssistant, setSelectedAssistant] = useState<any | null>(null);
   const [selectedAssistantForModal, setSelectedAssistantForModal] = useState<any | null>(null);
@@ -119,11 +119,11 @@ export default function PromptAssistant() {
   const generatePrompt = async () => {
     if (selectedAssistantForModal && Object.keys(fieldValues).length > 0) {
       setIsGenerating(true);
-      
+
       try {
         await requestQueue.add(async () => {
           let prompt = selectedAssistantForModal.template[lang];
-          
+
           // Create field mappings using the improved logic from the other project
           const fieldMappings: Record<string, string> = {};
           selectedAssistantForModal.fields.forEach((field: any) => {
@@ -136,7 +136,7 @@ export default function PromptAssistant() {
             const placeholder = new RegExp(`\\[${key}\\]`, 'g');
             prompt = prompt.replace(placeholder, value);
           });
-          
+
           console.log('Generated Prompt (JSON.stringify):', JSON.stringify(prompt)); // <--- ADDED FOR DEBUGGING
 
           setGeneratedPrompt(prompt);
@@ -145,7 +145,7 @@ export default function PromptAssistant() {
 
           // Save prompt to history
           savePromptHistory(prompt);
-          
+
           // Increment trending score (fire-and-forget)
           incrementTrendingScore(selectedAssistantForModal.id);
         });
@@ -225,7 +225,7 @@ export default function PromptAssistant() {
 
   const filteredAssistants = allAssistants.filter(assistant => {
     const matchesSearch = assistant.name[lang].toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         assistant.description[lang].toLowerCase().includes(searchQuery.toLowerCase());
+      assistant.description[lang].toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = selectedCategory === 'all' || assistant.category.key === selectedCategory;
     return matchesSearch && matchesCategory;
   });
@@ -289,7 +289,7 @@ export default function PromptAssistant() {
             </select>
             {/* Grid/List Toggle Placeholder */}
             <Button variant="outline" size="icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-layout-grid"><rect width="7" height="7" x="3" y="3"/><rect width="7" height="7" x="14" y="3"/><rect width="7" height="7" x="14" y="14"/><rect width="7" height="7" x="3" y="14"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-layout-grid"><rect width="7" height="7" x="3" y="3" /><rect width="7" height="7" x="14" y="3" /><rect width="7" height="7" x="14" y="14" /><rect width="7" height="7" x="3" y="14" /></svg>
             </Button>
           </div>
         </div>
@@ -397,14 +397,32 @@ export default function PromptAssistant() {
                       <label className="block text-sm font-medium mb-2">
                         {field.label[lang]}
                       </label>
-                      <Input
-                        placeholder={field.placeholder[lang]}
-                        value={fieldValues[field.name] || ''}
-                        onChange={(e) => setFieldValues(prev => ({
-                          ...prev,
-                          [field.name]: e.target.value
-                        }))}
-                      />
+                      {field.type === 'dropdown' ? (
+                        <select
+                          className="w-full p-2 rounded-lg border border-input bg-background text-foreground focus:ring-2 focus:ring-primary focus:border-transparent"
+                          value={fieldValues[field.name] || ''}
+                          onChange={(e) => setFieldValues(prev => ({
+                            ...prev,
+                            [field.name]: e.target.value
+                          }))}
+                        >
+                          <option value="">{field.placeholder[lang]}</option>
+                          {field.options?.map((option: any) => (
+                            <option key={option.value} value={option.value}>
+                              {option.label[lang]}
+                            </option>
+                          ))}
+                        </select>
+                      ) : (
+                        <Input
+                          placeholder={field.placeholder[lang]}
+                          value={fieldValues[field.name] || ''}
+                          onChange={(e) => setFieldValues(prev => ({
+                            ...prev,
+                            [field.name]: e.target.value
+                          }))}
+                        />
+                      )}
                     </div>
                   ))}
                 </div>

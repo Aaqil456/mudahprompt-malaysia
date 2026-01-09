@@ -127,7 +127,7 @@ export default function PromptAssistant() {
             >
               <h3 className="font-bold text-lg mb-3">{assistant.name[lang]}</h3>
               {assistant.imageSrc ? (
-                <div className="relative w-full pb-[100%] overflow-hidden rounded-lg mb-3"> {/* 1:1 ratio, fills top, rounded corners */}
+                <div className="relative w-full pb-[100%] overflow-hidden rounded-lg mb-3 border-4 border-yellow-400 bg-muted/20"> {/* 1:1 ratio, fills top, rounded corners */}
                   <img
                     src={assistant.imageSrc}
                     alt={assistant.name[lang]}
@@ -136,7 +136,7 @@ export default function PromptAssistant() {
                   />
                 </div>
               ) : (
-                <div className="relative w-full pb-[100%] bg-primary/20 rounded-lg mb-3 flex items-center justify-center"> {/* Placeholder with similar styling */}
+                <div className="relative w-full pb-[100%] bg-primary/20 rounded-lg mb-3 flex items-center justify-center border-4 border-yellow-400"> {/* Placeholder with similar styling */}
                   <Wand2 className="h-1/2 w-1/2 text-primary" /> {/* Adjust icon size for larger placeholder */}
                 </div>
               )}

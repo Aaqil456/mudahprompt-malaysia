@@ -289,11 +289,11 @@ export default function AssistantDetail() {
                 <Card className="card-gradient p-6 max-w-4xl mx-auto">
                     {/* Large banner image at the top */}
                     {assistant.imageSrc ? (
-                        <div className="relative w-full pb-[56.25%] overflow-hidden rounded-lg mb-4">
+                        <div className="relative mx-auto w-fit max-w-full overflow-hidden rounded-lg mb-4 bg-muted/20 border-4 border-yellow-400">
                             <img
                                 src={assistant.imageSrc}
                                 alt={assistant.name[lang]}
-                                className="absolute inset-0 w-full h-full object-cover"
+                                className="block h-auto max-h-[500px] w-auto max-w-full object-contain"
                                 loading="lazy"
                             />
                         </div>

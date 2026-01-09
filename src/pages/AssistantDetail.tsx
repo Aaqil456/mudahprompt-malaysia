@@ -9,6 +9,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { useToast } from '@/hooks/use-toast';
 import { getAssistants } from '@/lib/assistants';
 import { supabase } from '@/integrations/supabase/client';
+import { useQuery } from '@tanstack/react-query';
 
 // RequestQueue class for spacing tasks
 class RequestQueue {
@@ -59,8 +60,13 @@ export default function AssistantDetail() {
     const fieldsContainerRef = useRef<HTMLDivElement>(null);
     const generatedPromptRef = useRef<HTMLDivElement>(null);
 
-    const [assistant, setAssistant] = useState<any | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
+    const { data: allAssistants = [], isLoading: isLoadingAssistants } = useQuery({
+        queryKey: ['assistants'],
+        queryFn: getAssistants,
+    });
+
+    const assistant = allAssistants.find(a => a.id === assistantId);
+
     const [fieldValues, setFieldValues] = useState<Record<string, string>>({});
     const [generatedPrompt, setGeneratedPrompt] = useState('');
     const [editedPrompt, setEditedPrompt] = useState('');
@@ -68,41 +74,19 @@ export default function AssistantDetail() {
     const [isGenerating, setIsGenerating] = useState(false);
     const [progress, setProgress] = useState(0);
 
-    // Fetch assistant data by ID
+    // Handle redirection if assistant is not found
     useEffect(() => {
-        const fetchAssistant = async () => {
-            setIsLoading(true);
-            try {
-                const assistants = await getAssistants();
-                const foundAssistant = assistants.find(a => a.id === assistantId);
-
-                if (foundAssistant) {
-                    setAssistant(foundAssistant);
-                } else {
-                    toast({
-                        title: 'Error',
-                        description: 'Assistant not found',
-                        variant: 'destructive',
-                    });
-                    navigate('/prompt-assistant');
-                }
-            } catch (error) {
-                console.error('Error fetching assistant:', error);
-                toast({
-                    title: 'Error',
-                    description: 'Failed to load assistant',
-                    variant: 'destructive',
-                });
-                navigate('/prompt-assistant');
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        if (assistantId) {
-            fetchAssistant();
+        if (!isLoadingAssistants && !assistant) {
+            toast({
+                title: 'Error',
+                description: 'Assistant not found',
+                variant: 'destructive',
+            });
+            navigate('/prompt-assistant');
         }
-    }, [assistantId, navigate, toast]);
+    }, [assistant, isLoadingAssistants, navigate, toast]);
+
+    const isLoading = isLoadingAssistants;
 
     // Regenerate prompt when language changes (if prompt was already generated)
     useEffect(() => {
@@ -113,7 +97,8 @@ export default function AssistantDetail() {
 
             // Create field mappings
             const fieldMappings: Record<string, string> = {};
-            assistant.fields.forEach((field: any) => {
+            const fields = Array.isArray(assistant.fields) ? assistant.fields : [];
+            fields.forEach((field: any) => {
                 const fieldKey = field.name.toLowerCase().replace(/\s+/g, '');
                 fieldMappings[fieldKey] = fieldValues[field.name] || '';
             });
@@ -161,7 +146,8 @@ export default function AssistantDetail() {
 
                     // Create field mappings using the improved logic from the other project
                     const fieldMappings: Record<string, string> = {};
-                    assistant.fields.forEach((field: any) => {
+                    const fields = Array.isArray(assistant.fields) ? assistant.fields : [];
+                    fields.forEach((field: any) => {
                         const fieldKey = field.name.toLowerCase().replace(/\s+/g, '');
                         fieldMappings[fieldKey] = fieldValues[field.name] || '';
                     });
@@ -319,7 +305,7 @@ export default function AssistantDetail() {
                     {/* Fields Container (main content area) */}
                     <div ref={fieldsContainerRef} className="mb-6">
                         <div className="grid gap-4">
-                            {assistant.fields.map((field: any) => (
+                            {Array.isArray(assistant.fields) && assistant.fields.map((field: any) => (
                                 <div key={field.name}>
                                     <label className="block text-sm font-medium mb-2">
                                         {field.label[lang]}

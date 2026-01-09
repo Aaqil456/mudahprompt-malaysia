@@ -1,35 +1,35 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Wand2 } from 'lucide-react';
+import { Search, Wand2, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/enhanced-button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
 import { getAssistants } from '@/lib/assistants';
+import { useQuery } from '@tanstack/react-query';
 
 export default function PromptAssistant() {
   const navigate = useNavigate();
   const { lang, t } = useLanguage();
 
-  const [allAssistants, setAllAssistants] = useState<any[]>([]);
+  const { data: allAssistants = [], isLoading } = useQuery({
+    queryKey: ['assistants'],
+    queryFn: getAssistants,
+  });
+
   const [selectedAssistant, setSelectedAssistant] = useState<any | null>(null);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all'); // Use 'all' as the language-agnostic key for "All"
   const [sortOrder, setSortOrder] = useState<'newest' | 'oldest' | 'trending'>('newest');
 
-  // Fetch assistants from Supabase on component mount
+  // Set initial selected assistant once data is loaded
   useEffect(() => {
-    const fetchAssistants = async () => {
-      const fetchedAssistants = await getAssistants();
-      setAllAssistants(fetchedAssistants);
-      if (fetchedAssistants.length > 0) {
-        setSelectedAssistant(fetchedAssistants[0]);
-      }
-    };
-    fetchAssistants();
-  }, []);
+    if (allAssistants.length > 0 && !selectedAssistant) {
+      setSelectedAssistant(allAssistants[0]);
+    }
+  }, [allAssistants, selectedAssistant]);
 
   // Effect to reset selectedCategory when language changes, if the current category key is no longer valid
   useEffect(() => {
@@ -114,54 +114,61 @@ export default function PromptAssistant() {
         </div>
 
         {/* Assistant Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-8">
-          {sortedAssistants.map((assistant) => (
-            <Card
-              key={assistant.id}
-              className={cn(
-                "card-gradient p-4 flex flex-col justify-between h-full",
-                selectedAssistant?.id === assistant.id
-                  ? "border-primary bg-primary/5"
-                  : "border-border hover:border-primary/50 hover:bg-primary/5"
-              )}
-            >
-              <h3 className="font-bold text-lg mb-3">{assistant.name[lang]}</h3>
-              {assistant.imageSrc ? (
-                <div className="relative w-full pb-[100%] overflow-hidden rounded-lg mb-3 border-4 border-yellow-400 bg-muted/20"> {/* 1:1 ratio, fills top, rounded corners */}
-                  <img
-                    src={assistant.imageSrc}
-                    alt={assistant.name[lang]}
-                    className="absolute inset-0 w-full h-full object-cover" // object-fit: cover
-                    loading="lazy" // Lazy loading
-                  />
-                </div>
-              ) : (
-                <div className="relative w-full pb-[100%] bg-primary/20 rounded-lg mb-3 flex items-center justify-center border-4 border-yellow-400"> {/* Placeholder with similar styling */}
-                  <Wand2 className="h-1/2 w-1/2 text-primary" /> {/* Adjust icon size for larger placeholder */}
-                </div>
-              )}
-              <p className="text-sm text-muted-foreground mb-3 line-clamp-3">
-                {assistant.description[lang]}
-              </p>
-              <div className="flex flex-wrap gap-2 mb-4">
-                <span className="text-xs bg-accent/20 dark:bg-accent text-accent-foreground px-2 py-1 rounded inline-block">
-                  {assistant.category[lang]}
-                </span>
-              </div>
-              <Button
-                onClick={() => {
-                  setSelectedAssistant(assistant);
-                  navigate(`/prompt-assistant/${assistant.id}`);
-                }}
-                className="w-full mt-auto"
-                variant="accent"
+        {isLoading ? (
+          <div className="flex flex-col items-center justify-center py-20">
+            <Loader2 className="h-10 w-10 text-primary animate-spin mb-4" />
+            <p className="text-muted-foreground">{t('common.loading') || 'Loading assistants...'}</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-8">
+            {sortedAssistants.map((assistant) => (
+              <Card
+                key={assistant.id}
+                className={cn(
+                  "card-gradient p-4 flex flex-col justify-between h-full",
+                  selectedAssistant?.id === assistant.id
+                    ? "border-primary bg-primary/5"
+                    : "border-border hover:border-primary/50 hover:bg-primary/5"
+                )}
               >
-                <Wand2 className="h-4 w-4 mr-2" />
-                {t('assistant.generatePrompt')}
-              </Button>
-            </Card>
-          ))}
-        </div>
+                <h3 className="font-bold text-lg mb-3">{assistant.name[lang]}</h3>
+                {assistant.imageSrc ? (
+                  <div className="relative w-full pb-[100%] overflow-hidden rounded-lg mb-3 border-4 border-yellow-400 bg-muted/20"> {/* 1:1 ratio, fills top, rounded corners */}
+                    <img
+                      src={assistant.imageSrc}
+                      alt={assistant.name[lang]}
+                      className="absolute inset-0 w-full h-full object-cover" // object-fit: cover
+                      loading="lazy" // Lazy loading
+                    />
+                  </div>
+                ) : (
+                  <div className="relative w-full pb-[100%] bg-primary/20 rounded-lg mb-3 flex items-center justify-center border-4 border-yellow-400"> {/* Placeholder with similar styling */}
+                    <Wand2 className="h-1/2 w-1/2 text-primary" /> {/* Adjust icon size for larger placeholder */}
+                  </div>
+                )}
+                <p className="text-sm text-muted-foreground mb-3 line-clamp-3">
+                  {assistant.description[lang]}
+                </p>
+                <div className="flex flex-wrap gap-2 mb-4">
+                  <span className="text-xs bg-accent/20 dark:bg-accent text-accent-foreground px-2 py-1 rounded inline-block">
+                    {assistant.category[lang]}
+                  </span>
+                </div>
+                <Button
+                  onClick={() => {
+                    setSelectedAssistant(assistant);
+                    navigate(`/prompt-assistant/${assistant.id}`);
+                  }}
+                  className="w-full mt-auto"
+                  variant="accent"
+                >
+                  <Wand2 className="h-4 w-4 mr-2" />
+                  {t('assistant.generatePrompt')}
+                </Button>
+              </Card>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -20,6 +20,7 @@ export async function getAssistants() {
     fields: assistant.fields,
     template: { ms: assistant.template_ms, en: assistant.template_en },
     trending_score: assistant.trending_score,
+    tutorialUrl: assistant.tutorial_url,
     created_at: assistant.created_at,
   }));
 }

@@ -119,6 +119,8 @@ export default function AssistantDetail() {
         if (assistant && Object.keys(fieldValues).length > 0) {
             setIsGenerating(true);
             setProgress(0);
+            setGeneratedPrompt('');
+            setEditedPrompt('');
 
             try {
                 // Determine step size for a 1.5-second duration (1500ms)
@@ -359,6 +361,17 @@ export default function AssistantDetail() {
                             </>
                         )}
                     </Button>
+
+                    {assistant.tutorialUrl && (
+                        <Button
+                            variant="outline"
+                            onClick={() => window.open(assistant.tutorialUrl, '_blank')}
+                            className="w-full mb-6 bg-primary/5 hover:bg-primary/10 border-primary/20 text-primary"
+                        >
+                            <Wand2 className="h-4 w-4 mr-2" />
+                            {lang === 'ms' ? 'Cara Penggunaan' : 'How to Use'}
+                        </Button>
+                    )}
 
                     {isGenerating && (
                         <div className="mb-6 flex flex-col items-center justify-center animate-in fade-in zoom-in duration-300">

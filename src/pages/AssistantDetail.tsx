@@ -293,7 +293,7 @@ export default function AssistantDetail() {
 
                     {/* Title and subtitle directly under the image */}
                     <h2 className="text-2xl font-bold mb-2">{assistant.name[lang]}</h2>
-                    <p className="text-muted-foreground text-sm mb-4">
+                    <p className="text-muted-foreground text-sm mb-4 whitespace-pre-wrap">
                         {assistant.description[lang]}
                     </p>
 

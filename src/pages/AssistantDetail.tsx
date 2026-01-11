@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Copy, Edit3, Save, Wand2, ArrowLeft } from 'lucide-react';
+import { Copy, Edit3, Save, Wand2, ArrowLeft, PlayCircle, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/enhanced-button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -73,6 +73,26 @@ export default function AssistantDetail() {
     const [isEditing, setIsEditing] = useState(false);
     const [isGenerating, setIsGenerating] = useState(false);
     const [progress, setProgress] = useState(0);
+    const [showVideo, setShowVideo] = useState(false);
+    const [isVideoLoading, setIsVideoLoading] = useState(true);
+
+    const getYouTubeVideoId = (url: string) => {
+        if (!url) return '';
+        if (url.includes('v=')) {
+            return url.split('v=')[1].split('&')[0];
+        } else if (url.includes('youtu.be/')) {
+            return url.split('youtu.be/')[1].split('?')[0];
+        } else if (url.includes('youtube.com/embed/')) {
+            return url.split('youtube.com/embed/')[1].split('?')[0];
+        }
+        return '';
+    };
+
+    const getYouTubeEmbedUrl = (url: string) => {
+        if (!url) return '';
+        const videoId = getYouTubeVideoId(url);
+        return videoId ? `https://www.youtube-nocookie.com/embed/${videoId}?rel=0&modestbranding=1` : url;
+    };
 
     // Handle redirection if assistant is not found
     useEffect(() => {
@@ -114,6 +134,23 @@ export default function AssistantDetail() {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [lang]); // Only trigger when language changes
+
+    // Pre-warm YouTube connection when page loads
+    useEffect(() => {
+        if (assistant?.tutorialUrl) {
+            const link = document.createElement('link');
+            link.rel = 'preconnect';
+            link.href = 'https://www.youtube-nocookie.com';
+            document.head.appendChild(link);
+
+            // Also add a low-priority image prefetch for the thumbnail
+            const videoId = getYouTubeVideoId(assistant.tutorialUrl);
+            if (videoId) {
+                const img = new Image();
+                img.src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+            }
+        }
+    }, [assistant]);
 
     const generatePrompt = async () => {
         if (assistant && Object.keys(fieldValues).length > 0) {
@@ -363,14 +400,50 @@ export default function AssistantDetail() {
                     </Button>
 
                     {assistant.tutorialUrl && (
-                        <Button
-                            variant="outline"
-                            onClick={() => window.open(assistant.tutorialUrl, '_blank')}
-                            className="w-full mb-6 bg-primary/5 hover:bg-primary/10 border-primary/20 text-primary"
-                        >
-                            <Wand2 className="h-4 w-4 mr-2" />
-                            {lang === 'ms' ? 'Cara Penggunaan' : 'How to Use'}
-                        </Button>
+                        <div className="mb-6 space-y-4">
+                            <Button
+                                variant={showVideo ? "destructive" : "accent"}
+                                onClick={() => {
+                                    setShowVideo(!showVideo);
+                                    if (!showVideo) setIsVideoLoading(true);
+                                }}
+                                className="w-full group transition-all duration-300 shadow-md hover:shadow-lg active:scale-95 flex items-center justify-center font-bold"
+                            >
+                                {showVideo ? (
+                                    <ChevronDown className="h-4 w-4 mr-2 animate-bounce" />
+                                ) : (
+                                    <PlayCircle className="h-4 w-4 mr-2 group-hover:rotate-12 transition-transform" />
+                                )}
+                                {showVideo
+                                    ? (lang === 'ms' ? 'Tutup Tutorial' : 'Close Tutorial')
+                                    : (lang === 'ms' ? 'Lihat Cara Guna (Video)' : 'Watch How to Use (Video)')
+                                }
+                            </Button>
+
+                            {showVideo && (
+                                <div className="overflow-hidden rounded-xl border-2 border-primary/20 bg-black animate-in fade-in slide-in-from-top-2 duration-300 relative min-h-[250px] shadow-xl">
+                                    {isVideoLoading && (
+                                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-muted/20 backdrop-blur-sm z-10">
+                                            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary mb-3" />
+                                            <span className="text-sm font-medium text-muted-foreground animate-pulse">
+                                                {lang === 'ms' ? 'Menyediakan video...' : 'Preparing video...'}
+                                            </span>
+                                        </div>
+                                    )}
+                                    <div className={`relative pb-[56.25%] h-0 transition-opacity duration-500 ${isVideoLoading ? 'opacity-0' : 'opacity-100'}`}>
+                                        <iframe
+                                            className="absolute top-0 left-0 w-full h-full"
+                                            src={getYouTubeEmbedUrl(assistant.tutorialUrl)}
+                                            title="YouTube video player"
+                                            frameBorder="0"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                            allowFullScreen
+                                            onLoad={() => setIsVideoLoading(false)}
+                                        ></iframe>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
                     )}
 
                     {isGenerating && (

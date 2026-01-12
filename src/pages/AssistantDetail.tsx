@@ -7,6 +7,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card } from '@/components/ui/card';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useToast } from '@/hooks/use-toast';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
 import { getAssistants } from '@/lib/assistants';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery } from '@tanstack/react-query';
@@ -67,7 +69,7 @@ export default function AssistantDetail() {
 
     const assistant = allAssistants.find(a => a.id === assistantId);
 
-    const [fieldValues, setFieldValues] = useState<Record<string, string>>({});
+    const [fieldValues, setFieldValues] = useState<Record<string, any>>({});
     const [generatedPrompt, setGeneratedPrompt] = useState('');
     const [editedPrompt, setEditedPrompt] = useState('');
     const [isEditing, setIsEditing] = useState(false);
@@ -120,17 +122,54 @@ export default function AssistantDetail() {
             const fields = Array.isArray(assistant.fields) ? assistant.fields : [];
             fields.forEach((field: any) => {
                 const fieldKey = field.name.toLowerCase().replace(/\s+/g, '');
-                fieldMappings[fieldKey] = fieldValues[field.name] || '';
+                let value = fieldValues[field.name];
+
+                // Check if field is visible due to conditional logic
+                const isVisible = !field.isConditional || fields.some((f: any) =>
+                    f.showFieldsIfChecked?.includes(field.name) &&
+                    (fieldValues[f.name] === true || fieldValues[f.name]?.checked === true)
+                );
+
+                if (!isVisible) {
+                    value = '';
+                } else if (field.type === 'checkbox') {
+                    const checkedValue = field.valueWhenChecked || 'Yes';
+                    const uncheckedValue = field.valueIfUnchecked || '';
+
+                    if (typeof value === 'object') {
+                        let finalValue = value.checked ? (value.value || checkedValue) : uncheckedValue;
+                        if (value.checked && typeof finalValue === 'string' && finalValue.includes('[value]')) {
+                            finalValue = finalValue.replace('[value]', value.value || '');
+                        }
+                        value = finalValue;
+                    } else {
+                        value = value === true ? checkedValue : uncheckedValue;
+                    }
+                }
+
+                fieldMappings[fieldKey] = isVisible ? (value || '') : '__VOID_LINE__';
             });
 
-            // Replace placeholders
+            // Replace placeholders and handle void lines
             Object.entries(fieldMappings).forEach(([key, value]) => {
                 const placeholder = new RegExp(`\\[${key}\\]`, 'g');
                 prompt = prompt.replace(placeholder, value);
             });
 
-            setGeneratedPrompt(prompt);
-            setEditedPrompt(prompt);
+            // Smart Hide Logic: Remove lines containing __VOID_LINE__
+            const processedPrompt = prompt
+                .split('\n')
+                .filter(line => !line.includes('__VOID_LINE__'))
+                .filter((line, index, array) => {
+                    // Remove duplicate empty lines
+                    if (line.trim() === '' && array[index - 1]?.trim() === '') return false;
+                    return true;
+                })
+                .join('\n')
+                .trim();
+
+            setGeneratedPrompt(processedPrompt);
+            setEditedPrompt(processedPrompt);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [lang]); // Only trigger when language changes
@@ -188,19 +227,56 @@ export default function AssistantDetail() {
                     const fields = Array.isArray(assistant.fields) ? assistant.fields : [];
                     fields.forEach((field: any) => {
                         const fieldKey = field.name.toLowerCase().replace(/\s+/g, '');
-                        fieldMappings[fieldKey] = fieldValues[field.name] || '';
+                        let value = fieldValues[field.name];
+
+                        // Check if field is visible due to conditional logic
+                        const isVisible = !field.isConditional || fields.some((f: any) =>
+                            f.showFieldsIfChecked?.includes(field.name) &&
+                            (fieldValues[f.name] === true || fieldValues[f.name]?.checked === true)
+                        );
+
+                        if (!isVisible) {
+                            value = '';
+                        } else if (field.type === 'checkbox') {
+                            const checkedValue = field.valueWhenChecked || 'Yes';
+                            const uncheckedValue = field.valueIfUnchecked || '';
+
+                            if (typeof value === 'object') {
+                                let finalValue = value.checked ? (value.value || checkedValue) : uncheckedValue;
+                                if (value.checked && typeof finalValue === 'string' && finalValue.includes('[value]')) {
+                                    finalValue = finalValue.replace('[value]', value.value || '');
+                                }
+                                value = finalValue;
+                            } else {
+                                value = value === true ? checkedValue : uncheckedValue;
+                            }
+                        }
+
+                        fieldMappings[fieldKey] = isVisible ? (value || '') : '__VOID_LINE__';
                     });
 
-                    // Replace placeholders using the field mappings
+                    // Replace placeholders and handle void lines
                     Object.entries(fieldMappings).forEach(([key, value]) => {
                         const placeholder = new RegExp(`\\[${key}\\]`, 'g');
                         prompt = prompt.replace(placeholder, value);
                     });
 
-                    console.log('Generated Prompt (JSON.stringify):', JSON.stringify(prompt));
+                    // Smart Hide Logic: Remove lines containing __VOID_LINE__
+                    const processedPrompt = prompt
+                        .split('\n')
+                        .filter(line => !line.includes('__VOID_LINE__'))
+                        .filter((line, index, array) => {
+                            // Remove duplicate empty lines
+                            if (line.trim() === '' && array[index - 1]?.trim() === '') return false;
+                            return true;
+                        })
+                        .join('\n')
+                        .trim();
 
-                    setGeneratedPrompt(prompt);
-                    setEditedPrompt(prompt);
+                    console.log('Generated Prompt (JSON.stringify):', JSON.stringify(processedPrompt));
+
+                    setGeneratedPrompt(processedPrompt);
+                    setEditedPrompt(processedPrompt);
                     setIsEditing(false);
                     setProgress(100);
 
@@ -344,39 +420,86 @@ export default function AssistantDetail() {
                     {/* Fields Container (main content area) */}
                     <div ref={fieldsContainerRef} className="mb-6">
                         <div className="grid gap-4">
-                            {Array.isArray(assistant.fields) && assistant.fields.map((field: any) => (
-                                <div key={field.name}>
-                                    <label className="block text-sm font-medium mb-2">
-                                        {field.label[lang]}
-                                    </label>
-                                    {field.type === 'dropdown' ? (
-                                        <select
-                                            className="w-full p-2 rounded-lg border border-input bg-background text-foreground focus:ring-2 focus:ring-primary focus:border-transparent"
-                                            value={fieldValues[field.name] || ''}
-                                            onChange={(e) => setFieldValues(prev => ({
-                                                ...prev,
-                                                [field.name]: e.target.value
-                                            }))}
-                                        >
-                                            <option value="">{field.placeholder[lang]}</option>
-                                            {field.options?.map((option: any, index: number) => (
-                                                <option key={index} value={option.value[lang]}>
-                                                    {option.label[lang]}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    ) : (
-                                        <Input
-                                            placeholder={field.placeholder[lang]}
-                                            value={fieldValues[field.name] || ''}
-                                            onChange={(e) => setFieldValues(prev => ({
-                                                ...prev,
-                                                [field.name]: e.target.value
-                                            }))}
-                                        />
-                                    )}
-                                </div>
-                            ))}
+                            {(() => {
+                                const fields = Array.isArray(assistant.fields) ? (assistant.fields as any[]) : [];
+                                return fields
+                                    .filter((field: any) => {
+                                        if (!field.isConditional) return true;
+                                        // Show if any parent checkbox that controls this field is checked
+                                        return fields.some((f: any) =>
+                                            f.showFieldsIfChecked?.includes(field.name) &&
+                                            (fieldValues[f.name] === true || fieldValues[f.name]?.checked === true)
+                                        );
+                                    })
+                                    .map((field: any) => (
+                                        <div key={field.name} className="animate-in fade-in slide-in-from-top-2 duration-300">
+                                            {field.type !== 'checkbox' && (
+                                                <label className="block text-sm font-medium mb-2">
+                                                    {field.label[lang]}
+                                                </label>
+                                            )}
+                                            {field.type === 'dropdown' ? (
+                                                <select
+                                                    className="w-full p-2 rounded-lg border border-input bg-background text-foreground focus:ring-2 focus:ring-primary focus:border-transparent"
+                                                    value={fieldValues[field.name] || ''}
+                                                    onChange={(e) => setFieldValues(prev => ({
+                                                        ...prev,
+                                                        [field.name]: e.target.value
+                                                    }))}
+                                                >
+                                                    <option value="">{field.placeholder?.[lang] || (lang === 'ms' ? 'Pilih satu' : 'Select one')}</option>
+                                                    {field.options?.map((option: any, index: number) => (
+                                                        <option key={index} value={option.value[lang]}>
+                                                            {option.label[lang]}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            ) : field.type === 'checkbox' ? (
+                                                <div className="space-y-4">
+                                                    <div className="flex items-center space-x-2">
+                                                        <Checkbox
+                                                            id={field.name}
+                                                            checked={fieldValues[field.name] === true || (typeof fieldValues[field.name] === 'object' && fieldValues[field.name]?.checked === true)}
+                                                            onCheckedChange={(checked) => {
+                                                                setFieldValues(prev => ({
+                                                                    ...prev,
+                                                                    [field.name]: checked === true ? { checked: true, value: prev[field.name]?.value || '' } : { checked: false, value: '' }
+                                                                }));
+                                                            }}
+                                                        />
+                                                        <Label
+                                                            htmlFor={field.name}
+                                                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                                        >
+                                                            {field.label[lang]}
+                                                        </Label>
+                                                    </div>
+                                                    {(field.showInputIfChecked && (fieldValues[field.name] === true || fieldValues[field.name]?.checked === true)) && (
+                                                        <div className="pl-6 animate-in fade-in slide-in-from-left-2 duration-200">
+                                                            <Input
+                                                                placeholder={field.inputPlaceholder?.[lang] || field.placeholder?.[lang]}
+                                                                value={typeof fieldValues[field.name] === 'object' ? fieldValues[field.name]?.value : ''}
+                                                                onChange={(e) => setFieldValues(prev => ({
+                                                                    ...prev,
+                                                                    [field.name]: { ...prev[field.name], value: e.target.value }
+                                                                }))}
+                                                            />
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            ) : (
+                                                <Input
+                                                    placeholder={field.placeholder?.[lang] || ''}
+                                                    value={fieldValues[field.name] || ''}
+                                                    onChange={(e) => setFieldValues(prev => ({
+                                                        ...prev,
+                                                        [field.name]: e.target.value
+                                                    }))}
+                                                />
+                                            )}
+                                        </div>
+                                    ));
+                            })()}
                         </div>
                     </div>
 

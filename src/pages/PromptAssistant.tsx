@@ -21,7 +21,7 @@ export default function PromptAssistant() {
   const [selectedAssistant, setSelectedAssistant] = useState<any | null>(null);
 
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('all'); // Use 'all' as the language-agnostic key for "All"
+  const [selectedCategory, setSelectedCategory] = useState('hot_prompt'); // Default to Hot Prompt
   const [sortOrder, setSortOrder] = useState<'newest' | 'oldest' | 'trending'>('newest');
 
   // Set initial selected assistant once data is loaded
@@ -34,7 +34,7 @@ export default function PromptAssistant() {
   // Effect to reset selectedCategory when language changes, if the current category key is no longer valid
   useEffect(() => {
     if (allAssistants.length > 0) {
-      const allCategoryKeys = ['all', ...Array.from(new Set(allAssistants.map(a => a.category.key)))];
+      const allCategoryKeys = ['all', ...Array.from(new Set(allAssistants.flatMap(a => a.category.key)))];
       if (!allCategoryKeys.includes(selectedCategory)) {
         setSelectedCategory('all'); // Reset to 'all' if the current key is not found in the new language's categories
       }
@@ -45,7 +45,7 @@ export default function PromptAssistant() {
   const filteredAssistants = allAssistants.filter(assistant => {
     const matchesSearch = assistant.name[lang].toLowerCase().includes(searchQuery.toLowerCase()) ||
       assistant.description[lang].toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategory === 'all' || assistant.category.key === selectedCategory;
+    const matchesCategory = selectedCategory === 'all' || assistant.category.key.includes(selectedCategory);
     return matchesSearch && matchesCategory;
   });
 
@@ -60,7 +60,25 @@ export default function PromptAssistant() {
     return 0;
   });
 
-  const categories = ['all', ...Array.from(new Set(allAssistants.map(a => a.category.key)))];
+  const otherCategories = Array.from(new Set(allAssistants.flatMap(a => Array.isArray(a.category.key) ? a.category.key : [a.category.key])))
+    .filter(k => k !== 'hot_prompt');
+
+  const categories = ['hot_prompt', 'all', ...otherCategories];
+
+  // Build a map of category keys to labels for consistent display
+  const categoryMap: Record<string, { ms: string, en: string }> = allAssistants.reduce((acc, a) => {
+    const keys = Array.isArray(a.category.key) ? a.category.key : [a.category.key];
+    keys.forEach((key: string) => {
+      if (!acc[key]) {
+        acc[key] = { ms: a.category.ms, en: a.category.en };
+      }
+      // If we found the "dedicated" label for a key (like my manual 'hot_prompt' update), use that
+      if (key === 'hot_prompt') {
+        acc[key] = { ms: 'Prompt Panas', en: 'Hot Prompt' };
+      }
+    });
+    return acc;
+  }, {} as any);
 
   return (
     <div className="min-h-screen bg-background">
@@ -87,9 +105,15 @@ export default function PromptAssistant() {
                 key={categoryKey}
                 variant={selectedCategory === categoryKey ? "default" : "outline"}
                 onClick={() => setSelectedCategory(categoryKey)}
-                className="flex-shrink-0"
+                className={cn(
+                  "flex-shrink-0 transition-all duration-300",
+                  categoryKey === 'hot_prompt' && selectedCategory !== 'hot_prompt' && "border-yellow-400 bg-yellow-400/10 text-yellow-500 hover:bg-yellow-400/20",
+                  categoryKey === 'hot_prompt' && selectedCategory === 'hot_prompt' && "bg-yellow-400 text-black hover:bg-yellow-500",
+                  categoryKey === 'all' && selectedCategory !== 'all' && "border-primary/50"
+                )}
               >
-                {categoryKey === 'all' ? t('common.all') : allAssistants.find(a => a.category.key === categoryKey)?.category[lang]}
+                {categoryKey === 'hot_prompt' && <Wand2 className="h-4 w-4 mr-2" />}
+                {categoryKey === 'all' ? t('common.all') : (categoryMap[categoryKey]?.[lang] || categoryKey)}
               </Button>
             ))}
           </div>
@@ -150,9 +174,11 @@ export default function PromptAssistant() {
                   {assistant.description[lang]}
                 </p>
                 <div className="flex flex-wrap gap-2 mb-4">
-                  <span className="text-xs bg-accent/20 dark:bg-accent text-accent-foreground px-2 py-1 rounded inline-block">
-                    {assistant.category[lang]}
-                  </span>
+                  {(Array.isArray(assistant.category.key) ? assistant.category.key : [assistant.category.key]).map((key: string) => (
+                    <span key={key} className="text-xs bg-accent/20 dark:bg-accent text-accent-foreground px-2 py-1 rounded inline-block">
+                      {categoryMap[key]?.[lang] || key}
+                    </span>
+                  ))}
                 </div>
                 <Button
                   onClick={() => {

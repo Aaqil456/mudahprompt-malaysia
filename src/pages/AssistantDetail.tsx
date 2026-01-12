@@ -412,9 +412,13 @@ export default function AssistantDetail() {
 
                     {/* Category */}
                     <div className="flex flex-wrap gap-2 mb-6">
-                        <span className="text-xs bg-accent/20 dark:bg-accent text-accent-foreground px-2 py-1 rounded inline-block">
-                            {assistant.category[lang]}
-                        </span>
+                        {(Array.isArray(assistant.category.key) ? [...assistant.category.key] : [assistant.category.key])
+                            .sort((a, b) => a === 'hot_prompt' ? -1 : b === 'hot_prompt' ? 1 : 0)
+                            .map((key: string) => (
+                                <span key={key} className="text-xs bg-accent/20 dark:bg-accent text-accent-foreground px-2 py-1 rounded inline-block">
+                                    {key === 'hot_prompt' ? (lang === 'ms' ? 'Prompt Panas' : 'Hot Prompt') : assistant.category[lang]}
+                                </span>
+                            ))}
                     </div>
 
                     {/* Fields Container (main content area) */}

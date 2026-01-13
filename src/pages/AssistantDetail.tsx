@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Copy, Edit3, Save, Wand2, ArrowLeft, PlayCircle, ChevronDown } from 'lucide-react';
+import { Copy, Edit3, Save, Wand2, ArrowLeft, PlayCircle, ChevronDown, Plus, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/enhanced-button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -145,6 +145,24 @@ export default function AssistantDetail() {
                     } else {
                         value = value === true ? checkedValue : uncheckedValue;
                     }
+                } else if (field.type === 'repeater') {
+                    const items = Array.isArray(value) ? value : [];
+                    const itemTemplate = field.itemTemplate?.[lang] || '';
+                    const itemStrings = items.map((itemValue: any, index: number) => {
+                        let itemStr = itemTemplate;
+                        // Always replace [index] if it exists in the template
+                        itemStr = itemStr.replace(/\[index\]/g, (index + (field.startIndex || 1)).toString());
+
+                        // Replace sub-fields
+                        if (field.fields) {
+                            field.fields.forEach((subField: any) => {
+                                const subVal = itemValue[subField.name] || '';
+                                itemStr = itemStr.replace(new RegExp(`\\[${subField.name}\\]`, 'g'), subVal);
+                            });
+                        }
+                        return itemStr;
+                    });
+                    value = itemStrings.length > 0 ? itemStrings.join('\n\n') : '';
                 }
 
                 fieldMappings[fieldKey] = isVisible ? (value || '') : '__VOID_LINE__';
@@ -250,6 +268,24 @@ export default function AssistantDetail() {
                             } else {
                                 value = value === true ? checkedValue : uncheckedValue;
                             }
+                        } else if (field.type === 'repeater') {
+                            const items = Array.isArray(value) ? value : [];
+                            const itemTemplate = field.itemTemplate?.[lang] || '';
+                            const itemStrings = items.map((itemValue: any, index: number) => {
+                                let itemStr = itemTemplate;
+                                // Always replace [index] if it exists in the template
+                                itemStr = itemStr.replace(/\[index\]/g, (index + (field.startIndex || 1)).toString());
+
+                                // Replace sub-fields
+                                if (field.fields) {
+                                    field.fields.forEach((subField: any) => {
+                                        const subVal = itemValue[subField.name] || '';
+                                        itemStr = itemStr.replace(new RegExp(`\\[${subField.name}\\]`, 'g'), subVal);
+                                    });
+                                }
+                                return itemStr;
+                            });
+                            value = itemStrings.length > 0 ? itemStrings.join('\n\n') : '';
                         }
 
                         fieldMappings[fieldKey] = isVisible ? (value || '') : '__VOID_LINE__';
@@ -490,6 +526,109 @@ export default function AssistantDetail() {
                                                             />
                                                         </div>
                                                     )}
+                                                </div>
+                                            ) : field.type === 'add_button' ? (
+                                                <Button
+                                                    variant={fieldValues[field.name]?.checked ? "destructive" : "outline"}
+                                                    onClick={() => {
+                                                        setFieldValues(prev => ({
+                                                            ...prev,
+                                                            [field.name]: { checked: !prev[field.name]?.checked, value: '' }
+                                                        }));
+                                                    }}
+                                                    className="w-full flex items-center justify-center gap-2 h-12 transition-all duration-300 shadow-sm hover:shadow-md"
+                                                >
+                                                    {fieldValues[field.name]?.checked ? (
+                                                        <>
+                                                            <Trash2 className="h-4 w-4" />
+                                                            {field.label_remove?.[lang] || (lang === 'ms' ? 'Buang' : 'Remove')} {field.label[lang].replace(/\(Pilihan\)/g, '').replace(/\(Optional\)/g, '').trim()}
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <Plus className="h-4 w-4" />
+                                                            {field.label_add?.[lang] || (lang === 'ms' ? 'Tambah' : 'Add')} {field.label[lang].replace(/\(Pilihan\)/g, '').replace(/\(Optional\)/g, '').trim()}
+                                                        </>
+                                                    )}
+                                                </Button>
+                                            ) : field.type === 'repeater' ? (
+                                                <div className="space-y-4">
+                                                    {(fieldValues[field.name] || []).map((item: any, index: number) => (
+                                                        <Card key={index} className="p-4 bg-muted/10 border-dashed border-2 relative animate-in zoom-in-95 duration-200">
+                                                            <Button
+                                                                variant="ghost"
+                                                                size="icon"
+                                                                className="absolute top-2 right-2 text-destructive hover:bg-destructive/10 h-8 w-8"
+                                                                onClick={() => {
+                                                                    const newArray = [...(fieldValues[field.name] || [])];
+                                                                    newArray.splice(index, 1);
+                                                                    setFieldValues(prev => ({ ...prev, [field.name]: newArray }));
+                                                                }}
+                                                            >
+                                                                <Trash2 className="h-4 w-4" />
+                                                            </Button>
+                                                            <h4 className="text-sm font-bold mb-3 flex items-center gap-2">
+                                                                {field.itemLabel?.[lang] || 'Item'} {index + 1}
+                                                            </h4>
+                                                            <div className="grid gap-3">
+                                                                {field.fields?.map((subField: any) => (
+                                                                    <div key={subField.name} className="space-y-1">
+                                                                        <Label className="text-xs font-medium text-muted-foreground">{subField.label[lang]}</Label>
+                                                                        {subField.type === 'dropdown' ? (
+                                                                            <select
+                                                                                className="w-full p-2 rounded-lg border border-input bg-background text-sm focus:ring-2 focus:ring-primary h-9"
+                                                                                value={item[subField.name] || ''}
+                                                                                onChange={(e) => {
+                                                                                    const newArray = [...(fieldValues[field.name] || [])];
+                                                                                    newArray[index] = { ...newArray[index], [subField.name]: e.target.value };
+                                                                                    setFieldValues(prev => ({ ...prev, [field.name]: newArray }));
+                                                                                }}
+                                                                            >
+                                                                                <option value="">{subField.placeholder?.[lang] || (lang === 'ms' ? 'Pilih satu' : 'Select one')}</option>
+                                                                                {subField.options?.map((option: any, optIdx: number) => (
+                                                                                    <option key={optIdx} value={option.value[lang]}>
+                                                                                        {option.label[lang]}
+                                                                                    </option>
+                                                                                ))}
+                                                                            </select>
+                                                                        ) : subField.type === 'textarea' ? (
+                                                                            <Textarea
+                                                                                placeholder={subField.placeholder?.[lang]}
+                                                                                value={item[subField.name] || ''}
+                                                                                onChange={(e) => {
+                                                                                    const newArray = [...(fieldValues[field.name] || [])];
+                                                                                    newArray[index] = { ...newArray[index], [subField.name]: e.target.value };
+                                                                                    setFieldValues(prev => ({ ...prev, [field.name]: newArray }));
+                                                                                }}
+                                                                                className="text-sm min-h-[60px]"
+                                                                            />
+                                                                        ) : (
+                                                                            <Input
+                                                                                placeholder={subField.placeholder?.[lang]}
+                                                                                value={item[subField.name] || ''}
+                                                                                onChange={(e) => {
+                                                                                    const newArray = [...(fieldValues[field.name] || [])];
+                                                                                    newArray[index] = { ...newArray[index], [subField.name]: e.target.value };
+                                                                                    setFieldValues(prev => ({ ...prev, [field.name]: newArray }));
+                                                                                }}
+                                                                                className="text-sm h-9"
+                                                                            />
+                                                                        )}
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        </Card>
+                                                    ))}
+                                                    <Button
+                                                        variant="outline"
+                                                        className="w-full border-dashed h-12 flex items-center justify-center gap-2 hover:bg-primary/5 transition-colors"
+                                                        onClick={() => {
+                                                            const newArray = [...(fieldValues[field.name] || []), {}];
+                                                            setFieldValues(prev => ({ ...prev, [field.name]: newArray }));
+                                                        }}
+                                                    >
+                                                        <Plus className="h-4 w-4" />
+                                                        {field.addLabel?.[lang] || (lang === 'ms' ? `Tambah ${field.itemLabel?.ms || 'Item'}` : `Add ${field.itemLabel?.en || 'Item'}`)}
+                                                    </Button>
                                                 </div>
                                             ) : (
                                                 <Input

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Copy, Edit3, Save, Wand2, ArrowLeft, PlayCircle, ChevronDown, Plus, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/enhanced-button';
 import { Input } from '@/components/ui/input';
+import { AutoResizeTextarea } from '@/components/ui/auto-resize-textarea';
 import { Textarea } from '@/components/ui/textarea';
 import { Card } from '@/components/ui/card';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -516,7 +517,7 @@ export default function AssistantDetail() {
                                                     </div>
                                                     {(field.showInputIfChecked && (fieldValues[field.name] === true || fieldValues[field.name]?.checked === true)) && (
                                                         <div className="pl-6 animate-in fade-in slide-in-from-left-2 duration-200">
-                                                            <Input
+                                                            <AutoResizeTextarea
                                                                 placeholder={field.inputPlaceholder?.[lang] || field.placeholder?.[lang]}
                                                                 value={typeof fieldValues[field.name] === 'object' ? fieldValues[field.name]?.value : ''}
                                                                 onChange={(e) => setFieldValues(prev => ({
@@ -591,7 +592,7 @@ export default function AssistantDetail() {
                                                                                 ))}
                                                                             </select>
                                                                         ) : subField.type === 'textarea' ? (
-                                                                            <Textarea
+                                                                            <AutoResizeTextarea
                                                                                 placeholder={subField.placeholder?.[lang]}
                                                                                 value={item[subField.name] || ''}
                                                                                 onChange={(e) => {
@@ -599,10 +600,10 @@ export default function AssistantDetail() {
                                                                                     newArray[index] = { ...newArray[index], [subField.name]: e.target.value };
                                                                                     setFieldValues(prev => ({ ...prev, [field.name]: newArray }));
                                                                                 }}
-                                                                                className="text-sm min-h-[60px]"
+                                                                                className="text-sm"
                                                                             />
                                                                         ) : (
-                                                                            <Input
+                                                                            <AutoResizeTextarea
                                                                                 placeholder={subField.placeholder?.[lang]}
                                                                                 value={item[subField.name] || ''}
                                                                                 onChange={(e) => {
@@ -610,7 +611,7 @@ export default function AssistantDetail() {
                                                                                     newArray[index] = { ...newArray[index], [subField.name]: e.target.value };
                                                                                     setFieldValues(prev => ({ ...prev, [field.name]: newArray }));
                                                                                 }}
-                                                                                className="text-sm h-9"
+                                                                                className="text-sm"
                                                                             />
                                                                         )}
                                                                     </div>
@@ -631,7 +632,7 @@ export default function AssistantDetail() {
                                                     </Button>
                                                 </div>
                                             ) : (
-                                                <Input
+                                                <AutoResizeTextarea
                                                     placeholder={field.placeholder?.[lang] || ''}
                                                     value={fieldValues[field.name] || ''}
                                                     onChange={(e) => setFieldValues(prev => ({

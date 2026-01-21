@@ -40,7 +40,7 @@ const AutoResizeTextarea = React.forwardRef<HTMLTextAreaElement, AutoResizeTexta
                 ref={internalRef}
                 onChange={handleChange}
                 className={cn(
-                    "min-h-[40px] resize-none overflow-hidden transition-[height] duration-200",
+                    "min-h-[40px] max-h-[300px] resize-none overflow-y-auto transition-[height] duration-200",
                     className
                 )}
             />

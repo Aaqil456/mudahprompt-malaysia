@@ -110,6 +110,23 @@ export default function AssistantDetail() {
     }, [assistant, isLoadingAssistants, navigate, toast]);
 
     const isLoading = isLoadingAssistants;
+    const isFirstLoad = useRef(true);
+
+    // Initialize field values from defaults
+    useEffect(() => {
+        if (assistant && isFirstLoad.current) {
+            const initialValues: Record<string, any> = {};
+            (assistant.fields as any[] || []).forEach(field => {
+                if (field.default !== undefined) {
+                    initialValues[field.name] = field.default;
+                }
+            });
+            if (Object.keys(initialValues).length > 0) {
+                setFieldValues(initialValues);
+            }
+            isFirstLoad.current = false;
+        }
+    }, [assistant]);
 
     // Regenerate prompt when language changes (if prompt was already generated)
     useEffect(() => {
@@ -691,6 +708,7 @@ export default function AssistantDetail() {
                                                 <AutoResizeTextarea
                                                     placeholder={field.placeholder?.[lang] || ''}
                                                     value={fieldValues[field.name] || ''}
+                                                    disabled={field.disabled}
                                                     onChange={(e) => setFieldValues(prev => ({
                                                         ...prev,
                                                         [field.name]: e.target.value

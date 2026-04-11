@@ -169,6 +169,22 @@ export default function AssistantDetail() {
                 fieldMappings[fieldKey] = isVisible ? (value || '') : '__VOID_LINE__';
             });
 
+            // Handle Conditional Blocks (IF_MODE)
+            const currentMode = (fieldValues['prompt_output_type'] || 
+                              (assistant.fields as any[]).find(f => f.name === 'prompt_output_type')?.default || 
+                              'text').toLowerCase().trim();
+            
+            console.log('[DEBUG] Current Language:', lang);
+            console.log('[DEBUG] Current Mode:', currentMode);
+
+            // Remove blocks for all other modes (Lenient with spaces)
+            const otherBranchRegex = new RegExp(`\\[\\s*IF_MODE\\s*:(?!\\s*${currentMode}\\s*\\b)[^\\]]+\\][\\s\\S]*?\\[\\s*END_MODE\\s*\\]`, 'gi');
+            prompt = prompt.replace(otherBranchRegex, '');
+
+            // Clean up the tags for the active format
+            const currentBranchRegex = new RegExp(`\\[\\s*IF_MODE\\s*:${currentMode}\\s*\\]|\\n?\\[\\s*END_MODE\\s*\\]`, 'gi');
+            prompt = prompt.replace(currentBranchRegex, '');
+
             // Replace placeholders and handle void lines
             Object.entries(fieldMappings).forEach(([key, value]) => {
                 const placeholder = new RegExp(`\\[${key}\\]`, 'g');
@@ -291,6 +307,21 @@ export default function AssistantDetail() {
 
                         fieldMappings[fieldKey] = isVisible ? (value || '') : '__VOID_LINE__';
                     });
+
+                    // Handle Conditional Blocks (IF_MODE)
+                    const currentMode = (fieldValues['prompt_output_type'] || 
+                                      (assistant.fields as any[]).find(f => f.name === 'prompt_output_type')?.default || 
+                                      'text').toLowerCase().trim();
+                    
+                    console.log('[DEBUG] Mode Detected:', currentMode);
+
+                    // Remove blocks for all other modes (Lenient with spaces)
+                    const otherBranchRegex = new RegExp(`\\[\\s*IF_MODE\\s*:(?!\\s*${currentMode}\\s*\\b)[^\\]]+\\][\\s\\S]*?\\[\\s*END_MODE\\s*\\]`, 'gi');
+                    prompt = prompt.replace(otherBranchRegex, '');
+
+                    // Clean up the tags for the active format
+                    const currentBranchRegex = new RegExp(`\\[\\s*IF_MODE\\s*:${currentMode}\\s*\\]|\\n?\\[\\s*END_MODE\\s*\\]`, 'gi');
+                    prompt = prompt.replace(currentBranchRegex, '');
 
                     // Replace placeholders and handle void lines
                     Object.entries(fieldMappings).forEach(([key, value]) => {
@@ -479,23 +510,46 @@ export default function AssistantDetail() {
                                                     {field.label[lang]}
                                                 </label>
                                             )}
-                                            {field.type === 'dropdown' ? (
-                                                <select
-                                                    className="w-full p-2 rounded-lg border border-input bg-background text-foreground focus:ring-2 focus:ring-primary focus:border-transparent"
-                                                    value={fieldValues[field.name] || ''}
-                                                    onChange={(e) => setFieldValues(prev => ({
-                                                        ...prev,
-                                                        [field.name]: e.target.value
-                                                    }))}
-                                                >
-                                                    <option value="">{field.placeholder?.[lang] || (lang === 'ms' ? 'Pilih satu' : 'Select one')}</option>
-                                                    {field.options?.map((option: any, index: number) => (
-                                                        <option key={index} value={option.value[lang]}>
-                                                            {option.label[lang]}
-                                                        </option>
-                                                    ))}
-                                                </select>
-                                            ) : field.type === 'checkbox' ? (
+                                                    {field.type === 'segmented' ? (
+                                                        <div className="flex p-1 bg-muted/20 rounded-xl border border-input w-fit min-w-[200px]">
+                                                            {field.options?.map((option: any, index: number) => {
+                                                                const isSelected = (fieldValues[field.name] || field.default) === option.value;
+                                                                return (
+                                                                    <button
+                                                                        key={index}
+                                                                        type="button"
+                                                                        onClick={() => setFieldValues(prev => ({
+                                                                            ...prev,
+                                                                            [field.name]: option.value
+                                                                        }))}
+                                                                        className={`flex-1 px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200 ${
+                                                                            isSelected 
+                                                                            ? "bg-primary text-primary-foreground shadow-md scale-[1.02]" 
+                                                                            : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
+                                                                        }`}
+                                                                    >
+                                                                        {option.label[lang]}
+                                                                    </button>
+                                                                );
+                                                            })}
+                                                        </div>
+                                                    ) : field.type === 'dropdown' ? (
+                                                        <select
+                                                            className="w-full p-2 rounded-lg border border-input bg-background text-foreground focus:ring-2 focus:ring-primary focus:border-transparent"
+                                                            value={fieldValues[field.name] || ''}
+                                                            onChange={(e) => setFieldValues(prev => ({
+                                                                ...prev,
+                                                                [field.name]: e.target.value
+                                                            }))}
+                                                        >
+                                                            <option value="">{field.placeholder?.[lang] || (lang === 'ms' ? 'Pilih satu' : 'Select one')}</option>
+                                                            {field.options?.map((option: any, index: number) => (
+                                                                <option key={index} value={option.value}>
+                                                                    {option.label[lang]}
+                                                                </option>
+                                                            ))}
+                                                        </select>
+                                                    ) : field.type === 'checkbox' ? (
                                                 <div className="space-y-4">
                                                     <div className="flex items-center space-x-2">
                                                         <Checkbox
@@ -619,17 +673,19 @@ export default function AssistantDetail() {
                                                             </div>
                                                         </Card>
                                                     ))}
-                                                    <Button
-                                                        variant="outline"
-                                                        className="w-full border-dashed h-12 flex items-center justify-center gap-2 hover:bg-primary/5 transition-colors"
-                                                        onClick={() => {
-                                                            const newArray = [...(fieldValues[field.name] || []), {}];
-                                                            setFieldValues(prev => ({ ...prev, [field.name]: newArray }));
-                                                        }}
-                                                    >
-                                                        <Plus className="h-4 w-4" />
-                                                        {field.addLabel?.[lang] || (lang === 'ms' ? `Tambah ${field.itemLabel?.ms || 'Item'}` : `Add ${field.itemLabel?.en || 'Item'}`)}
-                                                    </Button>
+                                                    {(!(field.maxItems && (fieldValues[field.name]?.length >= field.maxItems))) && (
+                                                        <Button
+                                                            variant="outline"
+                                                            className="w-full border-dashed h-12 flex items-center justify-center gap-2 hover:bg-primary/5 transition-colors"
+                                                            onClick={() => {
+                                                                const newArray = [...(fieldValues[field.name] || []), {}];
+                                                                setFieldValues(prev => ({ ...prev, [field.name]: newArray }));
+                                                            }}
+                                                        >
+                                                            <Plus className="h-4 w-4" />
+                                                            {field.addLabel?.[lang] || (lang === 'ms' ? `Tambah ${field.itemLabel?.ms || 'Item'}` : `Add ${field.itemLabel?.en || 'Item'}`)}
+                                                        </Button>
+                                                    )}
                                                 </div>
                                             ) : (
                                                 <AutoResizeTextarea

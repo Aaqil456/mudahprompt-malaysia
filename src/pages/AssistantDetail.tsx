@@ -138,6 +138,12 @@ export default function AssistantDetail() {
             // Create field mappings
             const fieldMappings: Record<string, string> = {};
             const fields = Array.isArray(assistant.fields) ? assistant.fields : [];
+
+            // Determine output mode FIRST before the loop (fixes TDZ bug)
+            const currentMode = (fieldValues['prompt_output_type'] || 
+                              (assistant.fields as any[]).find(f => f.name === 'prompt_output_type')?.default || 
+                              'text').toLowerCase().trim();
+
             fields.forEach((field: any) => {
                 const fieldKey = field.name.toLowerCase().replace(/\s+/g, '');
                 let value = fieldValues[field.name];
@@ -168,10 +174,7 @@ export default function AssistantDetail() {
                     const itemTemplate = field.itemTemplate?.[lang] || '';
                     const itemStrings = items.map((itemValue: any, index: number) => {
                         let itemStr = itemTemplate;
-                        // Always replace [index] if it exists in the template
                         itemStr = itemStr.replace(/\[index\]/g, (index + (field.startIndex || 1)).toString());
-
-                        // Replace sub-fields
                         if (field.fields) {
                             field.fields.forEach((subField: any) => {
                                 const subVal = itemValue[subField.name] || '';
@@ -180,17 +183,14 @@ export default function AssistantDetail() {
                         }
                         return itemStr;
                     });
-                    value = itemStrings.length > 0 ? itemStrings.join('\n\n') : '';
+                    const joiner = currentMode === 'json' ? ',\n' : '\n\n';
+                    value = itemStrings.length > 0 ? itemStrings.join(joiner) : '';
                 }
 
                 fieldMappings[fieldKey] = isVisible ? (value || '') : '__VOID_LINE__';
             });
 
             // Handle Conditional Blocks (IF_MODE)
-            const currentMode = (fieldValues['prompt_output_type'] || 
-                              (assistant.fields as any[]).find(f => f.name === 'prompt_output_type')?.default || 
-                              'text').toLowerCase().trim();
-            
             console.log('[DEBUG] Current Language:', lang);
             console.log('[DEBUG] Current Mode:', currentMode);
 
@@ -277,6 +277,14 @@ export default function AssistantDetail() {
                     // Create field mappings using the improved logic from the other project
                     const fieldMappings: Record<string, string> = {};
                     const fields = Array.isArray(assistant.fields) ? assistant.fields : [];
+
+                    // Determine output mode FIRST before the loop (fixes TDZ bug)
+                    const currentMode = (fieldValues['prompt_output_type'] || 
+                                      (assistant.fields as any[]).find(f => f.name === 'prompt_output_type')?.default || 
+                                      'text').toLowerCase().trim();
+
+                    console.log('[DEBUG] Mode Detected:', currentMode);
+
                     fields.forEach((field: any) => {
                         const fieldKey = field.name.toLowerCase().replace(/\s+/g, '');
                         let value = fieldValues[field.name];
@@ -307,10 +315,7 @@ export default function AssistantDetail() {
                             const itemTemplate = field.itemTemplate?.[lang] || '';
                             const itemStrings = items.map((itemValue: any, index: number) => {
                                 let itemStr = itemTemplate;
-                                // Always replace [index] if it exists in the template
                                 itemStr = itemStr.replace(/\[index\]/g, (index + (field.startIndex || 1)).toString());
-
-                                // Replace sub-fields
                                 if (field.fields) {
                                     field.fields.forEach((subField: any) => {
                                         const subVal = itemValue[subField.name] || '';
@@ -319,19 +324,14 @@ export default function AssistantDetail() {
                                 }
                                 return itemStr;
                             });
-                            value = itemStrings.length > 0 ? itemStrings.join('\n\n') : '';
+                            const joiner = currentMode === 'json' ? ',\n' : '\n\n';
+                            value = itemStrings.length > 0 ? itemStrings.join(joiner) : '';
                         }
 
                         fieldMappings[fieldKey] = isVisible ? (value || '') : '__VOID_LINE__';
                     });
 
                     // Handle Conditional Blocks (IF_MODE)
-                    const currentMode = (fieldValues['prompt_output_type'] || 
-                                      (assistant.fields as any[]).find(f => f.name === 'prompt_output_type')?.default || 
-                                      'text').toLowerCase().trim();
-                    
-                    console.log('[DEBUG] Mode Detected:', currentMode);
-
                     // Remove blocks for all other modes (Lenient with spaces)
                     const otherBranchRegex = new RegExp(`\\[\\s*IF_MODE\\s*:(?!\\s*${currentMode}\\s*\\b)[^\\]]+\\][\\s\\S]*?\\[\\s*END_MODE\\s*\\]`, 'gi');
                     prompt = prompt.replace(otherBranchRegex, '');
@@ -601,14 +601,52 @@ export default function AssistantDetail() {
                                                 </div>
                                             ) : field.type === 'add_button' ? (
                                                 <Button
-                                                    variant={fieldValues[field.name]?.checked ? "destructive" : "outline"}
+                                                    variant={fieldValues[field.name]?.checked ? "destructive" : "accent"}
                                                     onClick={() => {
+                                                        const isChecked = !fieldValues[field.name]?.checked;
+                                                        
+                                                        // Handle specific actions like sequence generation
+                                                        if (field.action === 'generate_sequences' && isChecked) {
+                                                            const durationVal = parseInt(fieldValues['Duration'] || (fields.find((f: any) => f.name === 'Duration')?.default) || '');
+                                                            const splitVal = parseInt(fieldValues['Split'] || (fields.find((f: any) => f.name === 'Split')?.default) || '');
+                                                            
+                                                            if (isNaN(durationVal) || isNaN(splitVal) || splitVal <= 0) {
+                                                                toast({
+                                                                    title: lang === 'ms' ? 'Input Diperlukan' : 'Input Required',
+                                                                    description: lang === 'ms' 
+                                                                        ? 'Sila pilih durasi dan masa pecahan terlebih dahulu' 
+                                                                        : 'Please select duration and split timing first',
+                                                                    variant: 'destructive'
+                                                                });
+                                                                return;
+                                                            }
+
+                                                            const count = Math.floor(durationVal / splitVal);
+                                                            const newSeqs = Array.from({ length: count }, (_, i) => {
+                                                                const start = i * splitVal;
+                                                                const end = (i + 1) * splitVal;
+                                                                return { time: `${start}–${end}s` };
+                                                                });
+                                                                
+                                                                setFieldValues(prev => ({
+                                                                    ...prev,
+                                                                    [field.name]: { checked: true, value: '' },
+                                                                    'Sequences': newSeqs
+                                                                }));
+                                                                
+                                                                toast({
+                                                                    title: lang === 'ms' ? 'Urutan Dihasilkan' : 'Sequences Generated',
+                                                                    description: lang === 'ms' ? `${count} babak telah disediakan.` : `${count} scenes have been prepared.`,
+                                                                });
+                                                                return;
+                                                        }
+
                                                         setFieldValues(prev => ({
                                                             ...prev,
-                                                            [field.name]: { checked: !prev[field.name]?.checked, value: '' }
+                                                            [field.name]: { checked: isChecked, value: '' }
                                                         }));
                                                     }}
-                                                    className="w-full flex items-center justify-center gap-2 h-12 transition-all duration-300 shadow-sm hover:shadow-md"
+                                                    className="w-full flex items-center justify-center gap-2 h-12 transition-all duration-300 shadow-sm hover:shadow-md font-bold"
                                                 >
                                                     {fieldValues[field.name]?.checked ? (
                                                         <>
@@ -617,7 +655,7 @@ export default function AssistantDetail() {
                                                         </>
                                                     ) : (
                                                         <>
-                                                            <Plus className="h-4 w-4" />
+                                                            {field.action === 'generate_sequences' ? <PlayCircle className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
                                                             {field.label_add?.[lang] || (lang === 'ms' ? 'Tambah' : 'Add')} {field.label[lang].replace(/\(Pilihan\)/g, '').replace(/\(Optional\)/g, '').trim()}
                                                         </>
                                                     )}
@@ -626,20 +664,23 @@ export default function AssistantDetail() {
                                                 <div className="space-y-4">
                                                     {(fieldValues[field.name] || []).map((item: any, index: number) => (
                                                         <Card key={index} className="p-4 bg-muted/10 border-dashed border-2 relative animate-in zoom-in-95 duration-200">
-                                                            <Button
-                                                                variant="ghost"
-                                                                size="icon"
-                                                                className="absolute top-2 right-2 text-destructive hover:bg-destructive/10 h-8 w-8"
-                                                                onClick={() => {
-                                                                    const newArray = [...(fieldValues[field.name] || [])];
-                                                                    newArray.splice(index, 1);
-                                                                    setFieldValues(prev => ({ ...prev, [field.name]: newArray }));
-                                                                }}
-                                                            >
-                                                                <Trash2 className="h-4 w-4" />
-                                                            </Button>
+                                                            {!field.hideControls && (
+                                                                <Button
+                                                                    variant="ghost"
+                                                                    size="icon"
+                                                                    className="absolute top-2 right-2 text-destructive hover:bg-destructive/10 h-8 w-8"
+                                                                    onClick={() => {
+                                                                        const newArray = [...(fieldValues[field.name] || [])];
+                                                                        newArray.splice(index, 1);
+                                                                        setFieldValues(prev => ({ ...prev, [field.name]: newArray }));
+                                                                    }}
+                                                                >
+                                                                    <Trash2 className="h-4 w-4" />
+                                                                </Button>
+                                                            )}
                                                             <h4 className="text-sm font-bold mb-3 flex items-center gap-2">
                                                                 {field.itemLabel?.[lang] || 'Item'} {index + 1}
+                                                                {field.hideControls && <span className="text-xs font-normal text-muted-foreground opacity-60">(Auto)</span>}
                                                             </h4>
                                                             <div className="grid gap-3">
                                                                 {field.fields?.map((subField: any) => (
@@ -649,6 +690,7 @@ export default function AssistantDetail() {
                                                                             <select
                                                                                 className="w-full p-2 rounded-lg border border-input bg-background text-sm focus:ring-2 focus:ring-primary h-9"
                                                                                 value={item[subField.name] || ''}
+                                                                                disabled={subField.disabled}
                                                                                 onChange={(e) => {
                                                                                     const newArray = [...(fieldValues[field.name] || [])];
                                                                                     newArray[index] = { ...newArray[index], [subField.name]: e.target.value };
@@ -657,7 +699,7 @@ export default function AssistantDetail() {
                                                                             >
                                                                                 <option value="">{subField.placeholder?.[lang] || (lang === 'ms' ? 'Pilih satu' : 'Select one')}</option>
                                                                                 {subField.options?.map((option: any, optIdx: number) => (
-                                                                                    <option key={optIdx} value={option.value[lang]}>
+                                                                                    <option key={optIdx} value={option.value}>
                                                                                         {option.label[lang]}
                                                                                     </option>
                                                                                 ))}
@@ -666,6 +708,7 @@ export default function AssistantDetail() {
                                                                             <AutoResizeTextarea
                                                                                 placeholder={subField.placeholder?.[lang]}
                                                                                 value={item[subField.name] || ''}
+                                                                                disabled={subField.disabled}
                                                                                 onChange={(e) => {
                                                                                     const newArray = [...(fieldValues[field.name] || [])];
                                                                                     newArray[index] = { ...newArray[index], [subField.name]: e.target.value };
@@ -677,6 +720,7 @@ export default function AssistantDetail() {
                                                                             <AutoResizeTextarea
                                                                                 placeholder={subField.placeholder?.[lang]}
                                                                                 value={item[subField.name] || ''}
+                                                                                disabled={subField.disabled}
                                                                                 onChange={(e) => {
                                                                                     const newArray = [...(fieldValues[field.name] || [])];
                                                                                     newArray[index] = { ...newArray[index], [subField.name]: e.target.value };
@@ -690,7 +734,7 @@ export default function AssistantDetail() {
                                                             </div>
                                                         </Card>
                                                     ))}
-                                                    {(!(field.maxItems && (fieldValues[field.name]?.length >= field.maxItems))) && (
+                                                    {!field.hideControls && (!(field.maxItems && (fieldValues[field.name]?.length >= field.maxItems))) && (
                                                         <Button
                                                             variant="outline"
                                                             className="w-full border-dashed h-12 flex items-center justify-center gap-2 hover:bg-primary/5 transition-colors"

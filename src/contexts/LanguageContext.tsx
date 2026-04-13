@@ -36,6 +36,7 @@ const translations = {
     // Navigation
     'nav.home': 'Laman Utama',
     'nav.promptAssistant': 'Pembantu Prompt',
+    'nav.promptVault': 'Gedung Prompt',
     'nav.learn': 'Belajar',
     'nav.contact': 'Hubungi Kami',
     'nav.privacy': 'Dasar Privasi',
@@ -155,6 +156,7 @@ const translations = {
     // Navigation
     'nav.home': 'Home',
     'nav.promptAssistant': 'Prompt Assistant',
+    'nav.promptVault': 'Prompt Vault',
     'nav.learn': 'Learn',
     'nav.contact': 'Contact',
     'nav.privacy': 'Privacy Policy',

@@ -63,6 +63,14 @@ export function Header() {
               {t('nav.promptAssistant')}
             </Button>
           </Link>
+          <Link to="/prompt-vault">
+            <Button 
+              variant={isCurrentPath('/prompt-vault') ? 'secondary' : 'ghost'} 
+              size="sm"
+            >
+              {t('nav.promptVault')}
+            </Button>
+          </Link>
           {/* <Link to="/learn">
             <Button 
               variant={isCurrentPath('/learn') ? 'secondary' : 'ghost'} 

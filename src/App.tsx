@@ -14,6 +14,7 @@ import { AuthGuard } from "./components/auth/AuthGuard";
 import Landing from "./pages/Landing";
 import Learn from "./pages/Learn";
 import PromptAssistant from "./pages/PromptAssistant";
+import PromptVault from "./pages/PromptVault";
 import AssistantDetail from "./pages/AssistantDetail";
 import Login from "./pages/Login";
 import AuthCallback from "./pages/AuthCallback";
@@ -43,6 +44,14 @@ const App = () => (
                       element={
                         <AuthGuard>
                           <PromptAssistant />
+                        </AuthGuard>
+                      }
+                    />
+                    <Route
+                      path="/prompt-vault"
+                      element={
+                        <AuthGuard>
+                          <PromptVault />
                         </AuthGuard>
                       }
                     />

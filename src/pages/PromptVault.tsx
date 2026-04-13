@@ -1,20 +1,25 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Search, ChevronRight, Copy, Check, Filter, Database, Sparkles, FolderTree } from 'lucide-react';
+import { Search, ChevronRight, Copy, Check, Filter, Database, Sparkles, FolderTree, X, ArrowRight } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { getVaultCategories, getVaultCollections, VaultCategory, VaultCollection } from '@/lib/vault';
 import { Button } from '@/components/ui/enhanced-button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from '@/components/ui/drawer';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 export default function PromptVault() {
   const { lang, t } = useLanguage();
+  const isMobile = useIsMobile();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
+  const [selectedCollection, setSelectedCollection] = useState<VaultCollection | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
   // Fetch Categories
@@ -46,7 +51,6 @@ export default function PromptVault() {
     return title.includes(query) || desc.includes(query);
   });
 
-  // Find category path for breadcrumbs/nested look
   const findCategoryPath = (cats: VaultCategory[], targetId: string, path: VaultCategory[] = []): VaultCategory[] | null => {
     for (const cat of cats) {
       if (cat.id === targetId) return [...path, cat];
@@ -60,6 +64,69 @@ export default function PromptVault() {
 
   const activePath = selectedCategoryId ? findCategoryPath(categories, selectedCategoryId) : [];
 
+  const CollectionDetailContent = ({ collection }: { collection: VaultCollection }) => (
+    <div className="flex flex-col h-full max-h-[80vh] md:max-h-[70vh]">
+      <ScrollArea className="flex-1 pr-4">
+        <div className="space-y-6 pb-6">
+          {/* Aesthetic Section */}
+          <div className="p-4 rounded-2xl bg-primary/5 border border-primary/10 relative overflow-hidden group">
+             <div className="absolute top-0 right-0 p-3 opacity-10 group-hover:scale-110 transition-transform">
+               <Sparkles className="w-8 h-8 text-primary" />
+             </div>
+             <h4 className="text-xs font-bold text-primary uppercase tracking-widest mb-2">
+               {lang === 'ms' ? 'Estetik Sasaran' : 'Target Aesthetic'}
+             </h4>
+             <p className="text-sm text-foreground leading-relaxed italic">
+               "{collection.aesthetic[lang]}"
+             </p>
+          </div>
+
+          {/* Description */}
+          <div className="space-y-2">
+            <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
+              {lang === 'ms' ? 'Mengenai Koleksi' : 'About Collection'}
+            </h4>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              {collection.description[lang]}
+            </p>
+          </div>
+
+          {/* Prompt List */}
+          <div className="space-y-4">
+            <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-widest flex items-center">
+              {lang === 'ms' ? 'Senarai Prompt' : 'Prompt List'}
+              <Badge variant="outline" className="ml-2 text-[10px] py-0 px-2 h-4">
+                {collection.prompts.length}
+              </Badge>
+            </h4>
+            
+            <div className="grid grid-cols-1 gap-3">
+              {collection.prompts.map((p, idx) => (
+                <div key={idx} className="group/prompt relative">
+                  <div className="p-4 rounded-xl bg-muted/30 border border-border/20 text-sm leading-relaxed pr-12 group-hover/prompt:bg-muted/50 group-hover/prompt:border-primary/20 transition-all">
+                    {p.prompt}
+                  </div>
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    className="absolute top-2 right-2 h-8 w-8 text-muted-foreground hover:text-primary transition-colors"
+                    onClick={() => handleCopy(p.prompt, `${collection.id}-${idx}`)}
+                  >
+                    {copiedId === `${collection.id}-${idx}` ? (
+                      <Check className="h-4 w-4 text-success" />
+                    ) : (
+                      <Copy className="h-4 w-4" />
+                    )}
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </ScrollArea>
+    </div>
+  );
+
   return (
     <div className="min-h-screen bg-background pb-20">
       {/* Hero Section */}
@@ -70,17 +137,17 @@ export default function PromptVault() {
         </div>
         
         <div className="container relative z-10 mx-auto px-4 text-center">
-          <Badge variant="outline" className="mb-4 py-1 px-4 border-primary/20 bg-primary/5 text-primary animate-fade-in">
+          <Badge variant="outline" className="mb-4 py-1 px-4 border-primary/20 bg-primary/5 text-primary">
             <Database className="w-3 h-3 mr-2" />
             {t('nav.promptVault')}
           </Badge>
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gradient animate-slide-up">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gradient">
             {lang === 'ms' ? 'Gedung Prompt AI' : 'AI Prompt Vault'}
           </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto animate-slide-up delay-100">
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             {lang === 'ms' 
-              ? 'Koleksi prompt curated untuk pelbagai keperluan AI anda. Hanya salin dan mula jana hasil yang menakjubkan.' 
-              : 'A curated collection of high-quality prompts for your AI needs. Just copy and start generating amazing results.'}
+              ? 'Koleksi prompt curated untuk pelbagai keperluan AI anda. Fokus, salin dan jana.' 
+              : 'A curated collection of high-quality prompts. Stay focused, copy, and create.'}
           </p>
         </div>
       </section>
@@ -90,7 +157,7 @@ export default function PromptVault() {
           
           {/* Sidebar - Categories */}
           <aside className="lg:col-span-3 space-y-6">
-            <div className="p-4 rounded-2xl border border-border/40 glass-effect">
+            <div className="p-4 rounded-2xl border border-border/40 glass-effect sticky top-24">
               <div className="flex items-center mb-6 text-primary font-bold">
                 <FolderTree className="w-5 h-5 mr-2" />
                 {lang === 'ms' ? 'Kategori' : 'Categories'}
@@ -165,66 +232,42 @@ export default function PromptVault() {
             {collectionsLoading ? (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {[1, 2, 3, 4].map(i => (
-                  <div key={i} className="h-64 rounded-2xl border border-border/40 bg-muted/20 animate-pulse"></div>
+                  <div key={i} className="h-48 rounded-2xl border border-border/40 bg-muted/20 animate-pulse"></div>
                 ))}
               </div>
             ) : filteredCollections.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {filteredCollections.map((collection) => (
-                  <Card key={collection.id} className="group overflow-hidden border-border/40 card-gradient hover:shadow-xl transition-all duration-300 flex flex-col h-full rounded-2xl">
-                    <div className="p-6 flex flex-col h-full">
+                  <Card 
+                    key={collection.id} 
+                    onClick={() => setSelectedCollection(collection)}
+                    className="group overflow-hidden border-border/40 card-gradient hover:shadow-xl hover:border-primary/30 transition-all duration-300 cursor-pointer rounded-2xl flex flex-col h-full"
+                  >
+                    <div className="p-6">
                       <div className="flex justify-between items-start mb-4">
-                        <div className="p-2 rounded-xl bg-primary/10 text-primary">
+                        <div className="p-2 rounded-xl bg-primary/10 text-primary group-hover:scale-110 transition-transform duration-300">
                           <Sparkles className="w-5 h-5 font-bold" />
                         </div>
-                        {collection.is_featured && (
-                          <Badge className="bg-accent text-accent-foreground border-none">
-                            Featured
-                          </Badge>
-                        )}
+                        <Badge variant="secondary" className="bg-muted text-[10px]">
+                           {collection.prompts.length} Prompts
+                        </Badge>
                       </div>
                       
                       <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">
                         {collection.title[lang]}
                       </h3>
                       
-                      <p className="text-sm text-muted-foreground mb-4 font-medium italic">
-                         {collection.aesthetic[lang]}
+                      <p className="text-sm text-muted-foreground mb-4 font-medium italic line-clamp-1">
+                         "{collection.aesthetic[lang]}"
                       </p>
                       
-                      <p className="text-sm text-muted-foreground mb-6 line-clamp-2">
+                      <p className="text-sm text-muted-foreground line-clamp-2">
                         {collection.description[lang]}
                       </p>
 
-                      <div className="mt-auto pt-4 border-t border-border/40">
-                        <Accordion type="single" collapsible className="w-full border-none">
-                          <AccordionItem value="prompts" className="border-none">
-                            <AccordionTrigger className="hover:no-underline py-2 text-sm font-bold text-primary">
-                              {lang === 'ms' ? `Lihat ${collection.prompts.length} Prompt` : `View ${collection.prompts.length} Prompts`}
-                            </AccordionTrigger>
-                            <AccordionContent className="pt-4 space-y-4">
-                              {collection.prompts.map((p, idx) => (
-                                <div key={idx} className="relative group/prompt">
-                                  <div className="p-4 rounded-xl bg-muted/30 border border-border/20 text-sm leading-relaxed pr-12 group-hover/prompt:bg-muted/50 transition-colors">
-                                    {p.prompt}
-                                  </div>
-                                  <Button
-                                    size="icon"
-                                    variant="ghost"
-                                    className="absolute top-2 right-2 h-8 w-8 text-muted-foreground hover:text-primary transition-colors"
-                                    onClick={() => handleCopy(p.prompt, `${collection.id}-${idx}`)}
-                                  >
-                                    {copiedId === `${collection.id}-${idx}` ? (
-                                      <Check className="h-4 w-4 text-success" />
-                                    ) : (
-                                      <Copy className="h-4 w-4" />
-                                    )}
-                                  </Button>
-                                </div>
-                              ))}
-                            </AccordionContent>
-                          </AccordionItem>
-                        </Accordion>
+                      <div className="mt-6 flex items-center text-primary text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity">
+                         {lang === 'ms' ? 'Teroka Koleksi' : 'Explore Collection'}
+                         <ArrowRight className="ml-2 w-4 h-4" />
                       </div>
                     </div>
                   </Card>
@@ -236,10 +279,7 @@ export default function PromptVault() {
                 <h3 className="text-xl font-medium text-muted-foreground">
                   {lang === 'ms' ? 'Tiada prompt ditemui' : 'No prompts found'}
                 </h3>
-                <p className="text-muted-foreground mb-6">
-                   {lang === 'ms' ? 'Cuba cari kata kunci lain atau tukar kategori.' : 'Try another search term or change category.'}
-                </p>
-                <Button variant="outline" onClick={() => { setSearchQuery(''); setSelectedCategoryId(null); }}>
+                <Button variant="outline" className="mt-4" onClick={() => { setSearchQuery(''); setSelectedCategoryId(null); }}>
                   {lang === 'ms' ? 'Set Semula' : 'Reset Filters'}
                 </Button>
               </div>
@@ -247,6 +287,62 @@ export default function PromptVault() {
           </main>
         </div>
       </div>
+
+      {/* Responsive Detail View */}
+      {!isMobile ? (
+        <Dialog open={!!selectedCollection} onOpenChange={(open) => !open && setSelectedCollection(null)}>
+          <DialogContent className="max-w-3xl overflow-hidden glass-effect border-border/40 rounded-3xl p-8 outline-none">
+            {selectedCollection && (
+              <>
+                <DialogHeader className="mb-6 pr-8 relative">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <Badge className="bg-primary/10 text-primary border-none hover:bg-primary/20">
+                      {lang === 'ms' ? 'Koleksi Prompt' : 'Prompt Collection'}
+                    </Badge>
+                  </div>
+                  <DialogTitle className="text-3xl font-bold text-gradient">
+                    {selectedCollection.title[lang]}
+                  </DialogTitle>
+                </DialogHeader>
+                
+                <CollectionDetailContent collection={selectedCollection} />
+                
+                <div className="mt-6 flex justify-end">
+                  <Button variant="ghost" onClick={() => setSelectedCollection(null)}>
+                    {lang === 'ms' ? 'Tutup' : 'Close'}
+                  </Button>
+                </div>
+              </>
+            )}
+          </DialogContent>
+        </Dialog>
+      ) : (
+        <Drawer open={!!selectedCollection} onOpenChange={(open) => !open && setSelectedCollection(null)}>
+          <DrawerContent className="px-4 pb-8 h-[90vh]">
+            {selectedCollection && (
+              <div className="flex flex-col h-full overflow-hidden">
+                <DrawerHeader className="px-0 mb-4 flex flex-row items-center justify-between">
+                  <DrawerTitle className="text-2xl font-bold text-gradient text-left pr-4">
+                    {selectedCollection.title[lang]}
+                  </DrawerTitle>
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    className="rounded-full flex-shrink-0"
+                    onClick={() => setSelectedCollection(null)}
+                  >
+                    <X className="h-5 w-5" />
+                  </Button>
+                </DrawerHeader>
+                
+                <div className="flex-1 overflow-hidden">
+                  <CollectionDetailContent collection={selectedCollection} />
+                </div>
+              </div>
+            )}
+          </DrawerContent>
+        </Drawer>
+      )}
     </div>
   );
 }
